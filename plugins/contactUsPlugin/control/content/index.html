@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app="contactUsPluginContent">
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../../../../scripts/buildfire.js"></script>
+    <script src="../../../../scripts/angular/angular.min.js"></script>
+</head>
+<body ng-controller="contactUsPluginCtrl">
+
+	<div class="item clearfix margin-top-thirty">
+		<div class="labels pull-left">
+			<label>Body Content</label>
+		</div>
+		<div class="main pull-right">
+			<textarea class="form-control" placeholder="WYSIWYG"></textarea>
+		</div>
+	</div>
+	<hr>
+	<div class="item clearfix">
+		<div class="labels pull-left">
+			<label>Address Title</label>
+		</div>
+		<div class="main pull-right">
+			<input type="text" class="form-control" placeholder="Address Title">
+		</div>
+	</div>
+	<hr>
+	<div class="item clearfix">
+		<div class="labels pull-left">
+			<label>Address</label>
+		</div>
+		<div class="main pull-right">
+			<input type="text" class="form-control" placeholder="Street Address">
+			<div class="display-map margin-top-ten">
+				<div class="checkbox checkbox-primary">
+					<input type="checkbox" id="display_map">
+					<label for="display_map">Display Map</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="item clearfix">
+		<div class="labels pull-left">
+			<label>Dynamic Links</label>
+		</div>
+		<div class="main pull-right">
+			Dynamic Links
+		</div>
+	</div> 	
+	
+<script>
+    var contactUsPluginApp = angular.module('contactUsPluginContent',[]);
+
+    contactUsPluginApp.controller('contactUsPluginCtrl',['$scope',function($scope){
+        
+    }]);
+</script>
+</body>
+</html>
