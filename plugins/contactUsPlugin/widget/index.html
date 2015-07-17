@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-App="textPlugin">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>example Text widget</title>
+
+    <script src="../../../scripts/angular/angular.min.js"></script>
+    <script type="text/javascript" src="../../../scripts/buildfire.js"></script>
+
+    <style>
+        .style1{
+            border: 5px solid red;
+        }
+
+        .style2{
+            border: 5px solid blue;
+        }
+    </style>
+</head>
+<body>
+<div ng-controller="textPluginCtrl" ng-cloak style="background-image: url({{data.imageUrl}});" class="{{data.design.style}}" >
+    {{data.text}}
+</div>
+<script>
+
+    var textPluginApp = angular.module('textPlugin', []);
+
+    textPluginApp.controller('textPluginCtrl', ['$scope', function ($scope) {
+        /*
+         * Go pull saved data
+         * */
+        buildfire.datastore.get(function (err, data) {
+
+            $scope.data = data;
+            $scope.$digest();
+
+        });
+
+        /*
+         Listen in if an update occurred on the control panel
+         */
+        buildfire.datastore.onUpdate(function (e) {
+            $scope.data = e.detail.obj;
+            $scope.$digest();
+        });
+
+        buildfire.analytics.trackAction('widget loaded');
+    }]);
+</script>
+
+</body>
+</html>
