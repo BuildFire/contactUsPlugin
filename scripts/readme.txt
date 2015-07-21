@@ -1,1 +1,0 @@
-NOTE: to plugin developer...dont change anything in this folder. it WILL NOT be imported with your plugin
