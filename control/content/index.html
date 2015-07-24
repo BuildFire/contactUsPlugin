@@ -1,65 +1,408 @@
 <!DOCTYPE html>
-<html ng-app="contactUsPluginContent">
-<head lang="en">
-    <meta charset="UTF-8">
-
-	<!-- CSS -->
-    <link href="../../../../styles/helper.css" rel="stylesheet">
-
-	<!-- JS -->
+<html ng-app='controllerapp'>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../../../../scripts/buildfire.js"></script>
+
     <script src="../../../../scripts/angular/angular.min.js"></script>
+
+    <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
+    <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+
+    <link rel="stylesheet" type="text/css" href="/sdk/styles/helper.css">
+
 </head>
-<body ng-controller="contactUsPluginCtrl">
+<body ng-controller='contentcontroller' style="height:auto;width:100%;">
 
-	<div class="item clearfix row">
-		<div class="labels col-md-3 padding-right-zero pull-left">
-			<span>Body Content</span>
-		</div>
-		<div class="main col-md-9 pull-right">
-			<textarea class="form-control" placeholder="WYSIWYG"></textarea>
-		</div>
-	</div>
-	<hr>
-	<div class="item clearfix row">
-		<div class="labels col-md-3 padding-right-zero pull-left">
-			<span>Address Title</span>
-		</div>
-		<div class="main col-md-9 pull-right">
-			<input type="text" class="form-control" placeholder="Address Title">
-		</div>
-	</div>
-	<hr>
-	<div class="item clearfix row">
-		<div class="labels col-md-3 padding-right-zero pull-left">
-			<span>Address</span>
-		</div>
-		<div class="main col-md-9 pull-right">
-			<input type="text" class="form-control" placeholder="Street Address">
-			<div class="display-map margin-top-ten">
-				<div class="checkbox checkbox-primary">
-					<input type="checkbox" id="display_map">
-					<label for="display_map">Display Map</label>
-				</div>
-			</div>
-		</div>
-	</div>
-	<hr>
-	<div class="item clearfix row">
-		<div class="labels col-md-3 padding-right-zero pull-left">
-			<span>Dynamic Links</span>
-		</div>
-		<div class="main col-md-9 pull-right">
-			Dynamic Links
-		</div>
-	</div>
-	
-<script>
-    var contactUsPluginApp = angular.module('contactUsPluginContent',[]);
 
-    contactUsPluginApp.controller('contactUsPluginCtrl',['$scope',function($scope){
-        
-    }]);
-</script>
+<div class="container">
+
+
+    <div class="container" style="height:12%;width:100%;">
+        <div class = "row" style="padding:2% 2% 2% 2%;">
+            <div class="col-xs-3"><h4 style="width:20%;margin-top:0%;">Carousel Images</h4></div>
+            <div class="col-xs-9">
+    <span class="btn btn-default btn-file"  style="position: relative;overflow: hidden;margin-right:65%;background-color:green;color:white;width:30%;">
+   Add Images<input type="file"  style="position: absolute;top: 0;right: 0;min-width: 100%;min-height: 100%; font-size: 100px;text-align: right;filter: alpha(opacity=0);opacity: 0; outline: none;
+background:white; cursor: inherit; display: block;" id="files"  name="files[]" multiple>
+</span>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+    <div class="container" style="margin-bottom:2%;">
+        <div class="row" style="padding:1% 0% 1% 2%;">
+            <div class="col-xs-offset-3 col-xs-9">
+                <ul class="list-group" style="width:100%;" id="columns">
+
+
+
+                    <li class="list-group-item column"  draggable="true" ng-repeat="data in imageList" >
+                        <div>
+
+                            <span class="glyphicon glyphicon-menu-hamburger" style="float:left;margin:2% 1% 2% 1%;"></span>
+                            <span style="width:10%;margin:1% 1% 1% 1%;"><img style="vertical-align:middle;max-width:10%;" ng-src="{{data.src}}" /> &nbsp; {{data.name}} </span>
+                <span style="float:right;width:30%;position:absolute;left:70%;top:2%;bottom:2%;">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" style="margin-right:10%;">Link</button>
+                    <div class="modal" id="myModal" style="background-color: rgba(255,255,255,0.4);width:100%;">
+                        <div class="modal-dialog" style="height:80%;">
+                            <div class="model header">
+                                Link URL
+                            </div>
+
+                            <div class="modal-body" style="height:60%;">
+                                <div class="container" style="height:100%;">
+                                    <h5 style="margin : 10% 0 10% 0;">Please enter your DeepLink Url or standard URL to link to content</h5>
+                                    <div class="container" style="height:25%;width:100%;">
+                                        <div class = "row">
+
+                                            <label class="col-xs-3"><h5 style="margin-top:0%;">URL</h5></label>
+                                            <div class="col-xs-9"><input type="text" style="width:100%;"/></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="container" style="height:25%;width:100%;">
+                                        <div class = "row">
+
+                                            <label class="col-xs-3" ><h5 style="margin-top:0%;">Open in App</h5></label>
+                                            <div class="col-xs-9"><input type="checkbox"/></div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <div class="container" style="height:15%;width:100%;">
+                                    <div class = "row">
+
+                                        <div class="col-xs-6" style="text-align:center;color:skyblue;"><button type="button" class="btn btn-default btn-block">Cancel</button></div>
+                                        <div class="col-xs-6" style="text-align:center;color:green;"><button type="button" class="btn btn-default btn-block">Save</button></div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                <span class="glyphicon glyphicon-remove-sign" style="margin:2% 3% 2% 3%;"></span>
+                    </span>
+                        </div>
+
+
+
+
+                    </li>
+                    <!--         <li class="list-group-item column" draggable="true"> -->
+                    <!--             <div> -->
+                    <!-- <!--             B -->
+                    <!--                 <span class="glyphicon glyphicon-menu-hamburger" style="float:left;margin:2% 1% 2% 1%;"></span> -->
+                    <!--                 <span><input type="file" file-model="myfile" style="display:inline-block;margin-right:12%;"></span> -->
+                    <!--                 <button type="button" class="btn btn-success" style="width:15%;">Link</button> -->
+                    <!--                 <span class="glyphicon glyphicon-remove-sign" style="float:right;margin:2% 3% 2% 3%;background-color:red;"></span> -->
+
+                    <!--             </div> -->
+                    <!--         </li> -->
+
+                    <!--         <li class="list-group-item column" draggable="true"> -->
+                    <!--             <div> -->
+
+                    <!--                 <span class="glyphicon glyphicon-menu-hamburger" style="float:left;margin:2% 1% 2% 1%;"></span> -->
+                    <!--                 <span><input type="file" file-model="myfile" style="display:inline-block;margin-right:12%;"></span> -->
+                    <!--                 <button type="button" class="btn btn-success" style="width:15%;">Link</button> -->
+                    <!--                 <span class="glyphicon glyphicon-remove-sign" style="float:right;margin:2% 3% 2% 3%;background-color:red;"></span> -->
+                    <!--             </div> -->
+                    <!--         </li> -->
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="container" style="height:15%;width:100%;">
+        <div class = "row" style="padding:2% 0% 2% 2%;">
+
+            <div class="col-xs-3"><h4 style="width:15%;margin-top:0%;">Body Content</h4></div>
+            <div class="col-xs-9" style="width:75%;"><textarea class="form-control" rows="3" col="100" placeholder="This is WYSIWYG" ng-model="data.content.bodyclass"></textarea></div>
+        </div>
+    </div>
+
+    <div class="container" style="height:10%;width:100%;">
+        <div class = "row" style="padding:2% 0% 2% 2%;">
+
+            <div class="col-xs-3"><h4 style="margin-top:0%;" >Address Title</h4></div>
+            <div class="col-xs-9" style="width:75%;">
+                <input type="text" class="form-control" ng-model="data.content.addresstitle">
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="height:10%;width:100%;">
+        <div class = "row" style="padding:1% 0% 1% 2%;">
+
+            <div class="col-xs-3"><h4 style="width:10%;margin-top:0%;">Address</h4></div>
+            <div class="col-xs-9" style="width:75%;"><input type="text" class="form-control" placeholder="Enter street address and geo coordinates" ng-model="data.content.address"></div>
+        </div>
+    </div>
+
+
+
+    <div class="container" style="margin-bottom:2%;">
+        <div class="row" style="padding:1% 0% 1% 2%;">
+            <div class="col-xs-offset-3 col-xs-9">
+                <form role="form">
+
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="" ng-model="data.content.checkboxMode">Display Map
+                    </label>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container" style="margin-bottom:2%;">
+        <div class="row" style="padding:1% 0% 1% 2%;">
+            <div class="col-xs-offset-3 col-xs-9">
+                <textarea class="form-control" rows="5" col="100" placeholder="Dynamic holder" style="position:relative;text-align: center;">
+
+        </textarea>
+            </div>
+        </div>
+    </div>
+
+    <!--   <div style="margin-left:28%;width:70%;height:30%;">
+           <textarea class="form-control" rows="5" col="100" placeholder="This is map"></textarea>
+       </div>  -->
+
+    <div style="width:100%;margin-top:2%;padding:3% 0% 3% 3%;">
+        <textarea class="form-control" rows="5" col="100" placeholder="Dynamic Links"></textarea>
+    </div>
+
+
+
+
+
+
+    <script>
+
+        var conapp = angular.module('controllerapp',[]);
+
+        conapp.controller('contentcontroller',['$scope','$rootScope',function($scope,$rootScope){
+
+
+
+
+
+
+
+
+            buildfire.datastore.get(function (err, result) {
+                if(result) {
+                    $scope.data= result.data;
+                    $scope.$digest();
+                    if (tmrDelay)clearTimeout(tmrDelay);
+                }
+            });
+
+            /*
+             * Call the datastore to save the data object
+             */
+            var saveData = function(newObj){
+
+                if(newObj == undefined)return;
+
+
+                buildfire.datastore.save(newObj, function (err, result) {
+                    if (err || !result)
+                        alert(err);
+                    else
+                        console.log('data saved');
+                });
+            };
+
+            /*
+             * create an artificial delay so api isnt called on every character entered
+             * */
+            var tmrDelay = null;
+            var saveDataWithDelay = function(newObj){
+                if(tmrDelay)clearTimeout(tmrDelay);
+                tmrDelay = setTimeout(function(){saveData(newObj);},500);
+            };
+
+            /*
+             * watch for changes in data and trigger the saveDataWithDelay function on change
+             * */
+            $scope.$watch('data',saveDataWithDelay ,true);
+
+//             alert("doner");
+
+
+            /************** Select Image Start ***********************/
+            $scope.imageList = [];
+
+            function handleFileSelect(evt) {
+                var files = evt.target.files; // FileList object
+
+                // files is a FileList of File objects. List some properties.
+                var output = [];
+                for (var i = 0, f; f = files[i]; i++) {
+                    console.log(f.name);
+                    // Only process image files.
+                    if (!f.type.match('image.*')) {
+                        continue;
+                    }
+
+                    var reader = new FileReader();
+
+                    // Closure to capture the file information.
+                    reader.onload = (function(theFile) {
+                        return function(e) {
+                            // Render thumbnail.
+                            console.log(e.target.result);
+                            $scope.imageList.push({"name":theFile.name,"src":e.target.result});
+                            $scope.$apply();
+                        };
+                    })(f);
+
+                    // Read in the image file as a data URL.
+                    reader.readAsDataURL(f);
+
+                    alert(imageList.length);
+
+                }
+            }
+
+            document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+            /************** Select image End ***********************/
+
+
+
+        }]);
+
+        /*
+         conapp.directive('filemodel1',['$rootScope',function($rootScope){
+
+
+         return {
+         restrict : 'AEC',
+         link : function(scope,element,attrs){
+         element.bind('change',function(event){
+
+         var fetchfile = event.target.files[0];
+         //                         scope.$emit('fileSelected',fetchfile);
+         $rootScope.file = fetchfile;
+
+
+
+
+         //                         alert("working");
+
+         })
+         }
+
+         }
+
+         }]);
+         */
+
+        /* Draggable list */
+        var dragSrcEl = null;
+
+        function handleDragStart(e) {
+            // Target (this) element is the source node.
+//   this.style.opacity = '0.4';
+
+            dragSrcEl = this;
+
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+        }
+        files
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault(); // Necessary. Allows us to drop.
+            }
+
+            e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+            return false;
+        }
+
+        function handleDragEnter(e) {
+            // this / e.target is the current hover target.
+            this.classList.add('over');
+        }
+
+        function handleDragLeave(e) {
+            this.classList.remove('over');  // this / e.target is previous target element.
+        }
+
+        function handleDrop(e) {
+            // this/e.target is current target element.
+
+            if (e.stopPropagation) {
+                e.stopPropagation(); // Stops some browsers from redirecting.
+            }
+
+            // Don't do anything if dropping the same column we're dragging.
+            if (dragSrcEl != this) {
+                // Set the source column's HTML to the HTML of the column we dropped on.
+                dragSrcEl.innerHTML = this.innerHTML;
+                this.innerHTML = e.dataTransfer.getData('text/html');
+            }
+
+            return false;
+        }
+
+        function handleDragEnd(e) {
+            // this/e.target is the source node.
+
+            [].forEach.call(cols, function (col) {
+                col.classList.remove('over');
+            });
+        }
+
+
+        var cols = document.querySelectorAll('#columns .column');
+        [].forEach.call(cols, function(col) {
+            col.addEventListener('dragstart', handleDragStart, false);
+            col.addEventListener('dragenter', handleDragEnter, false)
+            col.addEventListener('dragover', handleDragOver, false);
+            col.addEventListener('dragleave', handleDragLeave, false);
+            col.addEventListener('drop', handleDrop, false);
+            col.addEventListener('dragend', handleDragEnd, false);
+        });
+
+
+        /* Dragable list end */
+
+
+
+
+    </script>
+
+</div>
+
 </body>
 </html>

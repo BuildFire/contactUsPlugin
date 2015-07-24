@@ -1,52 +1,248 @@
-<!DOCTYPE html>
-<html ng-App="textPlugin">
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>example Text widget</title>
+﻿<!DOCTYPE html>
+<html ng-app="widgetapp">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="../../../scripts/angular/angular.min.js"></script>
-    <script type="text/javascript" src="../../../scripts/buildfire.js"></script>
 
-    <style>
-        .style1{
-            border: 5px solid red;
-        }
+	<!-- 	<link href="../../../../styles/helper.css" rel="stylesheet" /> -->
 
-        .style2{
-            border: 5px solid blue;
-        }
-    </style>
+
+	<!-- JS -->
+	<script src="../../../scripts/buildfire.js"></script>
+
+	<script src="../../../scripts/angular/angular.min.js"></script>
+
+	<script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
+	<script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+	<script src="http://maps.googleapis.com/maps/api/js?sensor=false?key=AIzaSyD94EXLxKUBcidyIL0nTAic7ryZus2C0fw"></script>
+
 </head>
-<body>
-<div ng-controller="textPluginCtrl" ng-cloak style="background-image: url({{data.imageUrl}});" class="{{data.design.style}}" >
-    {{data.text}}
+<body ng-controller="textPluginCtrl">
+
+
+
+<div class="container" style="height:5%;width:100%;background-color:deepskyblue;text-align:center;display:table;margin:0% 0% 0% 0%;">
+	<span class="indicator glyphicon glyphicon-chevron-left" style="float:left;margin:2% 1% 2% 1%;display:table-cell;"></span>
+	<h4 style="display:table-cell;vertical-align:middle;">Contact Us</h4>
+	<span class="glyphicon glyphicon-menu-hamburger" style="float:right;margin:2% 1% 2% 1%;display:table-cell;vertical-align: middle"></span>
+
 </div>
+
+
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel" style="height:30%">
+
+
+
+
+	<ol class="carousel-indicators">
+		<li data-target = "#myCarousel" data-slide-to = "0" class = "active"></li>
+		<li data-target = "#myCarousel" data-slide-to = "1"></li>
+		<li data-target = "#myCarousel" data-slide-to = "2"></li>
+	</ol>
+
+	<div class = "carousel-inner" style="height:100%;width:100%">
+		<div class = "item active" style="height:100%;width:100%;">
+			<a href="#"><img src = "../../myPlugin/resources/beach.jpg" style="height:100%;width:100%;" alt="Beach" class="img-responsive"></a>
+		</div>
+
+
+		<div class = "item" style="height:100%;width:100%;">
+			<a href="#"><img src = "../../myPlugin/resources/beach1.jpg" style="height:100%;width:100%;" alt="Beach1" class="img-responsive"></a>
+		</div>
+
+		<div class = "item" style="height:100%;width:100%;">
+			<a href="#"><img src = "../../myPlugin/resources/beach2.jpg" style="height:100%;width:100%;" alt="Beach1" class="img-responsive"></a>
+		</div>
+
+	</div>
+
+
+</div>
+
+
+
+
+
+
+<div style="height:10%;">
+	<div class="addresstitleclass"  style="height:60px;text-align:center;">
+		<h4 style="margin:0;padding:0;line-height:60px;color:deepskyblue;">{{data.content.addresstitle}}</h4>
+	</div>
+</div>
+
+
+<hr style="margin:0%;color:deepskyblue;border-style:inset;">
+
+<div>
+	<div class="addressclass"  style="height:60px;text-align:center;">
+		<p style="margin:0;padding:0;line-height:60px;color:deepskyblue;">{{data.content.address}}</p>
+	</div>
+</div>
+
+
+
+
+<div style="height:25%"  >
+	<div id="myMap" mapdirective class="mapclass" style="height:100%;"></div>
+</div>
+
+<div class="bodyclass" style="height:15%;padding:2% 2% 2% 2%;text-align:justify;color:black;">{{data.content.bodyclass}}</div>
+
+
+
+
+
+
+
+
 <script>
 
-    var textPluginApp = angular.module('textPlugin', []);
+	var textPluginApp = angular.module('widgetapp', []);
 
-    textPluginApp.controller('textPluginCtrl', ['$scope', function ($scope) {
-        /*
-         * Go pull saved data
-         * */
-        buildfire.datastore.get(function (err, data) {
+	textPluginApp.controller('textPluginCtrl', ['$scope', function ($scope) {
 
-            $scope.data = data;
-            $scope.$digest();
 
-        });
 
-        /*
-         Listen in if an update occurred on the control panel
-         */
-        buildfire.datastore.onUpdate(function (e) {
-            $scope.data = e.detail.obj;
-            $scope.$digest();
-        });
 
-        buildfire.analytics.trackAction('widget loaded');
-    }]);
+
+
+		var geocoder = new google.maps.Geocoder();
+		$scope.codeAddress = function() {
+			var address = $scope.query;
+
+
+			geocoder.geocode( { 'address': address}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+
+					console.log(results[0].geometry.location);
+					$scope.lat = results[0].geometry.location.lat();
+					$scope.long = results[0].geometry.location.lng();
+					$scope.mapobj.setCenter(new google.maps.LatLng($scope.lat,$scope.long ));
+					$scope.markerobj.setPosition(new google.maps.LatLng($scope.lat,$scope.long ));
+				} else {
+					alert('Geocode was not successful for the following reason: ' + status);
+					lat = "";
+					long = "";
+				}
+			});
+		}
+
+		/*
+		 * Go pull saved data
+		 * */
+		buildfire.datastore.get(function (err, result) {
+			if(result) {
+				$scope.data = result.data;
+				$scope.query = $scope.data.content.address;
+				$scope.codeAddress();
+				$scope.$digest();
+			}
+
+		});
+
+
+
+
+		$scope.lati = 28.6139;
+		$scope.long = 77.2090;
+
+
+
+
+
+		/*
+		 Listen in if an update occurred on the control panel
+		 */
+		buildfire.datastore.onUpdate(function (newObj) {
+			$scope.data = newObj.obj;
+
+			$scope.query = $scope.data.content.address;
+			$scope.codeAddress();
+			$scope.$digest();
+		});
+
+
+
+		buildfire.analytics.trackAction('widget loaded',{userid:2});
+	}]);
+
+
+
+	/* directive for map */
+
+	textPluginApp.directive('mapdirective',function(){
+		var link = function(scope,element,attrs){
+			var map;
+			var marker;
+			var address;
+			var infoWindow;
+
+
+
+
+			var lati = scope.lati;
+			var long = scope.long;
+
+
+
+			var latlng = new google.maps.LatLng(lati,long);
+
+			var mapOptions = {
+				center : latlng,
+				zoom : 16,
+				mapTypeId : google.maps.MapTypeId.ROADMAP
+			};
+
+
+
+
+
+			map = new google.maps.Map(element[0],mapOptions);
+
+			scope.mapobj = map;
+
+
+			var markerOptions = {
+				position : latlng,
+				map :map,
+				clickable : true
+			};
+
+			marker = new google.maps.Marker(markerOptions);
+
+			scope.markerobj = marker;
+
+
+
+
+
+
+			google.maps.event.addListenerOnce(map, 'idle', function(){
+
+				var mapCopyright=element[0].getElementsByTagName("a");
+				$(mapCopyright).click(function(){
+					return false;
+				});
+			});
+
+
+
+
+
+		}
+
+		return {
+			restrict : 'AEC',
+			template : '<div id="lmap"></div>',
+			replace : true,
+			link : link
+
+		}
+
+	});
+
+
 </script>
-
 </body>
 </html>

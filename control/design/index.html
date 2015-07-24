@@ -1,73 +1,23 @@
 <!DOCTYPE html>
-<html ng-app="contactUsPluginDesign">
-<head lang="en">
-    <meta charset="UTF-8">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<!-- CSS -->
+    <!-- Load helper.css to use our helper classes.
     <link href="../../../../styles/helper.css" rel="stylesheet">
+    -->
 
-	<!-- JS -->
+    <!-- JS -->
     <script src="../../../../scripts/buildfire.js"></script>
-    <script src="../../../../scripts/angular/angular.min.js"></script>
+
+    <!--
+   <script src="../../../../scripts/angular/angular.min.js"></script>
+   <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
+
+   <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+   -->
 </head>
-<body ng-controller="contactUsPluginCtrl">
-
-	<div class="item clearfix row">
-		<div class="labels col-md-3 padding-right-zero pull-left">
-			<span>Image Carousel</span>
-		</div>
-		<div class="main col-md-9 pull-right">
-			<div class="clearfix">
-				<a class="btn btn-success pull-left">Add Image</a>
-			</div>
-			<div class="carousel-items draggable-list-view margin-top-twenty border-radius-four border-grey">
-				<div class="d-item">
-					<span class="icon icon-menu"></span>
-					<img src="http://www.placehold.it/80x50" class="border-radius-four border-grey">
-					<div class="copy pull-right">
-						<span class="title ellipsis">Image Title</span>
-						<a class="text-primary text">Link</a>											
-						<span class="btn-icon btn-delete-icon btn-danger"><span>
-					</div>
-				</div>
-				<div class="d-item">
-					<span class="icon icon-menu"></span>
-					<img src="http://www.placehold.it/80x50" class="border-radius-four border-grey">
-					<div class="copy pull-right">
-						<span class="title ellipsis">Image Title</span>
-						<a class="text-primary text">Link</a>											
-						<span class="btn-icon btn-delete-icon btn-danger"><span>
-					</div>
-				</div>
-				<div class="d-item">
-					<span class="icon icon-menu"></span>
-					<img src="http://www.placehold.it/80x50" class="border-radius-four border-grey">
-					<div class="copy pull-right">
-						<span class="title ellipsis">Image Title</span>
-						<a class="text-primary text">Link</a>											
-						<span class="btn-icon btn-delete-icon btn-danger"><span>
-					</div>
-				</div>
-				<div class="d-item">
-					<span class="icon icon-menu"></span>
-					<img src="http://www.placehold.it/80x50" class="border-radius-four border-grey">
-					<div class="copy pull-right">
-						<span class="title ellipsis">Image Title</span>
-						<a class="text-primary text">Link</a>											
-						<span class="btn-icon btn-delete-icon btn-danger transition-third"><span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-<script>
-    var contactUsPluginApp = angular.module('contactUsPluginDesign',[]);
-
-    contactUsPluginApp.controller('contactUsPluginCtrl',['$scope',function($scope){
-        
-		
-    }]);
-</script>
+<body>
+<span>Design - Hello world!</span>
 </body>
 </html>
