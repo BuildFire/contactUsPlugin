@@ -15,9 +15,32 @@
 	<script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
 	<script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
 	<script src="http://maps.googleapis.com/maps/api/js?sensor=false?key=AIzaSyD94EXLxKUBcidyIL0nTAic7ryZus2C0fw"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<style type="text/css">
+ .left .carousel-control{
+  display:none;
+ }
+ 
+ .right .carousel-control{
+   display:none;
+ }
+
+</style>
+
 
 </head>
-<body ng-controller="textPluginCtrl">
+
+<body>
+
+
+
+
+
+<body ng-controller="textPluginCtrl" ng-cloak style="background:url({{data.content.bgUrl}});background-repeat:no-repeat;height:100%;">
+
+<!-- <div ng-controller="textPluginCtrl" ng-cloak style="background:url({{data.content.bgUrl}});background-repeat:no-repeat;height:100%;">  -->
+
 
 
 
@@ -30,40 +53,34 @@
 
 
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" style="height:30%">
+<!-- <div id="myCarousel" class="carousel slide" data-ride="carousel" style="height:30%"> -->
 
 
 
 
-	<ol class="carousel-indicators">
-		<li data-target = "#myCarousel" data-slide-to = "0" class = "active"></li>
-		<li data-target = "#myCarousel" data-slide-to = "1"></li>
-		<li data-target = "#myCarousel" data-slide-to = "2"></li>
-	</ol>
+<!-- 	<ol class="carousel-indicators"> -->
+<!-- 		<li data-target = "#myCarousel" data-slide-to = "0" class = "active"></li> -->
+<!-- 		<li data-target = "#myCarousel" data-slide-to = "1"></li> -->
+<!-- 		<li data-target = "#myCarousel" data-slide-to = "2"></li> -->
+<!-- 	</ol> -->
 
-	<div class = "carousel-inner" style="height:100%;width:100%">
-		<div class = "item active" style="height:100%;width:100%;">
-			<a href="#"><img src = "../../myPlugin/resources/beach.jpg" style="height:100%;width:100%;" alt="Beach" class="img-responsive"></a>
-		</div>
-
-
-		<div class = "item" style="height:100%;width:100%;">
-			<a href="#"><img src = "../../myPlugin/resources/beach1.jpg" style="height:100%;width:100%;" alt="Beach1" class="img-responsive"></a>
-		</div>
-
-		<div class = "item" style="height:100%;width:100%;">
-			<a href="#"><img src = "../../myPlugin/resources/beach2.jpg" style="height:100%;width:100%;" alt="Beach1" class="img-responsive"></a>
-		</div>
-
-	</div>
+<!-- 	<div class = "carousel-inner" style="height:100%;width:100%" ng-repeat="image in data.array"> -->
+<!-- 		<div class = "item active" style="height:100%;width:100%;" > -->
+<!-- 			<a href="#"><img src = {{image}} style="height:100%;width:100%;" alt="Beach" class="img-responsive"></a> -->
+<!-- 		</div> -->
 
 
-</div>
-
-
-
-
-
+<!-- 	</div> -->
+<!-- 	</div> -->
+	
+<div style="height:30%">
+	 <carousel interval="1000" no-wrap="true">
+      <slide ng-repeat="slide in data.array" active="slide.active">
+        <img ng-src="{{slide}}" style="margin:auto; width:100%">
+        
+      </slide>
+    </carousel>
+  </div>  
 
 <div style="height:10%;">
 	<div class="addresstitleclass"  style="height:60px;text-align:center;">
@@ -83,29 +100,78 @@
 
 
 
-<div style="height:25%"  >
+<div style="height:25%">
 	<div id="myMap" mapdirective class="mapclass" style="height:100%;"></div>
 </div>
 
-<div class="bodyclass" style="height:15%;padding:2% 2% 2% 2%;text-align:justify;color:black;">{{data.content.bodyclass}}</div>
+<div ng-include="as.html"></div>
+
+<div>
+	<div class="bodyclass"  style="height:60px;text-align:center;text-align:justify;">
+		{{data.content.bodyclass}}
+	</div>
+</div>
 
 
 
 
+  <script>
 
 
 
+	var textPluginApp = angular.module('widgetapp', ['ui.bootstrap']);
 
-<script>
-
-	var textPluginApp = angular.module('widgetapp', []);
-
-	textPluginApp.controller('textPluginCtrl', ['$scope', function ($scope) {
+	textPluginApp.controller('textPluginCtrl', ['$scope','$location', function ($scope,$location) {
 
 
+	/*	buildfire.datastore.get('imagefile',function(err,data){
+			if(err)
+				alert('there was a problem retrieving your data');
+			else
+				alert('got your data ' + JSON.stringify(data) );
+		});
+*/
+    $scope.absUrl = $location.absUrl();
+	$scope.absUrl	 = $scope.absUrl.split('contactUsPlugin');
+	$scope.absUrl = $scope.absUrl[0] + 'contactUsPlugin/' ;
+    
+		function bind(data){
+			$scope.data = data;
+// 			console.clear();
+			console.log("widget data");
+			
+			console.log($scope.data.array);
+			console.log($scope.data);
+			$scope.$digest();
+		}
+
+		/*
+		 * Go pull saved data
+		 * */
+		function loadData() {
+			buildfire.datastore.get(function (err, result) {
+				if (result) bind(result.data);
+			});
+		}
+		loadData();
+
+		/**
+		 * when a refresh is triggered get reload data
+		 */
+		buildfire.datastore.onRefresh(loadData);
 
 
 
+		buildfire.datastore.get(function (err, result) {
+			if(result) {
+				$scope.data = result.data;
+
+				$scope.query = $scope.data.content.address;
+				$scope.codeAddress();
+				$scope.$digest();
+			}
+
+		});
 
 		var geocoder = new google.maps.Geocoder();
 		$scope.codeAddress = function() {
@@ -128,18 +194,8 @@
 			});
 		}
 
-		/*
-		 * Go pull saved data
-		 * */
-		buildfire.datastore.get(function (err, result) {
-			if(result) {
-				$scope.data = result.data;
-				$scope.query = $scope.data.content.address;
-				$scope.codeAddress();
-				$scope.$digest();
-			}
 
-		});
+
 
 
 
@@ -151,16 +207,22 @@
 
 
 
-		/*
-		 Listen in if an update occurred on the control panel
-		 */
+
+		/* Listen in if an update occurred on the control panel  */
+
 		buildfire.datastore.onUpdate(function (newObj) {
 			$scope.data = newObj.obj;
 
 			$scope.query = $scope.data.content.address;
 			$scope.codeAddress();
 			$scope.$digest();
+
+
+
+
 		});
+		
+		
 
 
 
@@ -169,10 +231,12 @@
 
 
 
-	/* directive for map */
 
-	textPluginApp.directive('mapdirective',function(){
+
+textPluginApp.directive('mapdirective',function(){
+		
 		var link = function(scope,element,attrs){
+			
 			var map;
 			var marker;
 			var address;
@@ -190,6 +254,7 @@
 
 			var mapOptions = {
 				center : latlng,
+				// center: ll,
 				zoom : 16,
 				mapTypeId : google.maps.MapTypeId.ROADMAP
 			};
@@ -203,31 +268,114 @@
 			scope.mapobj = map;
 
 
-			var markerOptions = {
+	/*		var markerOptions = {
 				position : latlng,
 				map :map,
-				clickable : true
+				clickable : true,
+				draggable: true
 			};
 
 			marker = new google.maps.Marker(markerOptions);
+*/
 
+			
+			marker = new google.maps.Marker({ 
+		        position: latlng,
+		        draggable: true,
+		        animation: google.maps.Animation.DROP 
+    		}); 
+
+    		marker.setMap(map); 
+			
+			
 			scope.markerobj = marker;
+			
+			var draglat,draglng, dragEndlat, dragEndlong;
+			
+			google.maps.event.addListener(marker,'drag',function(event) {
+				draglat = event.latLng.lat();
+				draglng = event.latLng.lng();
+				console.log('draglat '+draglat+', draglng '+draglng);
+		    });
+			
+			var geocoder = new google.maps.Geocoder();
+
+		    google.maps.event.addListener(marker,'dragend',function(event) {
+		    	dragEndlat = event.latLng.lat();
+		    	dragEndlong = event.latLng.lng();
+		    	console.log('dragEndlat '+dragEndlat+', dragEndlong '+dragEndlong);
+		    	
+		    	
+		    	var latlng = new google.maps.LatLng(dragEndlat, dragEndlong);
+		    	map.setCenter(latlng);
+		  	  geocoder.geocode({'location': latlng}, function(results, status) {
+		  	    if (status == google.maps.GeocoderStatus.OK) {
+		  	      if (results[1]) {
+		  	    	console.log(results[0].geometry.location);
+		  	    	console.log('Address '+results[1].formatted_address);
+		  	    	scope.data.content.address = results[1].formatted_address;
+		  	    	scope.$apply();
+// 		  	        map.setZoom(11);
+// 		  	        marker = new google.maps.Marker({
+// 		  	          position: latlng,
+// 		  	          map: map
+// 		  	        });
+// 		  	        infowindow.setContent(results[1].formatted_address);
+		  	       // infowindow.open(map, marker);
+		  	      } else {
+		  	       // window.alert('No results found');
+		  	        alert('Address was not successful for the following reason: ' + status);
+		  	      }
+		  	    } else {
+		  	      //window.alert('Geocoder failed due to: ' + status);
+		  	      alert('Address was not successful for the following reason: ' + status);
+		  	    }
+		  	  });
+		  	  
+		    	
+		    });
 
 
+// 		    var geoAddress = new google.maps.Geocoder();
+// 			$scope.codeAddress = function() {
+// 				var address = $scope.query;
 
+// 				geocoder.geocode( { 'laglong': address}, function(results, status) {
+// 					if (status == google.maps.GeocoderStatus.OK) {
 
+// 						console.log(results[0].geometry.location);
+// 						$scope.lat = results[0].geometry.location.lat();
+// 						$scope.long = results[0].geometry.location.lng();
+// 						$scope.mapobj.setCenter(new google.maps.LatLng($scope.lat,$scope.long ));
+// 						$scope.markerobj.setPosition(new google.maps.LatLng($scope.lat,$scope.long ));
+// 					} else {
+// 						alert('Geocode was not successful for the following reason: ' + status);
+// 						lat = "";
+// 						long = "";
+// 					}
+// 				});
+// 			}
+			
+			
+/*
+ * 
+ google.maps.event.addListenerOnce(map, 'tilesloaded', function() {
+     google.maps.event.addListenerOnce(map, 'tilesloaded', function() {
+         google.maps.event.trigger(map, 'resize');
+
+     });
+});
+ */
 
 
 			google.maps.event.addListenerOnce(map, 'idle', function(){
-
+//myMap
+				//var mapCopyright=element[0].getElementsByTagName("a");
 				var mapCopyright=element[0].getElementsByTagName("a");
 				$(mapCopyright).click(function(){
 					return false;
 				});
 			});
-
-
-
 
 
 		}
