@@ -1,73 +1,194 @@
 <!DOCTYPE html>
-<html ng-app="contactUsPluginDesign">
-<head lang="en">
-    <meta charset="UTF-8">
+<html ng-app="widgetapp">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<!-- CSS -->
+    <!-- Load helper.css to use our helper classes.
     <link href="../../../../styles/helper.css" rel="stylesheet">
+    -->
 
-	<!-- JS -->
+    <!-- JS -->
     <script src="../../../../scripts/buildfire.js"></script>
-    <script src="../../../../scripts/angular/angular.min.js"></script>
+
+
+   <script src="../../../../scripts/angular/angular.min.js"></script>
+
+    <!--
+   <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
+
+   <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+   -->
 </head>
-<body ng-controller="contactUsPluginCtrl">
 
-	<div class="item clearfix row">
-		<div class="labels col-md-3 padding-right-zero pull-left">
-			<span>Image Carousel</span>
-		</div>
-		<div class="main col-md-9 pull-right">
-			<div class="clearfix">
-				<a class="btn btn-success pull-left">Add Image</a>
-			</div>
-			<div class="carousel-items draggable-list-view margin-top-twenty border-radius-four border-grey">
-				<div class="d-item">
-					<span class="icon icon-menu"></span>
-					<img src="http://www.placehold.it/80x50" class="border-radius-four border-grey">
-					<div class="copy pull-right">
-						<span class="title ellipsis">Image Title</span>
-						<a class="text-primary text">Link</a>											
-						<span class="btn-icon btn-delete-icon btn-danger"><span>
-					</div>
-				</div>
-				<div class="d-item">
-					<span class="icon icon-menu"></span>
-					<img src="http://www.placehold.it/80x50" class="border-radius-four border-grey">
-					<div class="copy pull-right">
-						<span class="title ellipsis">Image Title</span>
-						<a class="text-primary text">Link</a>											
-						<span class="btn-icon btn-delete-icon btn-danger"><span>
-					</div>
-				</div>
-				<div class="d-item">
-					<span class="icon icon-menu"></span>
-					<img src="http://www.placehold.it/80x50" class="border-radius-four border-grey">
-					<div class="copy pull-right">
-						<span class="title ellipsis">Image Title</span>
-						<a class="text-primary text">Link</a>											
-						<span class="btn-icon btn-delete-icon btn-danger"><span>
-					</div>
-				</div>
-				<div class="d-item">
-					<span class="icon icon-menu"></span>
-					<img src="http://www.placehold.it/80x50" class="border-radius-four border-grey">
-					<div class="copy pull-right">
-						<span class="title ellipsis">Image Title</span>
-						<a class="text-primary text">Link</a>											
-						<span class="btn-icon btn-delete-icon btn-danger transition-third"><span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
+
+<body ng-controller="widgetCtrl">
+
+<div class="container" style="height:45%;width:100%;">
+    <div class="row" style="padding:2% 0% 2% 2%;">
+
+        <div class="col-xs-3"><h4>Layout</h4></div>
+        <div class="col-xs-2">
+            <div style="border:1px solid black;height:20%;width:100%;padding:20% 20% 20% 20%;text-align:justify;text-justify: inter-word;">
+                Show Current Layout Style
+            </div>
+        </div>
+        <div class="col-xs-7">
+
+            <div class="container">
+
+                <div class="row" style="height:100%;padding:5% 5% 5% 5%;border:1px solid black;">
+                    <div class="col-xs-3" style="height:80%;">
+
+                        <img src="../../../contactUsPlugin/resources/CP Contact Us Content.png" alt="Pulpit Rock" style="width:50px;height:70px">
+
+                    </div>
+                    <div class="col-xs-3" style="height:80%;">
+
+                        <img src="../../myPlugin/resources/CP Contact Us Design.png" alt="Moustiers Sainte Marie" style="width:150px;height:170px">
+
+                    </div>
+                    <div class="col-xs-3" style="height:80%;">
+
+                        <img src="../../myPlugin/resources/CP Contact Us Content.png" alt="Cinque Terre" style="width:150px;height:170px">
+
+                    </div>
+                    <div class="col-xs-3" style="height:80%;">
+
+                        <img src="../../myPlugin/resources/CP Contact Us Design.png" alt="Cinque Terre" style="width:150px;height:170px">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+    </div>
+</div>
+
+<div style="position:fixed;top:50%;width:100%;height:50%;">
+
+    <hr style="width:100%;height:10%;">
+    <div class="container" style="height:50%;position:relative;">
+
+        <div class="col-xs-3"><h4>Layout</h4></div>
+        <div class="col-xs-9" style="height:100%;">
+           <div class="" style="height:100%;width:30%;border:1px solid black;" ng-click="openImageLib();">
+
+               <!--
+    <span class="btn btn-default btn-file" style="position: relative;overflow: hidden;margin-right:65%;background-color:white;color:black;width:20%;height:100%;padding:0% 0% 0% 0%;">
+   <input type="file" style="position: absolute;top: 10%;right: 0;min-width: 100%;min-height: 100%; font-size: 100px;text-align: right;filter: alpha(opacity=0);opacity: 0; outline: none;
+background:white; cursor: inherit; display: block;" id="files" name="files[]" multiple="">
+<span class="glyphicon glyphicon-remove-sign" style="width:20%;margin-left:80%;"></span>
+        <span class="glyphicon glyphicon-plus-sign" style=""></span>
+    </span>
+    -->
+            </div>
+
+
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
 <script>
-    var contactUsPluginApp = angular.module('contactUsPluginDesign',[]);
 
-    contactUsPluginApp.controller('contactUsPluginCtrl',['$scope',function($scope){
-        
-		
+    var WidgetApp = angular.module('widgetapp',[]);
+
+    WidgetApp.controller('widgetCtrl',['$scope',function($scope){
+
+
+        function bind(data){
+            $scope.data = data;
+            $scope.$digest();
+        }
+
+
+
+        /*
+         * Go pull saved data
+         * */
+        function loadData() {
+            buildfire.datastore.get(function (err, result) {
+                if (result) bind(result.data);
+            });
+        }
+        loadData();
+
+        /**
+         * when a refresh is triggered get reload data
+         */
+        buildfire.datastore.onRefresh(loadData);
+
+
+
+        //Go pull any previously saved data
+        buildfire.datastore.get(function(err,result){
+            if(result) {
+                $scope.data = result.data;
+                $scope.$digest();
+            }
+            $scope.$watch('data',saveData ,true);
+        });
+
+
+        // Call the datastore to save the data object
+
+        var saveData = function(newObj){
+            if(newObj == undefined)return;
+
+            buildfire.datastore.save(newObj,function(err,result){
+                if(err || !result)
+                    alert(err);
+                else
+                    console.log('data saved');
+            });
+        };
+
+        $scope.openImageLib = function () {
+
+            buildfire.imageLib.showDialog({showIcons: false, multiSelection: false}, function (error, result) {
+
+                if (result && result.selectedFiles && result.selectedFiles.length > 0) {
+
+                    $scope.data.content.bgUrl = result.selectedFiles[0];
+
+                    alert($scope.data.content.bgUrl);
+                    $scope.$apply();
+                }else{
+                    alert("we have no image");
+                }
+            });
+        }
+
+
+        /*
+         * watch for changes in data and trigger the saveDataWithDelay function on change
+         * */
+
     }]);
+
+
 </script>
+
+
 </body>
+
+
+
 </html>
