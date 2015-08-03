@@ -1,0 +1,15 @@
+/*
+This plugin will contain all custome styles related to widget design.
+*/
+
+.left .carousel-control{
+  display:none;
+ }
+ 
+ .right .carousel-control{
+   display:none;
+ }
+
+.newMap{
+	height:200px !important;
+}

@@ -1,39 +1,23 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="buildfire" >
-<head>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="../../../../styles/helper.css">
-    
-    <!-- Meta -->
-	<meta charset="utf-8">
-</head>
-<div class="holder padding-zero">
+<div class="holder padding-zero"  ng-cloak style="background:url({{dataForView.design.bgUrl}});background-repeat:no-repeat;height:100%;">
 	<div class="contact-plugin layout1">
-		<div class="plugin-banner clearfix border-bottom-grey">
-			<div class="plugin-slider text-center">
-				<div class="plugin-slide">
-					<img src="http://www.placehold.it/1280x720.jpg">
-				</div>
-				<div class="plugin-slide hidden">
-					<img src="http://www.placehold.it/1280x720.jpg">
-				</div>
-				<div class="plugin-slide hidden">
-					<img src="http://www.placehold.it/1280x720.jpg">
-				</div>
-			</div>
+		<div>
+			<carousel interval="3000" no-wrap="true">
+				<slide ng-repeat="slide in dataForView.array">
+					<img ng-src="{{slide.image_src}}" style="margin:auto; width:100%"  open-link="{{slide.imageurl}}">
+				</slide>
+			</carousel>
 		</div>
+
 		<div class="padded text-center">
-			<a class="text-primary">Contact info</a>
+			<a class="text-primary">{{dataForView.content.addresstitle}}</a>
 			<hr class="small">
-			<p class="margin-bottom-zero">1234 Grand Ave, San Diego, 92127</p>
+			<p class="margin-bottom-zero">{{dataForView.content.address}}</p>
 		</div>
-		<div class="contact-maps text-center">
-			<img src="http://www.placehold.it/1280x720.jpg">
+		<div class="contact-maps text-center" ng-if="dataForView.content.checkboxMode" >
+			<div class="newMap" mapdirective  ></div>
 		</div>
 		<div class="padded">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<p>{{dataForView.content.bodyclass}}</p>
 		</div>
 	</div>
 </div>
-</html>
