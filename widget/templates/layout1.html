@@ -1,23 +1,31 @@
-<div class="holder padding-zero"  ng-cloak style="background:url({{dataForView.design.bgUrl}});background-repeat:no-repeat;height:100%;">
+<div class="padding-zero"  ng-cloak style="background:url({{dataForView.design.bgUrl}});background-repeat:no-repeat;height:100%;  background-size: 100% 100%;">
 	<div class="contact-plugin layout1">
-		<div>
-			<carousel interval="3000" no-wrap="true">
-				<slide ng-repeat="slide in dataForView.array">
-					<img ng-src="{{slide.image_src}}" style="margin:auto; width:100%"  open-link="{{slide.imageurl}}">
-				</slide>
+    		<div ng-show="dataForView.array.length">
+ 			<carousel interval="3000" no-wrap="true"> 
+				<slide ng-repeat="slide in dataForView.array"> 
+					<img ng-src="{{slide.image_src}}" style="margin:auto; width:100%"  open-link="{{slide.imageurl}}"> 
+ 				</slide> 
 			</carousel>
-		</div>
+ 		</div>   
+		
+<!--     <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false,singleItem:true}"> -->
+<!--       <div owl-carousel-item="" ng-repeat="item in ::dataForView.array" class="item"> -->
+<!--       <img ng-src="{{item.image_src}}" style="margin:auto; width:100%"  open-link="{{item.imageurl}}"> -->
+<!--       </div> -->
+<!--     </data-owl-carousel> -->
+		   
 
 		<div class="padded text-center">
-			<a class="text-primary">{{dataForView.content.addresstitle}}</a>
-			<hr class="small">
-			<p class="margin-bottom-zero">{{dataForView.content.address}}</p>
+			<a class="text-primary"   ng-click="showItemlist1();">Contact Us</a>
+			<hr class="small" ng-show="dataForView.content.addresstitle">
+			<p class="margin-bottom-zero" ng-show="dataForView.content.address">{{dataForView.content.address}}</p>
 		</div>
 		<div class="contact-maps text-center" ng-if="dataForView.content.checkboxMode" >
 			<div class="newMap" mapdirective  ></div>
 		</div>
-		<div class="padded">
-			<p>{{dataForView.content.bodyclass}}</p>
+		<div class="padded"  ng-show = "dataForView.content.bodyclass">
+			<div ng-bind-html="dataForView.content.bodyclass"></div>
 		</div>
+		
 	</div>
 </div>

@@ -15,11 +15,11 @@ contactusPluginMap.factory('mapService',function(){
                     callback(results[1].formatted_address);
                 } else {
                     // window.alert('No results found');
-                    alert('Address was not successful for the following reason: ' + status);
+//                    alert('Address was not successful for the following reason: ' + status);
                 }
             } else {
                 //window.alert('Geocoder failed due to: ' + status);
-                alert('Address was not successful for the following reason: ' + status);
+//                alert('Address was not successful for the following reason: ' + status);
             }
         });
 	  }
@@ -35,7 +35,7 @@ contactusPluginMap.factory('mapService',function(){
                 }
                 callback(latLng);  
             } else {
-                alert('Geocode was not successful for the following reason: ' + status);
+//                alert('Geocode was not successful for the following reason: ' + status);
               
             }
         });
@@ -81,6 +81,13 @@ contactusPluginMap.directive('mapdirective',function(mapService){
             });
         });
         
+        
+       var contentinfo = '<a href="geo:'+lati +',' +long+ '"' +'><p>Get Direction</p></a>';
+        
+        var infowindow = new google.maps.InfoWindow({
+		      content: contentinfo
+		  });
+        
         var mapOptions = {
             center : latlng,
             // center: ll,
@@ -90,9 +97,11 @@ contactusPluginMap.directive('mapdirective',function(mapService){
 
         map = new google.maps.Map(element[0],mapOptions);
         
+        
+        
         marker = new google.maps.Marker({
             position: latlng,
-            draggable: true,
+//          draggable: true,          
             animation: google.maps.Animation.DROP
         });
 
@@ -101,8 +110,17 @@ contactusPluginMap.directive('mapdirective',function(mapService){
         scope.markerobj = marker;
         
         var draglat,draglng, dragEndlat, dragEndlong;
+        
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map,marker);
+//            innerHtml.write('<a href="geo:53.33196,6.92583">View on Google Maps</a>');
+   //     	window.location.href = marker.url;
+         });
 
         google.maps.event.addListener(marker,'drag',function(event) {
+       // 	infowindow.open(map,marker);
+        //	window.location.href = marker.url;
+        
             draglat = event.latLng.lat();
             draglng = event.latLng.lng();
             console.log('draglat '+draglat+', draglng '+draglng);
@@ -123,6 +141,23 @@ contactusPluginMap.directive('mapdirective',function(mapService){
             map.setCenter(latlng);
             getAddress(latlng);
         });
+        
+        scope.$watch('location',function(){
+		if(scope.location){
+        	var res = scope.location.split(",");
+			 var lati = res[0];
+	         var long = res[1];
+	         
+	         map.setCenter(new google.maps.LatLng(lati,long));
+	         marker.setPosition(new google.maps.LatLng(lati,long));
+//	         if(scope.data && scope.data.content &&  scope.data.content.address){
+//	        	 infowindow.setContent(scope.data.content.address);	 
+//	         }
+		} 
+
+			
+		});
+        
     }
 
     return {
@@ -134,3 +169,63 @@ contactusPluginMap.directive('mapdirective',function(mapService){
     }
 
 });
+
+
+//contactusPluginMap.directive("owlCarousel", function() {
+//	return {
+//		restrict: 'E',
+//		transclude: false,
+//		link: function (scope) {
+//			
+//			scope.initCarousel = function(element) {
+//			  // provide any default options you want
+//				alert("working");
+//				var defaultOptions = {
+//				};
+//				
+//				var customOptions = scope.$eval($(element).attr('data-options'));
+//				// combine the two options objects
+//				for(var key in customOptions) {
+//					defaultOptions[key] = customOptions[key];
+//				}
+//				// init carousel
+//				$(element).owlCarousel(defaultOptions);
+//			};
+//		}
+//	};
+//});
+//
+//contactusPluginMap.directive('owlCarouselItem', [function() {
+//	return {
+//		restrict: 'A',
+//		transclude: false,
+//		link: function(scope, element) {
+//		  // wait for the last item in the ng-repeat then call init
+//			if(scope.$last) {
+//				scope.initCarousel(element.parent());
+//			}
+//		}
+//	};
+//}]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
