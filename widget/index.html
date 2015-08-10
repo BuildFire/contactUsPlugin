@@ -2,10 +2,11 @@
 <html ng-app="widgetsapp">
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-		<link href="../../../styles/helper.css" rel="stylesheet" />
+    <link href="../../../styles/helper.css" rel="stylesheet" />
 	<link href="style/contactUsPluginStyle.css" rel="stylesheet" />
+	<link href="../../../scripts/owlCarousel/owlCarousel.css" rel="stylesheet" />
+	<link href="JS/owl-carousel/owl.theme.css" rel="stylesheet" />
+	<link href="JS/owl-carousel/owl.transitions.css" rel="stylesheet" />
 
 	<!-- JS -->
 	<script src="../../../scripts/buildfire.js"></script>
@@ -13,26 +14,19 @@
 	<script src="../../../scripts/angular/angular-route.min.js"></script>
 	<script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
 	<script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
-	<script src="../../../scripts/owlCarousel/owlCarousel.min.js"></script>
-   <link href="../../../scripts/owlCarousel/owlCarousel.css" rel="stylesheet" />
-	
-	
+	<script src="JS/owl-carousel/jquery-ui.min.js"></script>
+	<script src="../../../scripts/owlCarousel/owlCarousel.js"></script>
 	<script src="http://maps.googleapis.com/maps/api/js?sensor=false?key=AIzaSyD94EXLxKUBcidyIL0nTAic7ryZus2C0fw"></script>
-    
 
 </head>
 	<body ng-controller="contactusPluginCtrl">
 		
 		<div ng-view style="height:100%;"></div>
 		
-		<script src="app.js"></script>
-		<script src="map.js"></script>
-		<script src="controllers.js"></script>
-		<script src="services.js"></script>
-		
-		
-		
-		
-	
+		<script src="JS/app.js"></script>
+		<script src="JS/map.js"></script>
+		<script src="JS/controllers.js"></script>
+		<script src="JS/services.js"></script>
+		<script src="JS/directives.js"></script>
 	</body>
 </html>

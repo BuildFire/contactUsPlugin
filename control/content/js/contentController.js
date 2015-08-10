@@ -57,8 +57,6 @@ var conapp = angular.module('controllerapp',['ui.bootstrap','ui.sortable','ui.ti
                 	 $scope.vewData.image_linkstatus = "Linked"
                  
                  }
-//               alert($scope.vewData.image_title);
-//                 return false;
                  
                  $scope.data.imageurl = $scope.vewData.imageurl;
                  $scope.data.image_linkstatus = $scope.vewData.image_linkstatus;
@@ -87,7 +85,7 @@ var conapp = angular.module('controllerapp',['ui.bootstrap','ui.sortable','ui.ti
               $scope.addLink = function(){
            	   
                  
-                      var actionItem = {
+                      var actionItem1 = {
                           title: "build fire",
                           "url": "https://www.facebook.com/buildfireapps",
                           action: "linkToWeb",
@@ -96,16 +94,26 @@ var conapp = angular.module('controllerapp',['ui.bootstrap','ui.sortable','ui.ti
                       };
                       var options = {showIcon: true};
                       buildfire.actionItems.showDialog(null, options, function (err, actionItem) {
-                          if (err)
+                         
+                    	  
+                    	  if (err)
                               console.log(err);
                           else {
-                             
-                              if (!$scope.data.actionItems)
-                                  $scope.data.actionItems = [];
+                        	  if(actionItem == null){
+                        		  return false;
+                        	  };
+                              if(!$scope.data){
+                            	  $scope.data ={
+                            			  		"actionItems":[]
+                            	  };
+                              }else if(!$scope.data.actionItems)
+                            	 {
+                                   $scope.data.actionItems = [];
+                            	 }
                               $scope.data.actionItems.push(actionItem);
                               console.log(actionItem);
                               $scope.$apply();
-                          }
+                            }
 
                       });
                   
@@ -160,16 +168,16 @@ var conapp = angular.module('controllerapp',['ui.bootstrap','ui.sortable','ui.ti
 
            
 
-            $scope.save = function(){
+            $scope.save = function(data){
             
               if($scope.data == undefined){
             	  $scope.data = {
-            			  array:[$scope.addImageDetail]
+            			  array:[data]
             	  };
               }else if($scope.data.array == undefined){
-                  $scope.data.array = [$scope.addImageDetail];
+                  $scope.data.array = [data];
               }else{
-                  $scope.data.array.push($scope.addImageDetail);
+                  $scope.data.array.push(data);
               }
 
                 $scope.imagetitle= "";
@@ -190,10 +198,15 @@ var conapp = angular.module('controllerapp',['ui.bootstrap','ui.sortable','ui.ti
 
                 buildfire.imageLib.showDialog({showIcons: false, multiSelection: true}, function (error, result) {
                     if (result && result.selectedFiles && result.selectedFiles.length > 0) {
-                        image_src = result.selectedFiles[0];
-                        $scope.addImageDetail.image_src = image_src;
-                       
-                        $scope.save();
+                        console.log(result.selectedFiles);
+                    	i = 0;
+                    	var imgDetail;
+                        for(i=0 ; i < result.selectedFiles.length ; i++){
+                        	var image_src = result.selectedFiles[i];
+                            $scope.addImageDetail.image_src = image_src;
+                            imgDetail = angular.copy($scope.addImageDetail);
+                            $scope.save(imgDetail);	
+                        }
                         $scope.$apply();
                     }else{
                         alert("we have no image");
@@ -279,24 +292,27 @@ var conapp = angular.module('controllerapp',['ui.bootstrap','ui.sortable','ui.ti
              * */
             $scope.$watch('data',saveDataWithDelay ,true);
 
-            $scope.$watch('location',function(){
-        		setTimeout(function(){
-        			if($scope.location){
-	        		var res = $scope.location.split(",");
-	        		if($scope.data.content && $scope.data.content.locationLat){
-	        	    	$scope.data.content.locationLat = res[0];
-	        	    	$scope.data.content.locationLong = res[1];
-	        	    	
-	        	    }else{
-	        	    	$scope.data.content = {
-	        	    			locationLat:res[0],
-	        	    			locationLong:res[0]
-	        	    	}
-	        	    }
-        			}
-        		},1000);
-        		
-        	},true);
+//            $scope.$watch('location',function(){
+//        		setTimeout(function(){
+//        			if($scope.location){
+//	        		var res = $scope.location.split(",");
+////	        		console.clear();
+////	        		alert("test location");
+////	        		console.log($scope.data);
+//	        		if($scope.data.content && $scope.data.content.locationLat){
+//	        	    	$scope.data.content.locationLat = res[0];
+//	        	    	$scope.data.content.locationLong = res[1];
+//	        	    	
+//	        	    }else{
+//	        	    	$scope.data.content = {
+//	        	    			locationLat:res[0],
+//	        	    			locationLong:res[0]
+//	        	    	}
+//	        	    }
+//        			}
+//        		},1000);
+//        		
+//        	},true);
 //             alert("doner");
 
 

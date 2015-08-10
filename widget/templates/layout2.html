@@ -1,14 +1,19 @@
 
 
-<div class=" padding-zero"   ng-cloak style="background:url({{dataForView.design.bgUrl}});background-repeat:no-repeat;height:100%;  background-size: 100% 100%;">
+<div class=" padding-zero"   ng-cloak style="background:url({{bgResize(dataForView.design.bgUrl);}});background-repeat:no-repeat;  background-size: 100% 100%;">
 	<div class="contact-plugin layout2">
 		<div class="contact-maps text-center">
 <!-- 			<img src="http://www.placehold.it/1280x720.jpg"> -->
             <div ng-if="dataForView.content.checkboxMode">  
-			 	<div class="newMap" mapdirective  ></div>
-			 </div>	
+			 	<div class="newMapLayout2" mapdirective  ></div>
+			 </div>
+			 <div class="contact-address bg-primary" ng-show="dataForView.content.addresstitle">
+				<p class="margin-bottom-zero col-md-12">{{dataForView.content.addresstitle}}</p>
+			</div>	
+			<div ng-hide="dataForView.content.addresstitle">
 			<div class="contact-address bg-primary" ng-show="dataForView.content.address">
 				<p class="margin-bottom-zero col-md-12">{{dataForView.content.address}}</p>
+			</div>
 			</div>
 		</div>
 		<div class="padded text-center">
@@ -18,20 +23,26 @@
 <!--             </slide> -->
 <!--         </carousel> -->
 
+<div id="sliderContainer">
+<!--        <carouselslide></carouselslide> -->
+    </div>
 
 
 
 			<div class="margin-top-ten">
 				<a class="text-primary" ng-click="showItemlist2();">Contact Us</a>
+				<hr class="small" >
+				
 			</div>
 		</div>
 		
 
 		
 		
-		<hr class="small margin-zero" ng-hide="dataForView.content.addresstitle">
-		<div class="padded" ng-show="dataForView.content.bodyclass">
+<!-- 		<hr class="small margin-zero" ng-hide="dataForView.content.addresstitle"> -->
+		<div class="padded padding-top-zero" ng-show="dataForView.content.bodyclass">
 			<div ng-bind-html="dataForView.content.bodyclass"></div>
+			
 		</div>
 	</div>
 </div>

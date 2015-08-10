@@ -20,8 +20,8 @@ textPluginApp.controller('contactusPluginCtrl', ['$rootScope','$scope','$locatio
 	          if(result) {
 
 		            widgetservice  = result.data;
-		            $scope.query = widgetservice.content.address;
-		            $scope.codeAddress();
+//		            $scope.query = widgetservice.content.address;
+//		            $scope.codeAddress();
 		            $scope.$broadcast("dataUpdated",result.data);
 		            if(widgetservice.design && widgetservice.design.layout){
 		            	$scope.changeLocation(widgetservice.design.layout);	
@@ -39,17 +39,19 @@ textPluginApp.controller('contactusPluginCtrl', ['$rootScope','$scope','$locatio
   
   $scope.getData();
   /* Listen in if an update occurred on the control panel  */
-  
-  
+
   $scope.updatedData = function(){
 	 buildfire.datastore.onUpdate(function (newObj) {
+		 
 	     $scope.data = newObj.obj;
-	      $scope.query = $scope.data.content.address;
-	      
-	      $scope.codeAddress();
+//	      $scope.query = $scope.data.content.address;
 	      if( newObj.obj.design){
 	      	$scope.changeLocation(newObj.obj.design.layout);
-	      }
+	      }	      
+	      if(newObj.obj.content && newObj.obj.content.locationLat ){
+          	$scope.location = newObj.obj.content.locationLat + ',' + newObj.obj.content.locationLong;
+          }
+	      
 	      $scope.$broadcast("dataUpdated",newObj.obj);
 	      $scope.$digest();
 	  }); 
@@ -58,10 +60,6 @@ textPluginApp.controller('contactusPluginCtrl', ['$rootScope','$scope','$locatio
  $scope.updatedData();
     /*here geocding  */
    
-    $scope.codeAddress = function() {
-      $scope.query;
-    }
-    
     // save data
     
     $scope.saveData = function(newObj){
@@ -81,28 +79,49 @@ textPluginApp.controller('contactusPluginCtrl', ['$rootScope','$scope','$locatio
     /**
      * when a refresh is triggered get reload data
      */
-       buildfire.datastore.onRefresh($scope.getData);
-       
-    
-    buildfire.analytics.trackAction('widget loaded',{userid:2});
+   
+      
+     
+      buildfire.datastore.onRefresh($scope.getData);
+//      buildfire.analytics.trackAction('widget loaded',{userid:2});
+     
+      // Image Resize function
+      var widthImg = $(window).width();
+      var heightImg = (widthImg * 2) / 3;    
+      $scope.imageResize = function(imgUrl){
+    	 return buildfire.imageLib.cropImage(buildfire.imageLib.resizeImage(imgUrl, {width:widthImg,height:heightImg}), {width:widthImg,height:heightImg});
+      }
+     
+      // resize bg 
+      
+      $scope.bgResize = function(imgUrl){
+    	  var widthImg = $(window).width();
+          var heightImg = $(window).height();
+          if(imgUrl){
+        	  return buildfire.imageLib.cropImage(buildfire.imageLib.resizeImage(imgUrl, {width:widthImg,height:heightImg}), {width:widthImg,height:heightImg});	  
+          }else{
+        	  return ;
+          }
+    	 
+      }
+      
 }]);
 
 
 
-textPluginApp.controller('layout1Ctrl', ['$scope','$location','widgetservice','$sce' ,function ($scope,$location,widgetservice,$sce) {
+textPluginApp.controller('layout1Ctrl', ['$scope','$location','widgetservice','$sce','$compile' ,function ($scope,$location,widgetservice,$sce,$compile) {
 
 	
-	  $scope.items1 = [1,2,3,4,5];
-	  $scope.items2 = [1,2,3,4,5,6,7,8,9,10];
-	  
-	
-	
+	  $scope.updateStatus = true;
 	
 	$scope.setData = function(option){				
 		$scope.dataForView  = option;	
 		$scope.dataForView.content.bodyclass  = $sce.trustAsHtml($scope.dataForView.content.bodyclass);
-		
-	
+		if($scope.updateStatus){
+			$("#sliderContainer").empty();
+			var el = $compile('<carouselslide></carouselslide>')($scope);
+    		$("#sliderContainer").append(el);
+		}		
 	}
 	
 	if(widgetservice){
@@ -112,19 +131,18 @@ textPluginApp.controller('layout1Ctrl', ['$scope','$location','widgetservice','$
 	}
 	
 	$scope.showItemlist1 = function(){
-		
-		 buildfire.actionItems.list($scope.data.actionItems, null, function (err, actionItem) {
+		if($scope.dataForView.actionItems.length){
+		 buildfire.actionItems.list($scope.dataForView.actionItems, null, function (err, actionItem) {
              if (err){
             	 console.log(err);
              }
-                 
-
          });
+		}
 		
 	}
 	
 	$scope.$on("dataUpdated",function(e,data){
-	//	alert("data updated");
+		$scope.updateStatus = true;
 		$scope.setData(data);
 	});
 	
@@ -138,7 +156,7 @@ textPluginApp.controller('layout1Ctrl', ['$scope','$location','widgetservice','$
 
 
 
-textPluginApp.controller('layout2ctrl',['$scope','$sce','$timeout',function($scope,$sce,widgetservice,$timeout){
+textPluginApp.controller('layout2ctrl',['$scope','$sce','widgetservice','$timeout','$compile',function($scope,$sce,widgetservice,$timeout,$compile){
 
 
 	$scope.items1 = [1,2,3,4,5];
@@ -148,7 +166,7 @@ textPluginApp.controller('layout2ctrl',['$scope','$sce','$timeout',function($sco
 	  $scope.thumb = ["https://imagelibserver.s3.amazonaws.com/fbfc2e49-3…ca55c361/28584c70-39d9-11e5-8c2c-712ea17a5363.jpg",
 	                  "https://imagelibserver.s3.amazonaws.com/fbfc2e49-39d8-11e5-9d04-02f7ca55c361/a99b29f0-3a93-11e5-945e-7d01ee3c1728.jpg"
 	                  ];
-	
+	  $scope.updateStatus = true;
 	$scope.setData = function(option){
 		
 		$scope.dataForView  = option;
@@ -173,6 +191,12 @@ textPluginApp.controller('layout2ctrl',['$scope','$sce','$timeout',function($sco
 	    if($scope.dataForView.content && $scope.dataForView.content.bodyclass){
 	    	 $scope.dataForView.content.bodyclass = $sce.trustAsHtml($scope.dataForView.content.bodyclass); 	
 	    }
+	    
+	    if($scope.updateStatus){
+			$("#sliderContainer").empty();
+			var el = $compile('<carouselslidethree></carouselslidethree>')($scope);
+    		$("#sliderContainer").append(el);
+		}
 	   
   }
 		
@@ -188,12 +212,8 @@ textPluginApp.controller('layout2ctrl',['$scope','$sce','$timeout',function($sco
 		
 		$scope.showItemlist2 = function(){
 			
-			if($scope.data.actionItems == null || $scope.data.actionItems == undefined){
-				
-//			alert("please insert an Action item");	
-				
-			}else{
-				 buildfire.actionItems.list($scope.data.actionItems, null, function (err, actionItem) {				 				 				 
+			if($scope.dataForView.actionItems.length){
+             	 buildfire.actionItems.list($scope.dataForView.actionItems, null, function (err, actionItem) {				 				 				 
 		                if (err){
 		                	 console.log(err);
 		                }	                   
@@ -208,17 +228,4 @@ textPluginApp.controller('layout2ctrl',['$scope','$sce','$timeout',function($sco
 		
 }]);
 
-textPluginApp.directive("openLink",function(){
-	//app.newsFeed
-	return {
-		restrict:"AE",
-		link: function(scope,element,attrs){
-		  
-		  element.on("click",function(){
-			  var  ref = window.open(attrs.openLink,"_blank");
-//			 var  ref = window.open(attrs.openLink, '_blank', 'location=yes');
-		  });	
-		}	
-	};
-	
-})
+

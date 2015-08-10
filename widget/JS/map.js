@@ -58,41 +58,45 @@ contactusPluginMap.directive('mapdirective',function(mapService){
         var marker;
         var address;
         var infoWindow;
-        var lati = "";
-        var long = "";
+        var lati = 0;
+        var long =  0;
         var latlng = new google.maps.LatLng(lati,long);
         
-        mapService.getLatLngByAddress(scope.query,function(response){
-        	
-        	lati = response.lat;
-        	long = response.long;
-        	 latlng = new google.maps.LatLng(lati,long);
-        	 marker.setPosition(latlng);
-        	map.setCenter(latlng);
-        });
+//        mapService.getLatLngByAddress(scope.query,function(response){
+//        	
+//        	lati = response.lat;
+//        	long = response.long;
+//        	 latlng = new google.maps.LatLng(lati,long);
+//        	 marker.setPosition(latlng);
+//        	map.setCenter(latlng);
+//        });
+        
+//   	   setTimeout(function(){
+//   		latlng = new google.maps.LatLng(lati,long);
+//   	 	marker.setPosition(latlng);
+//   	 	map.setCenter(latlng);   
+//   	   }); 
+        
        
-        scope.$watch("query",function(){
-        	mapService.getLatLngByAddress(scope.query,function(response){
-            	lati = response.lat;
-            	long = response.long;
-            	 latlng = new google.maps.LatLng(lati,long);
-            	 marker.setPosition(latlng);
-            	map.setCenter(latlng);
-            });
-        });
-        
-        
-       var contentinfo = '<a href="geo:'+lati +',' +long+ '"' +'><p>Get Direction</p></a>';
-        
-        var infowindow = new google.maps.InfoWindow({
-		      content: contentinfo
-		  });
-        
-        var mapOptions = {
+   	 var contentinfo = '<a href="geo:'+lati +',' +long+ '"' +'><p style="margin:5px;font-size:17px;">Get Directions</p></a>';
+   	 
+   	 var infowindow = new google.maps.InfoWindow({
+	      content: contentinfo
+	  });	
+   	    var mapOptions = {
             center : latlng,
-            // center: ll,
-            zoom : 16,
-            mapTypeId : google.maps.MapTypeId.ROADMAP
+            zoomControl: false,
+            streetViewControl: false,
+            mapTypeControl:false,
+            zoom : 15,
+            mapTypeId : google.maps.MapTypeId.ROADMAP,
+            styles:[{
+                featureType: "poi",
+                elementType: "all",
+                stylers: [
+                          { visibility: "off" }
+                          ]
+                }]
         };
 
         map = new google.maps.Map(element[0],mapOptions);
@@ -101,7 +105,8 @@ contactusPluginMap.directive('mapdirective',function(mapService){
         
         marker = new google.maps.Marker({
             position: latlng,
-//          draggable: true,          
+//          draggable: true,
+            icon:'assets/currentlocation.png',
             animation: google.maps.Animation.DROP
         });
 
@@ -150,6 +155,9 @@ contactusPluginMap.directive('mapdirective',function(mapService){
 	         
 	         map.setCenter(new google.maps.LatLng(lati,long));
 	         marker.setPosition(new google.maps.LatLng(lati,long));
+//	         map.setZoom(15);
+	         contentinfo = '<a href="geo:'+lati +',' +long+ '"' +'><p style="margin:5px;font-size:17px;">Get Directions</p></a>';
+	       	 	infowindow.setContent(contentinfo);
 //	         if(scope.data && scope.data.content &&  scope.data.content.address){
 //	        	 infowindow.setContent(scope.data.content.address);	 
 //	         }
@@ -158,6 +166,7 @@ contactusPluginMap.directive('mapdirective',function(mapService){
 			
 		});
         
+
     }
 
     return {
@@ -169,56 +178,6 @@ contactusPluginMap.directive('mapdirective',function(mapService){
     }
 
 });
-
-
-//contactusPluginMap.directive("owlCarousel", function() {
-//	return {
-//		restrict: 'E',
-//		transclude: false,
-//		link: function (scope) {
-//			
-//			scope.initCarousel = function(element) {
-//			  // provide any default options you want
-//				alert("working");
-//				var defaultOptions = {
-//				};
-//				
-//				var customOptions = scope.$eval($(element).attr('data-options'));
-//				// combine the two options objects
-//				for(var key in customOptions) {
-//					defaultOptions[key] = customOptions[key];
-//				}
-//				// init carousel
-//				$(element).owlCarousel(defaultOptions);
-//			};
-//		}
-//	};
-//});
-//
-//contactusPluginMap.directive('owlCarouselItem', [function() {
-//	return {
-//		restrict: 'A',
-//		transclude: false,
-//		link: function(scope, element) {
-//		  // wait for the last item in the ng-repeat then call init
-//			if(scope.$last) {
-//				scope.initCarousel(element.parent());
-//			}
-//		}
-//	};
-//}]);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

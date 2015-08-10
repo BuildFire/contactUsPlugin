@@ -10,15 +10,16 @@ WidgetsApp.config(['$routeProvider', function($routeProvider) {
     })   */
 
         .when('/layout1', {
-            templateUrl: 'templates/layout1.html',
-            controller : 'layout1Ctrl',
+        	 controller : 'layout1Ctrl',
+        	templateUrl: 'templates/layout1.html',
+           
             cache :false,
             directive :'mapdirective'
         })
 
         .when('/layout2', {
-            templateUrl: 'templates/layout2.html',
-            controller : 'layout2ctrl',
+        	controller : 'layout2ctrl',
+        	templateUrl: 'templates/layout2.html',
             cache :false,
             directive :'mapdirective'
         })
