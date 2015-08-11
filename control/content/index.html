@@ -32,27 +32,32 @@
             <span></span>
         </div>
         <div class="main col-md-9 pull-right" data-spy="scroll" ui-sortable ng-model="data.array">
-            <div class="carousel-items draggable-list-view margin-top-twenty border-radius-four border-grey" ng-repeat="slide in data.array track by $index">
-                <div class="d-item">
-                    <span class="icon icon-menu"></span>
-                    <img src="{{slide.image_src}}" class="border-radius-four border-grey">
-
-                    <div class="copy pull-right">
-                        <span class="title ellipsis" style="margin-right:0%;">{{slide.image_title}}</span>
-                        <a class="text-primary text" data-toggle="modal"  ng-click="open('linkImgTpl',slide)">{{slide.image_linkstatus}}</a>
-                        <!--    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" style="margin-right:10%;">Button Link</button> -->
-						<span class="btn-icon btn-delete-icon btn-danger" ng-click="remove_item($index);"><span>
-                    </div>
-                </div>
+            <div class="carousel-items draggable-list-view border-radius-four border-grey" ng-repeat="slide in data.array track by $index">
+				<div class="d-item">
+					<span class="icon icon-menu pull-left"></span>
+					<div class="media-holder pull-left">
+	                    <img src="{{slide.image_src}}" class="border-radius-four border-grey">
+					</div>
+					<div class="copy pull-right">
+						<span class="title ellipsis">{{slide.image_title}}</span>
+						<div class="pull-right">
+							<a class="text-primary text" onclick="alert('Opens Action Items, NOT DeepLink');">Add Action</a>											
+							<span class="btn-icon btn-delete-icon btn-danger" ng-click="remove_item($index);"></span>
+						</div>
+					</div>
+				</div>
             </div>
         </div>
     </div>
     <hr class="none">
 	<div class="item row clearfix">
 	    <div class="labels col-md-3 pull-left">
-	        <span>Body Content</span>
+	        <span>Text</span>
 	    </div>
-	    <div class="main col-md-9 pull-right">
+	</div>
+	<hr class="none">
+	<div class="item row clearfix">
+	    <div class="main col-md-12 pull-right">
 	        <textarea class="form-control" rows="3" col="100" placeholder="This is WYSIWYG" ng-model="data.content.bodyclass"></textarea>
 	    </div>
 	</div>
