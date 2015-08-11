@@ -8,12 +8,15 @@ textPluginApp.directive("openLink",function(){
 		  
 		  element.on("click",function(){
                if(attrs.openLink){
-//            	   alert("in if " + buildfire);
-            	   window.open(attrs.openLink,'_blank');
+//            	   alert("" + attrs.openLink);
+//            	   window.open(attrs.openLink,'_blank');
             	   if(attrs.openinapp == "true"){
-//            		    buildfire.openWindow(attrs.openLink,'_system');
+            		   console.log("buildfire.navigation.openWindow(attrs.openLink,'_system');");
+            		    buildfire.navigation.openWindow(attrs.openLink,'_system');
             	   }else{
-//            		   buildfire.openWindow(attrs.openLink,'_blank');
+            		   console.log("buildfire.navigation.openWindow(attrs.openLink,'_blank');");
+            		   console.log(attrs.openLink);
+            		   buildfire.navigation.openWindow(attrs.openLink,'_blank');
             	   }
                }else{
 //            	   alert("in else");

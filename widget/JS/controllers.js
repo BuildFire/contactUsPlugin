@@ -116,12 +116,16 @@ textPluginApp.controller('layout1Ctrl', ['$scope','$location','widgetservice','$
 	
 	$scope.setData = function(option){				
 		$scope.dataForView  = option;	
-		$scope.dataForView.content.bodyclass  = $sce.trustAsHtml($scope.dataForView.content.bodyclass);
 		if($scope.updateStatus){
 			$("#sliderContainer").empty();
 			var el = $compile('<carouselslide></carouselslide>')($scope);
     		$("#sliderContainer").append(el);
-		}		
+		}
+		if($scope.dataForView){
+			if($scope.dataForView.content && $scope.dataForView.content.bodyclass){
+				$scope.dataForView.content.bodyclass  = $sce.trustAsHtml($scope.dataForView.content.bodyclass);		
+			}
+		}
 	}
 	
 	if(widgetservice){
