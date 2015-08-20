@@ -8,11 +8,11 @@
                             </div>
                             <div class="main col-md-9 pull-right">
                                 <div class="screens clearfix">
-                                    <div class="screen layouticon pull-left">
+                                    <div class="screen layouticon pull-left" ng-hide="addImageDetail.image_src">
                                         <a class="border-grey border-radius-three default-background-hover"  ng-click="addimage();"></a>
                   					</div>
-                  					<div class="screen layouticon pull-left">
-                                        <img class="border-grey border-radius-three " ng-show="addImageDetail.image_src"  ng-src="{{addImageDetail.image_src}}">
+                  					<div class="screen layouticon pull-left" ng-show="addImageDetail.image_src">
+                                        <img class="border-grey border-radius-three default-background-hover"  ng-click="addimage();"  ng-src="{{addImageDetail.image_src}}">
                   					</div>
                   					
                                 </div>

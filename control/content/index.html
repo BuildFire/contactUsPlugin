@@ -4,402 +4,199 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../../../../styles/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="../../../../styles/helper.css">
-    <link rel="stylesheet" type="text/css" href="../../../../styles/siteIcons.css">
-
-
+    <link rel="stylesheet" href="../../../../styles/siteIcons.css" >
+    <link rel="stylesheet" href="content-style/content-style.css" >
     <script src="../../../../scripts/buildfire.js"></script>
-   <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+    <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
     <script src="../../../../scripts/angular/angular.min.js"></script>
     <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
+    <script src="../../../../scripts/tinymce/tinymce.min.js"></script>
+    <script src="../../../../scripts/tinymce/ui-tinymce.js"></script>
+<!--     <script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyD94EXLxKUBcidyIL0nTAic7ryZus2C0fw"></script> -->
+<!--     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script> -->
+    
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     
     
     <script src="jquery-ui.min.js"></script>
 	<script src="sortable.js"></script>
+	<script src="js/contentController.js"></script>
+	<script src="js/map.js"></script>
+	
+	
+	
 </head>
 <body ng-controller='contentcontroller' style="height:auto;width:100%;">
 
 	<div class="item clearfix row">
         <div class="labels col-md-3 pull-left">
-            <span>Image Carousel</span>
+
+            <span>Carousel Images</span>
         </div>
         <div class="main col-md-9 pull-right">
-            <a class="btn btn-success" data-toggle="modal" ng-click="open('addImgTpl',{})">Add Image</a>
+
+            <button class="btn btn-success" data-toggle="modal" ng-click="addimage();">Add Image</button>
         </div>
     </div>
-    <hr class="none">
-    <div class="item row clearfix">
+    
+   <div class="item row clearfix">
+
         <div class="labels col-md-3 pull-left">
-            <span></span>
+            <span>&nbsp;</span>
         </div>
-        <div class="main col-md-9 pull-right" data-spy="scroll" ui-sortable ng-model="data.array">
-            <div class="carousel-items draggable-list-view border-radius-four border-grey" ng-repeat="slide in data.array track by $index">
-				<div class="d-item">
-					<span class="icon icon-menu pull-left"></span>
-					<div class="media-holder pull-left">
-	                    <img src="{{slide.image_src}}" class="border-radius-four border-grey">
-					</div>
-					<div class="copy pull-right">
-						<span class="title ellipsis">{{slide.image_title}}</span>
-						<div class="pull-right">
-							<a class="text-primary text" onclick="alert('Opens Action Items, NOT DeepLink');">Add Action</a>											
-							<span class="btn-icon btn-delete-icon btn-danger" ng-click="remove_item($index);"></span>
-						</div>
-					</div>
-				</div>
+        <div class="main col-md-9 pull-right">
+    <div class="home carousel-items draggable-list-view margin-top-twenty border-radius-four border-grey"
+                 ui-sortable="ContentHome.imageSortableOptions" ng-model="data.array" ng-show="data.array.length">
+                <div class="item" ng-repeat="slide in data.array track by $index">
+                  <span class="icon icon-menu cursor-grab"
+                        aria-hidden="true" ></span>
+                  <span class="img-carousel-thumb border-radius-four border-grey">
+                    <img ng-src="{{slide.image_src}}">
+                  </span>
+                    <span class="title ellipsis word-wrap">{{slide.image_title 
+                       }}</span>
+
+                  <div class="copy pull-right carousel-item-btns">
+                        <a  ng-click="open('linkImgTpl',slide)"
+                           class="btn  margin-left-ten width65" ng-class="slide.image_linkstatus == 'Link' ? 'btn-primary' :'btn-success'">{{slide.image_linkstatus}}</a>
+                        
+                        <span class="btn-icon btn-delete-icon btn-danger"
+                              ng-click="remove_item($index);"></span>
+                    </div>
+                </div>
+      </div>
+	</div>
+ </div>
+   </div>
+    <div class="container" style="margin-bottom:2%;">
+        <div class="row" style="padding:1% 0% 1% 2%;">
+            <div class="col-xs-offset-3 col-xs-9">
+                <ul class="list-group" style="width:100%;" id="columns">
+                </ul>
             </div>
         </div>
     </div>
-    <hr class="none">
-	<div class="item row clearfix">
-	    <div class="labels col-md-3 pull-left">
-	        <span>Text</span>
-	    </div>
-	</div>
-	<hr class="none">
-	<div class="item row clearfix">
-	    <div class="main col-md-12 pull-right">
-	        <textarea class="form-control" rows="3" col="100" placeholder="This is WYSIWYG" ng-model="data.content.bodyclass"></textarea>
-	    </div>
-	</div>
-	<hr class="none">
-	<div class="item row clearfix">
-    	<div class="labels col-md-3 pull-left">
-        	<span>Address Title</span>
-    	</div>
-    	<div class="main col-md-9 pull-right">
-        	<input type="text" class="form-control" ng-model="data.content.addresstitle">
-    	</div>
-	</div>
-	<hr class="none">
-	<div class="item row clearfix">
-    	<div class="labels col-md-3 pull-left">
-	        <span>Address</span>
-	    </div>
-	    <div class="main col-md-9 pull-right">
-	        <input type="text" class="form-control" placeholder="Enter street address and geo coordinates" ng-model="data.content.address">
-	    	<div class="display-map margin-top-ten">
-				<div class="checkbox checkbox-primary">
-					<input type="checkbox" ng-model="data.content.checkboxMode" id="display_map">
-					<label for="display_map">Display Map</label>
-				</div>
-			</div>
-		</div>
-	</div>
-	<hr class="none">
-	<div class="item clearfix row">
-		<div class="labels col-md-3 padding-right-zero pull-left">
-			<span>Dynamic Links</span>
+
+
+
+<div class="item row clearfix">
+		<div class="labels col-md-3 pull-left">
+				<span>Body Content</span>
 		</div>
 		<div class="main col-md-9 pull-right">
-			Dynamic Links
-		</div>
-	</div>
-
-    <script>
-
-        var conapp = angular.module('controllerapp',['ui.bootstrap','ui.sortable']);
-        
-        conapp.controller('ModalInstanceCtrl',['$scope','$modalInstance','items', function($scope,$modalInstance,items){
-            
-        	$scope.data = items;
-            $scope.vewData = angular.copy($scope.data);
-
-            
-            /*save function for modal of image */
-
-            $scope.save = function(){
-                if($scope.addImageDetail.image_src != ""){
-                	$scope.addImageDetail.image_linkstatus = "Linked";
-                }else{
-                	$scope.addImageDetail.image_linkstatus = "Link";
-                }
-
-              if($scope.data.array == undefined){
-                  $scope.data.array = [$scope.addImageDetail];
-              }else{
-                  $scope.data.array.push($scope.addImageDetail);
-              }
-
-                $scope.imagetitle= "";
-                $scope.imageurl = "";
-                $modalInstance.close();
-            }
-            
-
-            $scope.addimage = function(){
-                
-            	$scope.addImageDetail = {
-	            	        image_linkstatus:"",
-	            	        image_src:"",
-	            	        image_title:"",
-	            	        imageurl:"",
-	            	        openinapp:false
-            	        };
-
-                buildfire.imageLib.showDialog({showIcons: false, multiSelection: false}, function (error, result) {
-                    if (result && result.selectedFiles && result.selectedFiles.length > 0) {
-                        image_src = result.selectedFiles[0];
-                        $scope.addImageDetail.image_src = image_src;
-                       $scope.$apply();
-                    }else{
-                        alert("we have no image");
-                    }
-                });
-            }
-
-      
-            $scope.ok = function () {
-                 if($scope.vewData.imageurl == "" || $scope.vewData.imageurl == undefined){
-                	 $scope.vewData.image_linkstatus = "Link"
-                
-                 }else{
-                	 $scope.vewData.image_linkstatus = "Linked"
-                 }
-                 $scope.data.imageurl = $scope.vewData.imageurl;
-                 $scope.data.image_linkstatus = $scope.vewData.image_linkstatus;
-                 $scope.data.openinapp = $scope.vewData.openinapp;
-                 $modalInstance.close();
-              };
-
-              $scope.cancel = function () {
-            	  
-                $modalInstance.dismiss('cancel');
-             };
-                   	
-        }]);
-
-        conapp.controller('contentcontroller',['$scope','$rootScope','$modal','$log',function($scope,$rootScope,$modal,$log){
-
-           /************************* Model Section ***************************/
-
-
-           var dataDefault = {
-
-               array:[
-
-                   {
-                       image_linkstatus:null,
-                       image_src:null,
-                       image_title:null,
-                       imageurl:null,
-                       openinapp:false
-                   }
-               ],
-
-               content:{
-                   address:null,
-                   addresstitle:null,
-                   bgUrl:null,
-                   bodyclass:null,
-                   checkboxMode:false
-               },
-
-               design:{
-                   bgUrl:null,
-                   layout : "layout1"
-               }
-
-           };
-
-
-            $scope.animationsEnabled = true;
-            $scope.open = function (name,data) {
-            	if(name == "addImgTpl"){
-            		$scope.items = $scope.data;	
-            	}else{
-            		$scope.items = data;
-            	}
-            	
-            	
-             	var modalInstance = $modal.open({
-                animation: $scope.animationsEnabled,
-                templateUrl: 'template/' + name + '.html',
-                controller: 'ModalInstanceCtrl',
-                resolve: {
-                  items: function () {
-                    return $scope.items;
-                  }
-                }
-              });
-
-              modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
-              }, function () {
-                $log.info('Modal dismissed at: ' + new Date());
-              });
-            };
-
-            $scope.toggleAnimation = function () {
-              $scope.animationsEnabled = !$scope.animationsEnabled;
-            };
-           
- 
-           /************************* Model Section End ***********************/
-
-            $scope.link_status = "link";
-            
-            
-            $scope.link_func = function(){
-
-                buildfire.datastore.get(function(err,data){
-
-                    console.log(data);
-
-                });
-
-            }
- 
-            
-            var index = 1;
-
-
-            $scope.remove_item = function(index){
-
-                buildfire.datastore.get(function(err,result){
-                    $scope.data = result.data;
-                    $scope.data.array.splice(index,1);
-                    $scope.$digest();
-                });
-
-            }
-
-
-
-            buildfire.datastore.get(function (err, result) {
-
-                if(result) {
-
-                    $scope.data= result.data;
-                    $scope.$digest();
-                    if (tmrDelay)clearTimeout(tmrDelay);
-                }else{
-                    saveData(dataDefault);
-                }
-
-            });
-
-            buildfire.datastore.onUpdate(function (newObj) {
-       	     	$scope.data = newObj.obj;
-       	      	$scope.$digest();
-       	  });
-            
-            /*
-             * Call the datastore to save the data object
-             */
-            var saveData = function(newObj){
-                 
-                if(newObj == undefined)return;
-
-
-                buildfire.datastore.save(newObj, function (err, result) {
-                    if (err || !result)
-                        alert(err);
-                    else
-                        console.log('data saved');
-                });
-            };
-
-            /*
-             * create an artificial delay so api isnt called on every character entered
-             * */
-            var tmrDelay = null;
-            var saveDataWithDelay = function(newObj){
-                if(tmrDelay)clearTimeout(tmrDelay);
-                tmrDelay = setTimeout(function(){saveData(newObj);},500);
-            };
-
-            /*
-             * watch for changes in data and trigger the saveDataWithDelay function on change
-             * */
-            $scope.$watch('data',saveDataWithDelay ,true);
-
-//             alert("doner");
-
-
-            /************** Select Image Start ***********************/
-
-
-        }]);
-
-
-
-        /* Draggable list */
-        var dragSrcEl = null;
-
-        function handleDragStart(e) {
-            // Target (this) element is the source node.
-//   this.style.opacity = '0.4';
-
-            dragSrcEl = this;
-
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', this.innerHTML);
-        }
-
-        function handleDragOver(e) {
-            if (e.preventDefault) {
-                e.preventDefault(); // Necessary. Allows us to drop.
-            }
-
-            e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
-
-            return false;
-        }
-
-        function handleDragEnter(e) {
-            // this / e.target is the current hover target.
-            this.classList.add('over');
-        }
-
-        function handleDragLeave(e) {
-            this.classList.remove('over');  // this / e.target is previous target element.
-        }
-
-        function handleDrop(e) {
-            // this/e.target is current target element.
-
-            if (e.stopPropagation) {
-                e.stopPropagation(); // Stops some browsers from redirecting.
-            }
-
-            // Don't do anything if dropping the same column we're dragging.
-            if (dragSrcEl != this) {
-                // Set the source column's HTML to the HTML of the column we dropped on.
-                dragSrcEl.innerHTML = this.innerHTML;
-                this.innerHTML = e.dataTransfer.getData('text/html');
-            }
-
-            return false;
-        }
-
-        function handleDragEnd(e) {
-            // this/e.target is the source node.
-
-            [].forEach.call(cols, function (col) {
-                col.classList.remove('over');
-            });
-        }
-
-
-        var cols = document.querySelectorAll('#columns .column');
-        [].forEach.call(cols, function(col) {
-            col.addEventListener('dragstart', handleDragStart, false);
-            col.addEventListener('dragenter', handleDragEnter, false)
-            col.addEventListener('dragover', handleDragOver, false);
-            col.addEventListener('dragleave', handleDragLeave, false);
-            col.addEventListener('drop', handleDrop, false);
-            col.addEventListener('dragend', handleDragEnd, false);
-        });
-
-
-        /* Dragable list end */
-
-
-
-
-    </script>
-
+                <textarea id="text" ui-tinymce class="form-control" rows="5" width="100%" ng-model="detail" ng-change="chanageWYSIWYG(detail);"></textarea>
+		 </div>
 </div>
 
+
+
+
+<div class="item row clearfix" style="margin-top:5%">
+    <div class="labels col-md-3 pull-left">
+        <span>Address Title</span>
+    </div>
+    <div class="main col-md-9 pull-right">
+        <input type="text" class="form-control" ng-model="data.content.addresstitle">
+    </div>
+</div>
+
+
+
+<div class="item row clearfix" style="margin-top:5%">
+    <div class="labels col-md-3 pull-left">
+        <span>Address</span>
+    </div>
+    <div class="main col-md-9 pull-right">
+<!--         <input type="text" class="form-control" id="pac-input" placeholder="Enter street address and geo coordinates" ng-model="data.content.address"  googleplace> -->
+<!-- <label for="searchTextField"></label> -->
+<!-- <input id="searchTextField" type="text" size="50"> -->
+
+<google-places location=location></google-places>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="item row clearfix" style="margin-top:5%">
+    <div class="labels col-md-3 pull-left">
+        <span></span>
+    </div>
+    <div class="main col-md-9 pull-right">
+        <form role="form">
+              <div class="checkbox checkbox-primary">
+						  <input id="checkboxid" type="checkbox" value="" ng-model="data.content.checkboxMode">
+						  <label for="checkboxid">Display Map</label>
+			  </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<div class="item row clearfix" style="margin-top:5%">
+    <div class="labels col-md-3 pull-left">
+        
+    </div>
+    <div class="main col-md-9 pull-right">
+        <div id="mymap" class="newMap"  mapdirective style="height:200px;" >
+<!-- <mapdirective></mapdirective> -->
+           
+        </div>
+        
+       
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="item row clearfix" style="margin-top:5%;">
+        <div class="labels col-md-3 pull-left">
+            <span>Links</span>
+        </div>
+        <div class="main col-md-9 pull-right">
+
+            <button class="btn btn-success" data-toggle="modal" ng-click="addLink();">Add Link</button>
+        </div>
+    </div>
+    
+    <div class="item row clearfix">
+        <div class="labels col-md-3 pull-left">
+            <span>&nbsp;</span>
+        </div>
+        <div class="main col-md-9 pull-right">
+    <div class="home carousel-items draggable-list-view margin-top-twenty border-radius-four border-grey"
+                 ui-sortable="ContentHome.imageSortableOptions" ng-model="data.actionItems" ng-show="data.actionItems.length">
+                <div class="item" ng-repeat="slide in data.actionItems track by $index">
+                  <span class="icon icon-menu cursor-grab"
+                        aria-hidden="true" ></span>
+                  <span class="img-carousel-thumb border-radius-four border-grey">
+                    <img ng-src="{{slide.iconUrl}}">
+                  </span>
+                    <span class="title ellipsis word-wrap-action-item">
+                     <div>{{slide.title}}</div>
+                     <div>{{slide.actionName}}</div>
+                    
+                    </span>
+
+                  <div class="copy pull-right carousel-item-action">
+                        <a  class="btn  margin-left-ten carousel-item-action-link" >{{slide.url || slide.phoneNumber  ||slide.email || slide.deepLinkUrl}}</a>
+                        
+                        <span class="btn-icon btn-delete-icon btn-danger"
+                              ng-click="remove_item1($index);"></span>
+                    </div>
+                </div>
+      </div>
+	</div>
+ </div>
 </body>
 </html>

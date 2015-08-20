@@ -4,22 +4,36 @@
 
 	                                <div class="modal-body" style="height:60%;">
 	                                    <div class="container" style="height:100%;">
-	                                        <h5 style="margin : 10% 0 10% 0;">Please enter your DeepLink Url or standard URL to link to content</h5>
-	                                        <div class="container" style="height:25%;width:100%;">
-	                                            <div class = "row">
+	                                        <h5 class="margin-bottom-twenty">Please enter your DeepLink Url or standard URL to link to content</h5>
+	                                        
+	                                            <div class = "row form-group">
 	
-	                                                <label class="col-xs-3"><h5 style="margin-top:0%;">URL</h5></label>
-	                                                <div class="col-xs-9"><input type="url" style="width:100%;" ng-model="vewData.imageurl"/></div>
+	                                                <label class="col-xs-3"><h5 >URL</h5></label>
+	                                                <div class="col-xs-9"><input type="url"  ng-model="vewData.imageurl" class="form-control"/></div>
 	                                            </div>
-	                                        </div>
+	                                        
+	                                        
+	                                         
+	                                            <div class = "row ">
 	
-	                                        <div class="container" style="height:25%;width:100%;">
-	                                            <div class = "row">
-	
-	                                                <label class="col-xs-3" ><h5 style="margin-top:0%;">Open in App</h5></label>
-	                                                <div class="col-xs-9"><input type="checkbox" ng-model="vewData.openinapp"/></div>
+	                                                <label class="col-xs-3"><h5 >Title</h5></label>
+	                                                <div class="col-xs-9"><input type="text"  ng-model="vewData.image_title" class="form-control"/></div>
 	                                            </div>
-	                                        </div>
+	                                        
+	
+	                                        
+	                                            <div class = "row form-group">
+	
+	                                                <label class="col-xs-3" ><h5 >Open in App</h5></label>
+	                                                <div class="col-xs-9 ">
+<!-- 	                                                <input type="checkbox" ng-model="vewData.openinapp"/> -->
+	                                                <div class="checkbox checkbox-primary margin-top-five">
+															  <input type="checkbox" ng-model="vewData.openinapp">
+						  										<label for="checkboxid">&nbsp;</label>
+			  										</div>
+	                                                </div>
+	                                            </div>
+	                                        
 	
 	
 	                                    </div>

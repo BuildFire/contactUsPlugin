@@ -3,6 +3,8 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../../../../styles/helper.css" rel="stylesheet">
+      <link rel="stylesheet" href="../../../../styles/siteIcons.css" >
+      <link rel="stylesheet" href="../../../../styles/siteStyle.css" >
 
     <script src="../../../../scripts/angular/angular.min.js"></script>
     <script src="../../../../scripts/angular/angular-route.min.js"></script>
@@ -15,50 +17,69 @@
 
 
 <body ng-controller="designCtrl">
+<div class="container" style="height:45%;width:100%;">
+    <div class="row" style="padding:2% 0% 2% 2%;">
 
-	<div class="item row clearfix">
-		<div class="labels col-md-3 padding-right-zero pull-left">
-			<span>Layout</span>
-		</div>
-		<div class="main col-md-9 pull-right">
-			<div class="screens clearfix">
-				<div class="screen layouticon pull-left">
-					<a class="border-grey border-radius-three default-background-hover text-center">
-						<span class="add-icon hidden">+</span>
-						<img src="{{selectedimage}}">
-					</a>
-				</div>
-				<div class="screen layoutgrid pull-right margin-left-zero border-grey border-radius-three">
-					<a class="layouticon border-grey border-radius-three default-background-hover text-center" ng-click="change_layout('layout1');">
-						<span class="add-icon hidden">+</span>
-						<img src="resource/Contact Us Layout 1.png">
-					</a>
-					<a class="layouticon border-grey border-radius-three default-background-hover text-center">
-						<span class="add-icon hidden">+</span>
-						<img src="resource/Contact Us Layout 2.png">
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<hr>
-	<div class="item row clearfix margin-top-thirty">
-		<div class="labels col-md-3 padding-right-zero pull-left">
-			<span>Background Images</span>
-		</div>
-		<div class="main col-md-9 pull-right">
-			<div class="screens clearfix">
-				<div class="screen text-center layouticon pull-left">
-					<a class="border-grey border-radius-three default-background-hover text-center" ng-click="openImageLib();">
-						<span class="add-icon">+</span>
-						<img ng-src="{{AddCarouselImagePopup.imageInfo.imageUrl}}">
-					</a>
-					<label class="secondary">750x1334</label>
-					<span class="icon btn-icon btn-delete-icon btn-danger transition-third" ng-click="AddCarouselImagePopup.removeImage()"><span>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="col-xs-2"><span>Layout</span></div>
+        <div class="col-xs-3">
+            <div class="img-thumbnail">
+                <img ng-src="{{selectedimage}}" alt="Layout1" style="width:100px;height:auto;">
+            </div>
+        </div>
+        <div class="col-xs-7">
+
+            <div class="container">
+
+                <div class="row" style="height:100%;padding:5px;border:1px solid #dddddd;">
+                    <div class="col-xs-4 img-thumbnail"  ng-click="change_layout('layout1');">
+
+                        <img src="resource/ContactUsLayout1.png" alt="Layout1">
+
+                    </div>
+                    
+                    <div class="col-xs-4 img-thumbnail margin-left-ten" >
+
+                        <img src="resource/ContactUsLayout2.png" alt="Layout2" ng-click="change_layout('layout2');">
+
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div style="position:fixed;top:50%;width:100%;height:50%;">
+
+    <hr style="width:100%;height:10%;">
+    <div class="container" style="height:50%;position:relative;">
+
+        <div class="col-xs-2"><span>Background Images</span></div>
+        <div class="col-xs-10" style="height:100%;">
+            <div class="item clearfix row">
+
+                <div class="main col-md-9 pull-right" style="position:absolute;left:0%;" >
+                    <div class="screens clearfix" >
+                        <div class="screen layouticon pull-left">
+                            <a class="border-grey border-radius-three default-background-hover"  ng-click="openImageLib();" ng-hide="data.design.bgUrl"></a>
+<!--                             <span class="add-icon" ng-hide="data.design.bgUrl">+</span> -->
+                    		<img class="border-grey border-radius-three default-background-hover" ng-src="{{data.design.bgUrl}}" ng-click="openImageLib();" ng-show="data.design.bgUrl">
+                    	<span style=" top: 0; content: '-'; position:absolute; right:0;" class="btn-icon btn-delete-icon btn-danger transition-thid"  ng-click="removeBgImage();"></span>
+                  	
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+
+
 </div>
 
 
@@ -81,67 +102,17 @@
 
     pluginDesign.controller('designCtrl',['$scope',function($scope){
 
-        /************************* Model Section ***************************/
-        var dataDefault = {
-
-            array:[
-
-                {
-                    image_linkstatus:null,
-                    image_src:null,
-                    image_title:null,
-                    imageurl:null,
-                    openinapp:false
-                }
-            ],
-
-            content:{
-                address:null,
-                addresstitle:null,
-                bgUrl:null,
-                bodyclass:null,
-                checkboxMode:false
-            },
-
-            design:{
-                bgUrl:null,
-                layout : "layout1"
-            },
-
-        };
-
-         function bind(data){
-         $scope.data = data;
-             console.log()
-         $scope.$digest();
-         }
-
-
-
-        /*
-         * Go pull saved data
-         * */
-        function loadData() {
-            buildfire.datastore.get(function (err, result) {
-                if (result) bind(result.data);
-            });
-        }
-    loadData();
-
-        /**
-         * when a refresh is triggered get reload data
-         */
-           buildfire.datastore.onRefresh(loadData);
-
-
-
+    	$scope.selectedimage = 'resource/ContactUsLayout1.png';
+    	
         //Go pull any previously saved data
 
          buildfire.datastore.get(function(err,result){
          if(result) {
                 $scope.data = result.data;
-
-           $scope.$digest();
+                if($scope.data.design && $scope.data.design.layout){
+                	$scope.change_layout($scope.data.design.layout);	
+                }
+                $scope.$digest();
          }
          $scope.$watch('data',saveData ,true);
          });
@@ -170,27 +141,34 @@
 
          $scope.data.design.bgUrl = result.selectedFiles[0];
 
-         alert($scope.data.content.bgUrl);
+//          alert($scope.data.content.bgUrl);
          $scope.$apply();
          }else{
-         alert("we have no image");
+//          alert("we have no image");
          }
          });
          }
-     /*   if($scope.data.design.layout == 'layout1'){
-            $scope.selectedimage = '/sdk/plugins/contactUsPluginsir /control/design/resource/Contact Us Layout 1.png';
-        }else{
-            $scope.selectedimage = '/sdk/plugins/contactUsPluginsir /control/design/resource/Contact Us Layout 2.png';
-        }  */
+         
+         $scope.removeBgImage = function(){
+        	 $scope.data.design.bgUrl = false;
+         }
+         
 
         $scope.change_layout = function(layoutwidget){
-            $scope.data.design.layout = layoutwidget;
-
+            
+            if($scope.data.design && $scope.data.design.layout){
+            	$scope.data.design.layout = layoutwidget;	
+            }else{
+            	$scope.data.design = {
+            			layout:layoutwidget
+            	}
+            }
+            
             if($scope.data.design.layout == 'layout1' ){
-                $scope.selectedimage = 'resource/Contact Us Layout 1.png';
+                $scope.selectedimage = 'resource/ContactUsLayout1.png';
 
             }else{
-                $scope.selectedimage = 'resource/Contact Us Layout 2.png';
+                $scope.selectedimage = 'resource/ContactUsLayout2.png';
             }
 
         }
@@ -209,7 +187,4 @@
 
 
 </body>
-
-
-
 </html>
