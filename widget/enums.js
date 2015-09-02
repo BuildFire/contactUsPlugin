@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular) {
-  angular.module('contactUsPluginDesign')
+  angular.module('contactUsPluginWidget')
     .constant('TAG_NAMES', {
       CONTACT_INFO: 'ContactInfo'
     })

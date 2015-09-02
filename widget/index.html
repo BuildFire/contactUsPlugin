@@ -1,33 +1,37 @@
 ﻿<!DOCTYPE html>
-<html ng-app="widgetsapp">
+<html ng-app="contactUsPluginWidget">
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../styles/bootstrap.css">
+  <link rel="stylesheet" href="../../../styles/siteIcons.css">
+  <link rel="stylesheet" href="../../../styles/appStyle.css">
+  <link rel="stylesheet" href="../../../styles/helper.css">
+  <link rel="stylesheet" href="../../../scripts/owlCarousel/owlCarousel.css">
 
-		<link href="../../../styles/helper.css" rel="stylesheet" />
-	<link href="style/contactUsPluginStyle.css" rel="stylesheet" />
+  <!--Angular, jQuery & Owl Carousel -->
+  <script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+  <script src="../../../scripts/buildfire.js"></script>
+  <script type="text/javascript" src="../../../scripts/owlCarousel/owlCarousel.js"></script>
+  <script src="../../../scripts/buildfire/components/carousel/carousel.js"></script>
+  <script src="../../../scripts/angular/angular.min.js"></script>
+  <script src="../../../scripts/angular/angular-route.min.js"></script>
 
-	<!-- JS -->
-	<script src="../../../scripts/buildfire.js"></script>
-	<script src="../../../scripts/angular/angular.min.js"></script>
-	<script src="../../../scripts/angular/angular-route.min.js"></script>
-	<script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
-	
-	<script src="jquery-ui.min.js"></script>
-	<script src="sortable.js"></script>
-	
-	<script src="http://maps.googleapis.com/maps/api/js?sensor=false?key=AIzaSyD94EXLxKUBcidyIL0nTAic7ryZus2C0fw"></script>
+  <!-- Meta -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- App -->
+  <script src="app.js" type="application/javascript"></script>
+  <script src="enums.js" type="application/javascript"></script>
+  <script src="app.services.js" type="application/javascript"></script>
+  <script src="controllers/widget.home.controller.js" type="application/javascript"></script>
+	<!--<script
+    src="http://maps.googleapis.com/maps/api/js?sensor=false?key=AIzaSyD94EXLxKUBcidyIL0nTAic7ryZus2C0fw"></script>-->
     
 
 </head>
-	<body ng-controller="contactusPluginCtrl">
-		
+	<body>
 		<div ng-view></div>
-		
-		<script src="app.js"></script>
-		<script src="map.js"></script>
-		<script src="controllers.js"></script>
-		<script src="services.js"></script>
-	
 	</body>
 </html>
