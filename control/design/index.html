@@ -1,215 +1,27 @@
 <!DOCTYPE html>
 <html ng-app="contactUsPluginDesign">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../../../../styles/helper.css" rel="stylesheet">
+  <!-- CSS -->
+  <link href="../../../../styles/helper.css" rel="stylesheet">
+  <link href="../../../../styles/siteIcons.css" rel="stylesheet">
 
-    <script src="../../../../scripts/angular/angular.min.js"></script>
-    <script src="../../../../scripts/angular/angular-route.min.js"></script>
+  <!-- JS -->
+  <script src="../../../../scripts/buildfire.js"></script>
+  <script src="../../../../scripts/angular/angular.min.js"></script>
+  <script src="../../../../scripts/angular/angular-route.min.js"></script>
+  <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
+  <script src="../../../../scripts/tinymce/tinymce.min.js"></script>
+  <script src="../../../../scripts/tinymce/ui-tinymce.js"></script>
+  <script src="app.js"></script>
+  <script src="enums.js"></script>
+  <script src="app.services.js"></script>
+  <script src="controllers/design.home.controller.js"></script>
 
-    <script src="../../../../scripts/buildfire.js"></script>
-
-
-
+  <meta charset="UTF-8">
 </head>
-
-
-<body ng-controller="designCtrl">
-
-	<div class="item row clearfix">
-		<div class="labels col-md-3 padding-right-zero pull-left">
-			<span>Layout</span>
-		</div>
-		<div class="main col-md-9 pull-right">
-			<div class="screens clearfix">
-				<div class="screen layouticon pull-left">
-					<a class="border-grey border-radius-three default-background-hover text-center">
-						<span class="add-icon hidden">+</span>
-						<img src="{{selectedimage}}">
-					</a>
-				</div>
-				<div class="screen layoutgrid pull-right margin-left-zero border-grey border-radius-three">
-					<a class="layouticon border-grey border-radius-three default-background-hover text-center" ng-click="change_layout('layout1');">
-						<span class="add-icon hidden">+</span>
-						<img src="resource/Contact Us Layout 1.png">
-					</a>
-					<a class="layouticon border-grey border-radius-three default-background-hover text-center">
-						<span class="add-icon hidden">+</span>
-						<img src="resource/Contact Us Layout 2.png">
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<hr>
-	<div class="item row clearfix margin-top-thirty">
-		<div class="labels col-md-3 padding-right-zero pull-left">
-			<span>Background Images</span>
-		</div>
-		<div class="main col-md-9 pull-right">
-			<div class="screens clearfix">
-				<div class="screen text-center layouticon pull-left">
-					<a class="border-grey border-radius-three default-background-hover text-center" ng-click="openImageLib();">
-						<span class="add-icon hidden">+</span>
-						<img ng-src="{{AddCarouselImagePopup.imageInfo.imageUrl}}">
-					</a>
-					<label class="secondary">750x1334</label>
-					<span class="icon btn-icon btn-delete-icon btn-danger transition-third" ng-click="AddCarouselImagePopup.removeImage()"><span>
-				</div>
-			</div>
-		</div>
-	</div>
+<body>
+<div class="main_view">
+  <div class="content" ng-view=""></div>
 </div>
-
-
-<!--
-<div class="item row clearfix">
-    <div class="labels col-md-3 pull-left">
-        <span>Background Images</span>
-    </div>
-    <div class="main col-md-9 pull-right">
-
-        <textarea class="form-control" rows="3" col="100" placeholder="This is WYSIWYG" ng-model="data.content.bodyclass"></textarea>
-    </div>
-</div>  -->
-
-
-<script>
-
-    var pluginDesign = angular.module('contactUsPluginDesign',[]);
-
-
-    pluginDesign.controller('designCtrl',['$scope',function($scope){
-
-        /************************* Model Section ***************************/
-        var dataDefault = {
-
-            array:[
-
-                {
-                    image_linkstatus:null,
-                    image_src:null,
-                    image_title:null,
-                    imageurl:null,
-                    openinapp:false
-                }
-            ],
-
-            content:{
-                address:null,
-                addresstitle:null,
-                bgUrl:null,
-                bodyclass:null,
-                checkboxMode:false
-            },
-
-            design:{
-                bgUrl:null,
-                layout : "layout1"
-            },
-
-        };
-
-         function bind(data){
-         $scope.data = data;
-             console.log()
-         $scope.$digest();
-         }
-
-
-
-        /*
-         * Go pull saved data
-         * */
-        function loadData() {
-            buildfire.datastore.get(function (err, result) {
-                if (result) bind(result.data);
-            });
-        }
-    loadData();
-
-        /**
-         * when a refresh is triggered get reload data
-         */
-           buildfire.datastore.onRefresh(loadData);
-
-
-
-        //Go pull any previously saved data
-
-         buildfire.datastore.get(function(err,result){
-         if(result) {
-                $scope.data = result.data;
-
-           $scope.$digest();
-         }
-         $scope.$watch('data',saveData ,true);
-         });
-
-
-        // Call the datastore to save the data object
-
-         var saveData = function(newObj){
-         if(newObj == undefined)return;
-
-         buildfire.datastore.save(newObj,function(err,result){
-         if(err || !result)
-         alert(err);
-         else
-         console.log('data saved');
-         });
-         };
-
-
-
-         $scope.openImageLib = function () {
-
-         buildfire.imageLib.showDialog({showIcons: false, multiSelection: false}, function (error, result) {
-
-         if (result && result.selectedFiles && result.selectedFiles.length > 0) {
-
-         $scope.data.design.bgUrl = result.selectedFiles[0];
-
-         alert($scope.data.content.bgUrl);
-         $scope.$apply();
-         }else{
-         alert("we have no image");
-         }
-         });
-         }
-     /*   if($scope.data.design.layout == 'layout1'){
-            $scope.selectedimage = '/sdk/plugins/contactUsPluginsir /control/design/resource/Contact Us Layout 1.png';
-        }else{
-            $scope.selectedimage = '/sdk/plugins/contactUsPluginsir /control/design/resource/Contact Us Layout 2.png';
-        }  */
-
-        $scope.change_layout = function(layoutwidget){
-            $scope.data.design.layout = layoutwidget;
-
-            if($scope.data.design.layout == 'layout1' ){
-                $scope.selectedimage = 'resource/Contact Us Layout 1.png';
-
-            }else{
-                $scope.selectedimage = 'resource/Contact Us Layout 2.png';
-            }
-
-        }
-
-
-
-
-        /*
-         * watch for changes in data and trigger the saveDataWithDelay function on change
-         * */
-
-    }]);
-
-
-</script>
-
-
 </body>
-
-
-
 </html>
