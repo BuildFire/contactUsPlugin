@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+/**
+ * Created by ttnd on 2/9/15.
+ */
+=======
 'use strict';
 (function (angular, buildfire) {
   angular
@@ -26,3 +31,4 @@
       }
     }]);
 })(window.angular, window.buildfire);
+>>>>>>> 721c3ae3d81bb45e91f0b98c9f7b98da5c5a0a0d
