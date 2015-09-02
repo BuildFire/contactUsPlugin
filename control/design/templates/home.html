@@ -1,0 +1,44 @@
+
+<div class="item row clearfix">
+  <div class="labels col-md-3 padding-right-zero pull-left">
+    <span>Layout</span>
+  </div>
+  <div class="main col-md-9 pull-right">
+    <div class="screens clearfix">
+      <div class="screen layouticon pull-left">
+        <a class="border-grey border-radius-three default-background-hover text-center">
+          <span class="add-icon hidden">+</span>
+          <img src="{{selectedimage}}">
+        </a>
+      </div>
+      <div class="screen layoutgrid pull-right margin-left-zero border-grey border-radius-three">
+        <a class="layouticon border-grey border-radius-three default-background-hover text-center" ng-click="change_layout('layout1');">
+          <span class="add-icon hidden">+</span>
+          <img src="resource/Contact Us Layout 1.png">
+        </a>
+        <a class="layouticon border-grey border-radius-three default-background-hover text-center">
+          <span class="add-icon hidden">+</span>
+          <img src="resource/Contact Us Layout 2.png">
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="item row clearfix margin-top-thirty">
+  <div class="labels col-md-3 padding-right-zero pull-left">
+    <span>Background Images</span>
+  </div>
+  <div class="main col-md-9 pull-right">
+    <div class="screens clearfix">
+      <div class="screen text-center layouticon pull-left">
+        <a class="border-grey border-radius-three default-background-hover text-center" ng-click="openImageLib();">
+          <span class="add-icon hidden">+</span>
+          <img ng-src="{{AddCarouselImagePopup.imageInfo.imageUrl}}">
+        </a>
+        <label class="secondary">750x1334</label>
+					<span class="icon btn-icon btn-delete-icon btn-danger transition-third" ng-click="AddCarouselImagePopup.removeImage()"><span>
+      </div>
+    </div>
+  </div>
+</div>
