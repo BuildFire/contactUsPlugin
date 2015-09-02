@@ -1,190 +1,28 @@
 <!DOCTYPE html>
 <html ng-app="contactUsPluginDesign">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../../../../styles/helper.css" rel="stylesheet">
-      <link rel="stylesheet" href="../../../../styles/siteIcons.css" >
-      <link rel="stylesheet" href="../../../../styles/siteStyle.css" >
+  <!-- CSS -->
+  <link href="../../../../styles/helper.css" rel="stylesheet">
+  <link href="../../../../styles/siteIcons.css" rel="stylesheet">
 
-    <script src="../../../../scripts/angular/angular.min.js"></script>
-    <script src="../../../../scripts/angular/angular-route.min.js"></script>
+  <!-- JS -->
+  <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+  <script src="../../../../scripts/buildfire.js"></script>
+  <script src="../../../../scripts/angular/angular.min.js"></script>
+  <script src="../../../../scripts/angular/angular-route.min.js"></script>
+  <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
+  <script src="../../../../scripts/tinymce/tinymce.min.js"></script>
+  <script src="../../../../scripts/tinymce/ui-tinymce.js"></script>
+  <script src="app.js"></script>
+  <script src="enums.js"></script>
+  <script src="app.services.js"></script>
+  <script src="controllers/design.home.controller.js"></script>
 
-    <script src="../../../../scripts/buildfire.js"></script>
-
-
-
+  <meta charset="UTF-8">
 </head>
-
-
-<body ng-controller="designCtrl">
-<div class="container" style="height:45%;width:100%;">
-    <div class="row" style="padding:2% 0% 2% 2%;">
-
-        <div class="col-xs-2"><span>Layout</span></div>
-        <div class="col-xs-3">
-            <div class="img-thumbnail">
-                <img ng-src="{{selectedimage}}" alt="Layout1" style="width:100px;height:auto;">
-            </div>
-        </div>
-        <div class="col-xs-7">
-
-            <div class="container">
-
-                <div class="row" style="height:100%;padding:5px;border:1px solid #dddddd;">
-                    <div class="col-xs-4 img-thumbnail"  ng-click="change_layout('layout1');">
-
-                        <img src="resource/ContactUsLayout1.png" alt="Layout1">
-
-                    </div>
-                    
-                    <div class="col-xs-4 img-thumbnail margin-left-ten" >
-
-                        <img src="resource/ContactUsLayout2.png" alt="Layout2" ng-click="change_layout('layout2');">
-
-                    </div>
-
-
-
-                </div>
-            </div>
-
-        </div>
-    </div>
+<body>
+<div class="main_view">
+  <div class="content" ng-view=""></div>
 </div>
-
-
-<div style="position:fixed;top:50%;width:100%;height:50%;">
-
-    <hr style="width:100%;height:10%;">
-    <div class="container" style="height:50%;position:relative;">
-
-        <div class="col-xs-2"><span>Background Images</span></div>
-        <div class="col-xs-10" style="height:100%;">
-            <div class="item clearfix row">
-
-                <div class="main col-md-9 pull-right" style="position:absolute;left:0%;" >
-                    <div class="screens clearfix" >
-                        <div class="screen layouticon pull-left">
-                            <a class="border-grey border-radius-three default-background-hover"  ng-click="openImageLib();" ng-hide="data.design.bgUrl"></a>
-<!--                             <span class="add-icon" ng-hide="data.design.bgUrl">+</span> -->
-                    		<img class="border-grey border-radius-three default-background-hover" ng-src="{{data.design.bgUrl}}" ng-click="openImageLib();" ng-show="data.design.bgUrl">
-                    	<span style=" top: 0; content: '-'; position:absolute; right:0;" class="btn-icon btn-delete-icon btn-danger transition-thid"  ng-click="removeBgImage();"></span>
-                  	
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-
-        </div>
-    </div>
-
-
-</div>
-
-
-<!--
-<div class="item row clearfix">
-    <div class="labels col-md-3 pull-left">
-        <span>Background Images</span>
-    </div>
-    <div class="main col-md-9 pull-right">
-
-        <textarea class="form-control" rows="3" col="100" placeholder="This is WYSIWYG" ng-model="data.content.bodyclass"></textarea>
-    </div>
-</div>  -->
-
-
-<script>
-
-    var pluginDesign = angular.module('contactUsPluginDesign',[]);
-
-
-    pluginDesign.controller('designCtrl',['$scope',function($scope){
-
-    	$scope.selectedimage = 'resource/ContactUsLayout1.png';
-    	
-        //Go pull any previously saved data
-
-         buildfire.datastore.get(function(err,result){
-         if(result) {
-                $scope.data = result.data;
-                if($scope.data.design && $scope.data.design.layout){
-                	$scope.change_layout($scope.data.design.layout);	
-                }
-                $scope.$digest();
-         }
-         $scope.$watch('data',saveData ,true);
-         });
-
-
-        // Call the datastore to save the data object
-
-         var saveData = function(newObj){
-         if(newObj == undefined)return;
-
-         buildfire.datastore.save(newObj,function(err,result){
-         if(err || !result)
-         alert(err);
-         else
-         console.log('data saved');
-         });
-         };
-
-
-
-         $scope.openImageLib = function () {
-
-         buildfire.imageLib.showDialog({showIcons: false, multiSelection: false}, function (error, result) {
-
-         if (result && result.selectedFiles && result.selectedFiles.length > 0) {
-
-         $scope.data.design.bgUrl = result.selectedFiles[0];
-
-//          alert($scope.data.content.bgUrl);
-         $scope.$apply();
-         }else{
-//          alert("we have no image");
-         }
-         });
-         }
-         
-         $scope.removeBgImage = function(){
-        	 $scope.data.design.bgUrl = false;
-         }
-         
-
-        $scope.change_layout = function(layoutwidget){
-            
-            if($scope.data.design && $scope.data.design.layout){
-            	$scope.data.design.layout = layoutwidget;	
-            }else{
-            	$scope.data.design = {
-            			layout:layoutwidget
-            	}
-            }
-            
-            if($scope.data.design.layout == 'layout1' ){
-                $scope.selectedimage = 'resource/ContactUsLayout1.png';
-
-            }else{
-                $scope.selectedimage = 'resource/ContactUsLayout2.png';
-            }
-
-        }
-
-
-
-
-        /*
-         * watch for changes in data and trigger the saveDataWithDelay function on change
-         * */
-
-    }]);
-
-
-</script>
-
-
 </body>
 </html>

@@ -1,32 +1,37 @@
-﻿<!DOCTYPE html>
-<html ng-app="widgetsapp">
+﻿﻿<!DOCTYPE html>
+<html ng-app="contactUsPluginWidget">
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../../../styles/helper.css" rel="stylesheet" />
-	<link href="style/contactUsPluginStyle.css" rel="stylesheet" />
-	<link href="../../../scripts/owlCarousel/owlCarousel.css" rel="stylesheet" />
-	<link href="JS/owl-carousel/owl.theme.css" rel="stylesheet" />
-	<link href="JS/owl-carousel/owl.transitions.css" rel="stylesheet" />
 
-	<!-- JS -->
-	<script src="../../../scripts/buildfire.js"></script>
-	<script src="../../../scripts/angular/angular.min.js"></script>
-	<script src="../../../scripts/angular/angular-route.min.js"></script>
-	<script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
-	<script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
-	<script src="JS/owl-carousel/jquery-ui.min.js"></script>
-	<script src="../../../scripts/owlCarousel/owlCarousel.js"></script>
-	<script src="http://maps.googleapis.com/maps/api/js?sensor=false?key=AIzaSyD94EXLxKUBcidyIL0nTAic7ryZus2C0fw"></script>
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../styles/bootstrap.css">
+  <link rel="stylesheet" href="../../../styles/siteIcons.css">
+  <link rel="stylesheet" href="../../../styles/appStyle.css">
+  <link rel="stylesheet" href="../../../styles/helper.css">
+  <link rel="stylesheet" href="../../../scripts/owlCarousel/owlCarousel.css">
+
+  <!--Angular, jQuery & Owl Carousel -->
+  <script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+  <script src="../../../scripts/buildfire.js"></script>
+  <script type="text/javascript" src="../../../scripts/owlCarousel/owlCarousel.js"></script>
+  <script src="../../../scripts/buildfire/components/carousel/carousel.js"></script>
+  <script src="../../../scripts/angular/angular.min.js"></script>
+  <script src="../../../scripts/angular/angular-route.min.js"></script>
+
+  <!-- Meta -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- App -->
+  <script src="app.js" type="application/javascript"></script>
+  <script src="enums.js" type="application/javascript"></script>
+  <script src="app.services.js" type="application/javascript"></script>
+  <script src="controllers/widget.home.controller.js" type="application/javascript"></script>
+	<!--<script
+    src="http://maps.googleapis.com/maps/api/js?sensor=false?key=AIzaSyD94EXLxKUBcidyIL0nTAic7ryZus2C0fw"></script>-->
+    
 
 </head>
-	<body ng-controller="contactusPluginCtrl">
-		
-		<div ng-view style="height:100%;"></div>
-		
-		<script src="JS/app.js"></script>
-		<script src="JS/map.js"></script>
-		<script src="JS/controllers.js"></script>
-		<script src="JS/services.js"></script>
-		<script src="JS/directives.js"></script>
+	<body>
+		<div ng-view></div>
 	</body>
 </html>
