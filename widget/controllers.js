@@ -45,9 +45,9 @@ textPluginApp.controller('contactusPluginCtrl', ['$rootScope','$scope','$locatio
           if(result) {
 
 	            widgetservice  = result.data;
-	            $scope.query = widgetservice.content.address;
+	            /*$scope.query = widgetservice.content.address;
 	            $scope.changeLocation(widgetservice.design.layout);
-	            $scope.codeAddress();
+	            $scope.codeAddress();*/
 	            $scope.$broadcast("dataUpdated",result.data);
 	            $scope.$digest();
 	        }else{
