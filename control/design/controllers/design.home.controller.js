@@ -18,18 +18,18 @@
             "itemBgImage": ""
           }
         };
-        var ContentHome = this;
-        ContentHome.masterData = null;
-        ContentHome.data = angular.copy(_data);
+        var DesignHome = this;
+        DesignHome.masterData = null;
+        DesignHome.data = angular.copy(_data);
 
         updateMasterItem(_data);
 
         function updateMasterItem(data) {
-          ContentHome.masterData = angular.copy(data);
+          DesignHome.masterData = angular.copy(data);
         }
 
         function isUnchanged(data) {
-          return angular.equals(data, ContentHome.masterData);
+          return angular.equals(data, DesignHome.masterData);
         }
 
         /*
@@ -38,8 +38,8 @@
         var init = function () {
           var success = function (result) {
               console.info('init success result:', result);
-              ContentHome.data = result.data;
-              updateMasterItem(ContentHome.data);
+              DesignHome.data = result.data;
+              updateMasterItem(DesignHome.data);
               if (tmrDelay)clearTimeout(tmrDelay);
             }
             , error = function (err) {
@@ -48,7 +48,7 @@
                 if (tmrDelay)clearTimeout(tmrDelay);
               }
               else if (err && err.code === STATUS_CODE.NOT_FOUND) {
-                saveData(JSON.parse(angular.toJson(ContentHome.data)), TAG_NAMES.CONTACT_INFO);
+                saveData(JSON.parse(angular.toJson(DesignHome.data)), TAG_NAMES.CONTACT_INFO);
               }
             };
           DataStore.get(TAG_NAMES.CONTACT_INFO).then(success, error);
@@ -93,7 +93,7 @@
          * watch for changes in data and trigger the saveDataWithDelay function on change
          * */
         $scope.$watch(function () {
-          return ContentHome.data;
+          return DesignHome.data;
         }, saveDataWithDelay, true);
 
       }]);
