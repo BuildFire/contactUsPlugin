@@ -22,6 +22,36 @@
         ContentHome.masterData = null;
         ContentHome.data = angular.copy(_data);
 
+        // create a new instance of the buildfire carousel editor
+        var editor = new Buildfire.components.carousel.editor("#carousel");
+
+        // this method will be called when a new item added to the list
+        editor.onAddItems = function (items) {
+          if(!ContentHome.data.content)
+            ContentHome.data.content = {};
+          if (!ContentHome.data.content.carouselImages)
+            ContentHome.data.content.carouselImages = [];
+          ContentHome.data.content.carouselImages.push.apply(ContentHome.data.content.carouselImages, items);
+          $scope.$digest();
+        };
+        // this method will be called when an item deleted from the list
+        editor.onDeleteItem = function (item, index) {
+          ContentHome.data.content.carouselImages.splice(index, 1);
+          $scope.$digest();
+        };
+        // this method will be called when you edit item details
+        editor.onItemChange = function (item, index) {
+          ContentHome.data.content.carouselImages.splice(index, 1, item);
+          $scope.$digest();
+        };
+        // this method will be called when you change the order of items
+        editor.onOrderChange = function (item, oldIndex, newIndex) {
+          var temp = ContentHome.data.content.carouselImages[oldIndex];
+          ContentHome.data.content.carouselImages[oldIndex] = ContentHome.data.content.carouselImages[newIndex];
+          ContentHome.data.content.carouselImages[newIndex] = temp;
+          $scope.$digest();
+        };
+
         updateMasterItem(_data);
 
         ContentHome.bodyWYSIWYGOptions={
@@ -46,6 +76,10 @@
           var success = function (result) {
               console.info('init success result:', result);
               ContentHome.data = result.data;
+              if (!ContentHome.data.content.carouselImages)
+                editor.loadItems([]);
+              else
+                editor.loadItems(ContentHome.data.content.carouselImages);
               updateMasterItem(ContentHome.data);
               if (tmrDelay)clearTimeout(tmrDelay);
             }
