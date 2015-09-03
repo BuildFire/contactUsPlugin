@@ -66,9 +66,10 @@
         </div>
         <div class="copy pull-right">
           <div class="col-md-4 padding-zero pull-left">
-            <a class="text-primary" ng-click="ContentHome.openEditLink(_link,$index)"><span class="title ellipsis pull-left">{{_link.title}}</span></a>
+            <a class="text-primary" ng-click="ContentHome.openEditLinkPopup(_link,$index)"><span class="title ellipsis pull-left">{{_link.title}}</span></a>
             <span class="title ellipsis pull-left">{{_link.url}}</span>
           </div>
+
           <span class="btn-icon btn-delete-icon btn-danger transition-th  ird pull-right" ng-click="ContentHome.removeLink($index)"></span>
 
         </div>
