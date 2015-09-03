@@ -210,13 +210,11 @@
         };
 
         ContentHome.setCoordinates = function () {
-          console.log("??????????????????????????????");
-          console.log(Utils.validLongLats(ContentHome.currentAddress));
           if (Utils.validLongLats(ContentHome.currentAddress)) {
             ContentHome.data.content.address = {
               type: ADDRESS_TYPE.COORDINATES,
               location: ContentHome.currentAddress,
-              location_coordinates: [ContentHome.currentAddress.split(",")[0], ContentHome.currentAddress.split(",")[1]]
+              location_coordinates: [ContentHome.currentAddress.split(",")[0].trim(), ContentHome.currentAddress.split(",")[1].trim()]
             };
           }
           else{
