@@ -100,7 +100,7 @@
         /**
          * link and sortable options
          */
-        var links = {"icon":"true"};
+        var linkOptions = {"icon":"true"};
         ContentHome.linksSortableOptions = {
           handle: '> .handle'
         };
@@ -110,7 +110,7 @@
          */
         ContentHome.openAddLinkPopup = function()
         {
-          Buildfire.actionItems.showDialog(null, links, function addLinkCallback(error, result) {
+          Buildfire.actionItems.showDialog(null, linkOptions, function addLinkCallback(error, result) {
             if (error) {
               return console.error('Error:', error);
             }
@@ -121,6 +121,24 @@
              return console.error('Error:Can not save data, Null record found.');
            }
             ContentHome.data.content.links.push(result);
+            $scope.$digest();
+          });
+        };
+        /**
+         * open dynamic link popup in edit mode
+         */
+        ContentHome.openEditLinkPopup = function (link, index) {
+          Buildfire.actionItems.showDialog(link, linkOptions, function editLinkCallback(error, result) {
+            if (error) {
+              return console.error('Error:', error);
+            }
+            if (!ContentHome.data.content.links) {
+              ContentHome.data.content.links = [];
+            }
+            if(result===null){
+              return console.error('Error:Can not save data, Null record found.');
+            }
+            ContentHome.data.content.links.splice(index, 1, result);
             $scope.$digest();
           });
         };
