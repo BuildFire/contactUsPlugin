@@ -30,6 +30,7 @@
           trusted: true,
           theme: 'modern'
         }
+
         function updateMasterItem(data) {
           ContentHome.masterData = angular.copy(data);
         }
@@ -61,6 +62,43 @@
         };
         init();
 
+
+        /**
+         * link and sortable options
+         */
+        var links = {"icon":"true"};
+        ContentHome.linksSortableOptions = {
+          handle: '> .handle'
+        };
+
+        /**
+         * add dynamic link
+         */
+        ContentHome.openAddLinkPopup = function()
+        {
+          Buildfire.actionItems.showDialog(null, links, function addLinkCallback(error, result) {
+            if (error) {
+              return console.error('Error:', error);
+            }
+            if (!ContentHome.data.content.links) {
+              ContentHome.data.content.links = [];
+            }
+           if(result===null){
+             return console.error('Error:Can not save data, Null record found.');
+           }
+            ContentHome.data.content.links.push(result);
+            $scope.$digest();
+          });
+        };
+
+        /**
+         * remove dynamic link
+         */
+        ContentHome.removeLink = function (index) {
+          if (ContentHome.data.content && ContentHome.data.content.links) {
+            ContentHome.data.content.links.splice(index, 1);
+          }
+        };
         /*
          * Call the datastore to save the data object
          */
