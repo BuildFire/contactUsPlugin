@@ -85,7 +85,7 @@
               clearTimeout(tmrDelay);
             }
             tmrDelay = setTimeout(function () {
-              saveData(JSON.parse(angular.toJson(newObj)), TAG_NAMES.YOUTUBE_INFO);
+              saveData(JSON.parse(angular.toJson(newObj)), TAG_NAMES.CONTACT_INFO);
             }, 500);
           }
         };
