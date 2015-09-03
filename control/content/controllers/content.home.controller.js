@@ -24,6 +24,12 @@
 
         updateMasterItem(_data);
 
+        ContentHome.bodyWYSIWYGOptions={
+          plugins: 'advlist autolink link image lists charmap print preview',
+          skin: 'lightgray',
+          trusted: true,
+          theme: 'modern'
+        }
         function updateMasterItem(data) {
           ContentHome.masterData = angular.copy(data);
         }
