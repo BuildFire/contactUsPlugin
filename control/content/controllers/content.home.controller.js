@@ -3,8 +3,8 @@
 (function (angular) {
   angular
     .module('contactUsPluginContent')
-    .controller('ContentHomeCtrl', ['$scope','Buildfire','LAYOUTS','DataStore','TAG_NAMES','STATUS_CODE',
-      function ($scope, Buildfire, LAYOUTS,DataStore,TAG_NAMES,STATUS_CODE) {
+    .controller('ContentHomeCtrl', ['$scope','Buildfire','LAYOUTS','DataStore','TAG_NAMES','STATUS_CODE','ADDRESS_TYPE',
+      function ($scope, Buildfire, LAYOUTS,DataStore,TAG_NAMES,STATUS_CODE,ADDRESS_TYPE) {
         var _data = {
           "content": {
             "carouselImages": [],
@@ -59,7 +59,7 @@
           skin: 'lightgray',
           trusted: true,
           theme: 'modern'
-        }
+        };
         function updateMasterItem(data) {
           ContentHome.masterData = angular.copy(data);
         }
@@ -135,6 +135,17 @@
         $scope.$watch(function () {
           return ContentHome.data;
         }, saveDataWithDelay, true);
+
+        ContentHome.setLocation = function(data){
+          if(!ContentHome.data.content)
+            ContentHome.data.content = {};
+          ContentHome.data.content.address = {
+            type :ADDRESS_TYPE.LOCATION,
+            location : data.location,
+            location_coordinates : data.coordinates
+          };
+          $scope.$digest();
+        }
 
       }]);
 })(window.angular);

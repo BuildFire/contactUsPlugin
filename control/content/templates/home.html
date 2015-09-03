@@ -26,7 +26,9 @@
   </div>
   <div class="main col-md-9 pull-right">
     <input type="text" class="form-control"
-           placeholder="Enter street address and geo coordinates">
+           placeholder="Enter street address and geo coordinates"
+           google-location-search callback-fn="ContentHome.setLocation(data)"
+               ng-model="ContentHome.data.content.address.location">
 
     <div class="display-map margin-top-ten">
       <div class="checkbox checkbox-primary">

@@ -27,5 +27,9 @@
         {name: "Layout_1"},
         {name: "Layout_2"}
       ]
+    })
+    .constant('ADDRESS_TYPE', {
+      LOCATION : 'Location',
+      COORDINATES : "Coordinates"
     });
 })(window.angular);
