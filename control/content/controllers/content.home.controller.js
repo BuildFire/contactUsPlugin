@@ -60,7 +60,6 @@
           trusted: true,
           theme: 'modern'
         };
-        }
 
         function updateMasterItem(data) {
           ContentHome.masterData = angular.copy(data);
