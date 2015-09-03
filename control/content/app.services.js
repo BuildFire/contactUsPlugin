@@ -122,4 +122,18 @@
         }
       }
     }])
+    .factory("Utils", [function () {
+      function inRange(min, number, max) {
+        return ( !isNaN(number) && (number >= min) && (number <= max) );
+      }
+
+      return {
+        validLongLats: function (longLats) {
+          var longitude = longLats.split(",")[0];
+          var latitude = longLats.split(",")[1];
+          console.log(longitude,latitude );
+          return (inRange(-90, latitude, 90) && inRange(-180, longitude, 180));
+        }
+      }
+    }])
 })(window.angular, window.buildfire);

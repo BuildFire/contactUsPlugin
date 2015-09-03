@@ -37,10 +37,24 @@
           var autocomplete = new google.maps.places.Autocomplete(element[0], options);
           google.maps.event.addListener(autocomplete, 'place_changed', function () {
             var location = autocomplete.getPlace().formatted_address;
-            var coordinates = [autocomplete.getPlace().geometry.location.lng(), autocomplete.getPlace().geometry.location.lat()];
-            scope.setLocationInController({data:{location:location, coordinates:coordinates}});
+            if(autocomplete.getPlace().geometry){
+              var coordinates = [autocomplete.getPlace().geometry.location.lng(), autocomplete.getPlace().geometry.location.lat()];
+              scope.setLocationInController({data:{location:location, coordinates:coordinates}});
+            }
           });
         }
       };
     })
+    .directive('ngEnter', function () {
+      return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+          if(event.which === 13) {
+            scope.$apply(function (){
+              scope.$eval(attrs.ngEnter);
+            });
+            event.preventDefault();
+          }
+        });
+      };
+    });
 })(window.angular);
