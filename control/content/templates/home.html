@@ -42,9 +42,37 @@
 <hr class="none">
 <div class="item clearfix row">
   <div class="labels col-md-3 padding-right-zero pull-left">
-    <span>Dynamic Links</span>
+    <span>Links</span>
   </div>
   <div class="main col-md-9 pull-right">
-    Dynamic Links
+    <div class="col-md-4 row">
+      <a class="btn btn-success stretch" ng-click="ContentHome.openAddLinkPopup()">Add Link</a>
+    </div>
+  </div>
+</div>
+<hr class="none">
+<div class="item clearfix row">
+  <div class="main col-md-12 pull-right">
+    <div class="draggable-list-view wide-list has-btn links-list" ui-sortable="ContentHome.linksSortableOptions" ng-model="ContentHome.data.content.links">
+      <div class="d-item double-line square-icon clearfix" ng-repeat="_link in ContentHome.data.content.links track by $index  ">
+        <span class="icon icon-menu cursor-grab pull-left"></span>
+        <div class="media-holder pull-left">
+          <img src="http://www.placehold.it/50x50">
+        </div>
+        <div class="copy pull-right">
+          <div class="col-md-4 padding-zero pull-left">
+            <a class="text-primary" ng-click="ContentHome.openEditLink(_link,$index)"><span class="title ellipsis pull-left">{{_link.title}}</span></a>
+            <span class="title ellipsis pull-left">{{_link.url}}</span>
+          </div>
+          <span class="btn-icon btn-delete-icon btn-danger transition-th  ird pull-right" ng-click="ContentHome.removeLink($index)"></span>
+
+        </div>
+      </div>
+
+      <!-- Show If No Items -->
+      <div class="well text-center margin-bottom-zero border-none" ng-hide="ContentHome.data.content.links.length">
+        <p class="margin-zero">No items found.</p>
+      </div>
+    </div>
   </div>
 </div>
