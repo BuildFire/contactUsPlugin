@@ -6,8 +6,8 @@
     <span>Body Content</span>
   </div>
   <div class="main col-md-9 pull-right">
-    <textarea class="form-control" rows="3" col="100"
-              placeholder="This is WYSIWYG"></textarea>
+    <textarea ui-tinymce="ContentHome.bodyWYSIWYGOptions" class="form-control" rows="3" col="100"
+              placeholder="This is WYSIWYG" data-ng-model = "ContentHome.data.content.description"></textarea>
   </div>
 </div>
 <hr class="none">
@@ -16,7 +16,7 @@
     <span>Address Title</span>
   </div>
   <div class="main col-md-9 pull-right">
-    <input type="text" class="form-control">
+    <input type="text" class="form-control" data-ng-model="ContentHome.data.content.addressTitle">
   </div>
 </div>
 <hr class="none">
