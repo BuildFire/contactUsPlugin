@@ -3,15 +3,15 @@
 (function (angular) {
   angular
     .module('contactUsPluginContent')
-    .controller('ContentHomeCtrl', ['$scope','Buildfire','LAYOUTS','DataStore','TAG_NAMES','STATUS_CODE','ADDRESS_TYPE',
-      function ($scope, Buildfire, LAYOUTS,DataStore,TAG_NAMES,STATUS_CODE,ADDRESS_TYPE) {
+    .controller('ContentHomeCtrl', ['$scope', 'Buildfire', 'LAYOUTS', 'DataStore', 'TAG_NAMES', 'STATUS_CODE', 'ADDRESS_TYPE', 'Utils','$timeout',
+      function ($scope, Buildfire, LAYOUTS, DataStore, TAG_NAMES, STATUS_CODE, ADDRESS_TYPE, Utils,$timeout) {
         var _data = {
           "content": {
             "carouselImages": [],
             "description": '<p>&nbsp;<br></p>',
             "addressTitle": "",
             "address": {},
-            "links" : []
+            "links": []
           },
           "design": {
             "listLayout": LAYOUTS.listLayouts[0].name,
@@ -21,13 +21,14 @@
         var ContentHome = this;
         ContentHome.masterData = null;
         ContentHome.data = angular.copy(_data);
+        ContentHome.validCoordinatesFailure = false;
 
         // create a new instance of the buildfire carousel editor
         var editor = new Buildfire.components.carousel.editor("#carousel");
 
         // this method will be called when a new item added to the list
         editor.onAddItems = function (items) {
-          if(!ContentHome.data.content)
+          if (!ContentHome.data.content)
             ContentHome.data.content = {};
           if (!ContentHome.data.content.carouselImages)
             ContentHome.data.content.carouselImages = [];
@@ -54,7 +55,7 @@
 
         updateMasterItem(_data);
 
-        ContentHome.bodyWYSIWYGOptions={
+        ContentHome.bodyWYSIWYGOptions = {
           plugins: 'advlist autolink link image lists charmap print preview',
           skin: 'lightgray',
           trusted: true,
@@ -76,10 +77,15 @@
           var success = function (result) {
               console.info('init success result:', result);
               ContentHome.data = result.data;
-              if (!ContentHome.data.content.carouselImages)
-                editor.loadItems([]);
-              else
-                editor.loadItems(ContentHome.data.content.carouselImages);
+              if (ContentHome.data.content) {
+                if (!ContentHome.data.content.carouselImages)
+                  editor.loadItems([]);
+                else
+                  editor.loadItems(ContentHome.data.content.carouselImages);
+                if(ContentHome.data.content.address.location)
+                  ContentHome.currentAddress = ContentHome.data.content.address.location;
+              }
+
               updateMasterItem(ContentHome.data);
               if (tmrDelay)clearTimeout(tmrDelay);
             }
@@ -100,7 +106,7 @@
         /**
          * link and sortable options
          */
-        var linkOptions = {"icon":"true"};
+        var links = {"icon":"true"};
         ContentHome.linksSortableOptions = {
           handle: '> .cursor-grab'
         };
@@ -192,16 +198,31 @@
           return ContentHome.data;
         }, saveDataWithDelay, true);
 
-        ContentHome.setLocation = function(data){
-          if(!ContentHome.data.content)
+        ContentHome.setLocation = function (data) {
+          if (!ContentHome.data.content)
             ContentHome.data.content = {};
           ContentHome.data.content.address = {
-            type :ADDRESS_TYPE.LOCATION,
-            location : data.location,
-            location_coordinates : data.coordinates
+            type: ADDRESS_TYPE.LOCATION,
+            location: data.location,
+            location_coordinates: data.coordinates
           };
           $scope.$digest();
-        }
+        };
 
+        ContentHome.setCoordinates = function () {
+          if (Utils.validLongLats(ContentHome.currentAddress)) {
+            ContentHome.data.content.address = {
+              type: ADDRESS_TYPE.COORDINATES,
+              location: ContentHome.currentAddress,
+              location_coordinates: [ContentHome.currentAddress.split(",")[0].trim(), ContentHome.currentAddress.split(",")[1].trim()]
+            };
+          }
+          else{
+            ContentHome.validCoordinatesFailure = true;
+            $timeout(function () {
+              ContentHome.validCoordinatesFailure = false;
+            }, 5000);
+          }
+        }
       }]);
 })(window.angular);
