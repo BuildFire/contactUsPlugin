@@ -102,7 +102,7 @@
          */
         var linkOptions = {"icon":"true"};
         ContentHome.linksSortableOptions = {
-          handle: '> .handle'
+          handle: '> .cursor-grab'
         };
 
         /**
