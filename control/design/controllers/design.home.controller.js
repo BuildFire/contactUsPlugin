@@ -40,6 +40,25 @@
           Buildfire.datastore.save(DesignHome.contactUsDesignData, TAG_NAMES.CONTACT_INFO, callback);
         }
 
+        /* background image add <start>*/
+        var options = {showIcons: false, multiSelection: false};
+        var callback = function (error, result) {
+          if (error) {
+            console.error('Error:', error);
+          } else {
+            DesignHome.contactUsDesignData.design.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
+            $scope.$digest();
+
+          }
+        };
+        DesignHome.addBackgroundImage = function () {
+          Buildfire.imageLib.showDialog(options, callback);
+        };
+        DesignHome.removeBackgroundImage = function () {
+          DesignHome.contactUsDesignData.design.backgroundImage = null;
+        };
+        /* background image add </end>*/
+
         /*Initialize initial data and objects*/
         function init() {
           var contactUsDesignData = {

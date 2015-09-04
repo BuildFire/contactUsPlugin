@@ -23,18 +23,16 @@
 <hr>
 <div class="item row clearfix margin-top-thirty">
   <div class="labels col-md-3 padding-right-zero pull-left">
-    <span>Background Images</span>
+    <span>Item List Background Image</span>
   </div>
   <div class="main col-md-9 pull-right">
     <div class="screens clearfix">
       <div class="screen text-center layouticon pull-left">
-        <a class="border-grey border-radius-three default-background-hover text-center">
-          <span class="add-icon hidden">+</span>
-          <img src="">
+        <a class="border-radius-three default-background-hover" ng-click="DesignHome.addBackgroundImage()">
+          <span class="add-icon" ng-hide="DesignHome.contactUsDesignData.design.backgroundImage">+</span>
+          <img ng-show="DesignHome.contactUsDesignData.design.backgroundImage" ng-src="{{DesignHome.contactUsDesignData.design.backgroundImage | getImageUrl : 82:110}}">
         </a>
-        <label class="secondary">750x1334</label>
-					<span
-              class="icon btn-icon btn-delete-icon btn-danger transition-third"></span>
+        <span class="icon btn-icon btn-delete-icon btn-danger btn-close transition-third" ng-show="DesignHome.contactUsDesignData.design.backgroundImage" ng-click="DesignHome.removeBackgroundImage()"></span>
       </div>
     </div>
   </div>
