@@ -3,8 +3,8 @@
 (function (angular) {
   angular
     .module('contactUsPluginContent')
-    .controller('ContentHomeCtrl', ['$scope', 'Buildfire', 'LAYOUTS', 'DataStore', 'TAG_NAMES', 'STATUS_CODE', 'ADDRESS_TYPE', 'Utils','$timeout',
-      function ($scope, Buildfire, LAYOUTS, DataStore, TAG_NAMES, STATUS_CODE, ADDRESS_TYPE, Utils,$timeout) {
+    .controller('ContentHomeCtrl', ['$scope', 'Buildfire', 'LAYOUTS', 'DataStore', 'TAG_NAMES', 'STATUS_CODE', 'ADDRESS_TYPE', 'Utils', '$timeout',
+      function ($scope, Buildfire, LAYOUTS, DataStore, TAG_NAMES, STATUS_CODE, ADDRESS_TYPE, Utils, $timeout) {
         var _data = {
           "content": {
             "carouselImages": [],
@@ -82,7 +82,7 @@
                   editor.loadItems([]);
                 else
                   editor.loadItems(ContentHome.data.content.carouselImages);
-                if(ContentHome.data.content.address.location)
+                if (ContentHome.data.content.address.location)
                   ContentHome.currentAddress = ContentHome.data.content.address.location;
               }
 
@@ -106,7 +106,7 @@
         /**
          * link and sortable options
          */
-        var links = {"icon":"true"};
+        var links = {"icon": "true"};
         ContentHome.linksSortableOptions = {
           handle: '> .handle'
         };
@@ -114,8 +114,7 @@
         /**
          * add dynamic link
          */
-        ContentHome.openAddLinkPopup = function()
-        {
+        ContentHome.openAddLinkPopup = function () {
           Buildfire.actionItems.showDialog(null, linkOptions, function addLinkCallback(error, result) {
             if (error) {
               return console.error('Error:', error);
@@ -123,9 +122,9 @@
             if (!ContentHome.data.content.links) {
               ContentHome.data.content.links = [];
             }
-           if(result===null){
-             return console.error('Error:Can not save data, Null record found.');
-           }
+            if (result === null) {
+              return console.error('Error:Can not save data, Null record found.');
+            }
             ContentHome.data.content.links.push(result);
             $scope.$digest();
           });
@@ -141,7 +140,7 @@
             if (!ContentHome.data.content.links) {
               ContentHome.data.content.links = [];
             }
-            if(result===null){
+            if (result === null) {
               return console.error('Error:Can not save data, Null record found.');
             }
             ContentHome.data.content.links.splice(index, 1, result);
@@ -210,19 +209,25 @@
         };
 
         ContentHome.setCoordinates = function () {
-          if (Utils.validLongLats(ContentHome.currentAddress)) {
-            ContentHome.data.content.address = {
-              type: ADDRESS_TYPE.COORDINATES,
-              location: ContentHome.currentAddress,
-              location_coordinates: [ContentHome.currentAddress.split(",")[0].trim(), ContentHome.currentAddress.split(",")[1].trim()]
-            };
+          function successCallback(resp) {
+            if(resp) {
+              ContentHome.data.content.address = {
+                type: ADDRESS_TYPE.COORDINATES,
+                location: ContentHome.currentAddress,
+                location_coordinates: [ContentHome.currentAddress.split(",")[0].trim(), ContentHome.currentAddress.split(",")[1].trim()]
+              };
+            } else {
+              errorCallback();
+            }
           }
-          else{
+
+          function errorCallback(err) {
             ContentHome.validCoordinatesFailure = true;
             $timeout(function () {
               ContentHome.validCoordinatesFailure = false;
             }, 5000);
           }
+          Utils.validLongLats(ContentHome.currentAddress).then(successCallback, errorCallback);
         }
       }]);
 })(window.angular);
