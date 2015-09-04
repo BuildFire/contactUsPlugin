@@ -3,98 +3,115 @@
 (function (angular, window) {
   angular
     .module('contactUsPluginDesign')
-    .controller('DesignHomeCtrl', ['$scope','Buildfire','LAYOUTS','DataStore','TAG_NAMES','STATUS_CODE',
-      function ($scope, Buildfire, LAYOUTS,DataStore,TAG_NAMES,STATUS_CODE) {
-        var _data = {
-          "content": {
-            "carouselImages": [],
-            "description": '<p>&nbsp;<br></p>',
-            "addressTitle": "",
-            "address": {},
-            "links" : []
-          },
-          "design": {
-            "listLayout": LAYOUTS.listLayouts[0].name,
-            "itemBgImage": ""
+    .controller('DesignHomeCtrl', ['$scope','Buildfire','LAYOUTS','DataStore','TAG_NAMES',
+      function ($scope, Buildfire, LAYOUTS,DataStore,TAG_NAMES) {
+        var DesignHome = this;
+        var DesignHomeMaster;
+        DesignHome.layouts = {
+          listLayouts: [{
+            name: "Layout_1"
+          }, {
+            name: "Layout_2"
+          }]
+        };
+        /*On layout click event*/
+        DesignHome.changeListLayout = function (layoutName) {
+          if (layoutName && DesignHome.contactUsDesignData.design) {
+            DesignHome.contactUsDesignData.design.listLayout = layoutName;
+
+            saveData(function (err, data) {
+                  if (err) {
+                    return DesignHome.contactUsDesignData = angular.copy(DesignHomeMaster);
+                  }
+                  else if (data && data.obj) {
+                    return DesignHomeMaster = data.obj;
+
+                  }
+                  $scope.$digest();
+                }
+            )
           }
         };
-        var DesignHome = this;
-        DesignHome.masterData = null;
-        DesignHome.data = angular.copy(_data);
 
-        updateMasterItem(_data);
-
-        function updateMasterItem(data) {
-          DesignHome.masterData = angular.copy(data);
+        /*save method*/
+        function saveData(callback) {
+          callback = callback || function () {
+              };
+          Buildfire.datastore.save(DesignHome.contactUsDesignData, TAG_NAMES.CONTACT_INFO, callback);
         }
 
-        function isUnchanged(data) {
-          return angular.equals(data, DesignHome.masterData);
-        }
+        /* background image add <start>*/
+        var options = {showIcons: false, multiSelection: false};
+        var callback = function (error, result) {
+          if (error) {
+            console.error('Error:', error);
+          } else {
+            DesignHome.contactUsDesignData.design.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
+            $scope.$digest();
 
-        /*
-         * Go pull any previously saved data
-         * */
-        var init = function () {
-          var success = function (result) {
-              console.info('init success result:', result);
-              DesignHome.data = result.data;
-              updateMasterItem(DesignHome.data);
-              if (tmrDelay)clearTimeout(tmrDelay);
-            }
-            , error = function (err) {
-              if (err && err.code !== STATUS_CODE.NOT_FOUND) {
-                console.error('Error while getting data', err);
-                if (tmrDelay)clearTimeout(tmrDelay);
-              }
-              else if (err && err.code === STATUS_CODE.NOT_FOUND) {
-                saveData(JSON.parse(angular.toJson(DesignHome.data)), TAG_NAMES.CONTACT_INFO);
-              }
-            };
-          DataStore.get(TAG_NAMES.CONTACT_INFO).then(success, error);
+          }
         };
+        DesignHome.addBackgroundImage = function () {
+          Buildfire.imageLib.showDialog(options, callback);
+        };
+        DesignHome.removeBackgroundImage = function () {
+          DesignHome.contactUsDesignData.design.backgroundImage = null;
+        };
+        /* background image add </end>*/
+
+        /*Initialize initial data and objects*/
+        function init() {
+          var contactUsDesignData = {
+            design: {
+              listLayout: "",
+              itemLayout: "",
+              backgroundImage: ""
+            },
+            content: {
+              images: [],
+              description: ""
+            }
+          };
+          Buildfire.datastore.get(TAG_NAMES.CONTACT_INFO, function (err, data) {
+            if (err) {
+              Console.log('------------Error in Design of People Plugin------------', err);
+            }
+            else if (data && data.data) {
+              DesignHome.contactUsDesignData = angular.copy(data.data);
+              if (!DesignHome.contactUsDesignData.design)
+                DesignHome.contactUsDesignData.design = {};
+              if (!DesignHome.contactUsDesignData.design.listLayout)
+                DesignHome.contactUsDesignData.design.listLayout = DesignHome.layouts.listLayouts[0].name;
+              DesignHomeMaster = angular.copy(data.data);
+              $scope.$digest();
+            }
+            else {
+              DesignHome.contactUsDesignData = contactUsDesignData;
+              console.info('------------------unable to load data---------------');
+            }
+          });
+        }
+
+        /*Initialize Method Call*/
         init();
 
-        /*
-         * Call the datastore to save the data object
-         */
-        var saveData = function (newObj, tag) {
-          if (typeof newObj === 'undefined') {
-            return;
-          }
-          var success = function (result) {
-              console.info('Saved data result: ', result);
-              updateMasterItem(newObj);
-            }
-            , error = function (err) {
-              console.error('Error while saving data : ', err);
-            };
-          DataStore.save(newObj, tag).then(success, error);
-        };
-
-        /*
-         * create an artificial delay so api isnt called on every character entered
-         * */
-        var tmrDelay = null;
-        var saveDataWithDelay = function (newObj) {
-          if (newObj) {
-            if (isUnchanged(newObj)) {
-              return;
-            }
-            if (tmrDelay) {
-              clearTimeout(tmrDelay);
-            }
-            tmrDelay = setTimeout(function () {
-              saveData(JSON.parse(angular.toJson(newObj)), TAG_NAMES.CONTACT_INFO);
-            }, 500);
-          }
-        };
-        /*
-         * watch for changes in data and trigger the saveDataWithDelay function on change
-         * */
+        /*watch the change event and update in database*/
         $scope.$watch(function () {
-          return DesignHome.data;
-        }, saveDataWithDelay, true);
+          return DesignHome.contactUsDesignData;
+        }, function (newObj) {
+          console.log("Updated Object:",newObj)
+          if (newObj)
+            Buildfire.datastore.save(DesignHome.contactUsDesignData, TAG_NAMES.CONTACT_INFO, function (err, data) {
+              if (err) {
+                return DesignHome.contactUsDesignData = angular.copy(DesignHomeMaster);
+              }
+              else if (data && data.obj) {
+                return DesignHomeMaster = data.obj;
+
+              }
+              $scope.$digest();
+            });
+        }, true);
 
       }]);
-})(window.angular, window);
+})(window.angular);

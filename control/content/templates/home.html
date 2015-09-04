@@ -59,19 +59,17 @@
 <div class="item clearfix row">
   <div class="main col-md-12 pull-right">
     <div class="draggable-list-view wide-list has-btn links-list" ui-sortable="ContentHome.linksSortableOptions" ng-model="ContentHome.data.content.links">
-      <div class="d-item double-line square-icon clearfix" ng-repeat="_link in ContentHome.data.content.links track by $index  ">
+      <div class=" ui-sortable d-item double-line square-icon clearfix" ng-repeat="_link in ContentHome.data.content.links  ">
         <span class="icon icon-menu cursor-grab pull-left"></span>
         <div class="media-holder pull-left">
           <img src="http://www.placehold.it/50x50">
         </div>
         <div class="copy pull-right">
-          <div class="col-md-4 padding-zero pull-left">
+          <div class=" col-md-4 padding-zero pull-left">
             <a class="text-primary" ng-click="ContentHome.openEditLinkPopup(_link,$index)"><span class="title ellipsis pull-left">{{_link.title}}</span></a>
             <span class="title ellipsis pull-left">{{_link.url}}</span>
           </div>
-
           <span class="btn-icon btn-delete-icon btn-danger transition-th  ird pull-right" ng-click="ContentHome.removeLink($index)"></span>
-
         </div>
       </div>
 

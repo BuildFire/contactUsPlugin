@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular) {
-  angular.module('contactUsPluginContent', ['ngRoute', 'ui.tinymce', 'ui.bootstrap'])
+  angular.module('contactUsPluginContent', ['ngRoute', 'ui.tinymce', 'ui.bootstrap', 'ui.sortable'])
     //injected ngRoute for routing
     .config(['$routeProvider', function ($routeProvider) {
       $routeProvider
