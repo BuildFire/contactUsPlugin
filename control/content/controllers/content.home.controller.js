@@ -106,7 +106,7 @@
         /**
          * link and sortable options
          */
-        var links = {"icon":"true"};
+        var linkOptions = {"icon":"true"};
         ContentHome.linksSortableOptions = {
           handle: '> .cursor-grab'
         };
