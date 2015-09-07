@@ -11,7 +11,8 @@
             "description": '<p>&nbsp;<br></p>',
             "addressTitle": "",
             "address": {},
-            "links": []
+            "links": [],
+            "showMap": true
           },
           "design": {
             "listLayout": LAYOUTS.listLayouts[0].name,
@@ -82,9 +83,10 @@
                   editor.loadItems([]);
                 else
                   editor.loadItems(ContentHome.data.content.carouselImages);
-                if (ContentHome.data.content.address && ContentHome.data.content.address.location)
+                if (ContentHome.data.content.address && ContentHome.data.content.address.location) {
                   ContentHome.currentAddress = ContentHome.data.content.address.location;
                   ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
+                }
               }
 
               updateMasterItem(ContentHome.data);
@@ -107,7 +109,7 @@
         /**
          * link and sortable options
          */
-        var linkOptions = {"icon":"true"};
+        var linkOptions = {"icon": "true"};
         ContentHome.linksSortableOptions = {
           handle: '> .cursor-grab'
         };
@@ -213,7 +215,7 @@
 
         ContentHome.setCoordinates = function () {
           function successCallback(resp) {
-            if(resp) {
+            if (resp) {
               ContentHome.data.content.address = {
                 type: ADDRESS_TYPE.COORDINATES,
                 location: ContentHome.currentAddress,
@@ -230,6 +232,7 @@
               ContentHome.validCoordinatesFailure = false;
             }, 5000);
           }
+
           Utils.validLongLats(ContentHome.currentAddress).then(successCallback, errorCallback);
         }
       }]);
