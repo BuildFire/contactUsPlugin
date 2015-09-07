@@ -49,10 +49,15 @@
       return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
           if(event.which === 13) {
-            scope.$apply(function (){
-              scope.$eval(attrs.ngEnter);
-            });
-            event.preventDefault();
+            var val = $(element).val(),
+              regex = /^[0-9\-\., ]+$/g;
+            if(regex.test(val)) {
+              scope.$apply(function (){
+                scope.$eval(attrs.ngEnter);
+              });
+
+              event.preventDefault();
+            }
           }
         });
       };
