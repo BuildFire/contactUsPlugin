@@ -84,6 +84,7 @@
                   editor.loadItems(ContentHome.data.content.carouselImages);
                 if (ContentHome.data.content.address && ContentHome.data.content.address.location)
                   ContentHome.currentAddress = ContentHome.data.content.address.location;
+                  ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
               }
 
               updateMasterItem(ContentHome.data);
@@ -205,6 +206,8 @@
             location: data.location,
             location_coordinates: data.coordinates
           };
+          ContentHome.currentAddress = ContentHome.data.content.address.location;
+          ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
           $scope.$digest();
         };
 
