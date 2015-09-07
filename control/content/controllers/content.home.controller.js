@@ -82,7 +82,7 @@
                   editor.loadItems([]);
                 else
                   editor.loadItems(ContentHome.data.content.carouselImages);
-                if (ContentHome.data.content.address.location)
+                if (ContentHome.data.content.address && ContentHome.data.content.address.location)
                   ContentHome.currentAddress = ContentHome.data.content.address.location;
               }
 

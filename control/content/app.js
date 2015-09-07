@@ -45,6 +45,22 @@
         }
       };
     })
+    .directive("googleMap", function() {
+      return {
+        template: "<div></div>",
+        replace: true,
+        link: function(scope, elem, attrs) {
+          var map = new google.maps.Map(elem[0], {
+            center : new google.maps.LatLng(28.541966, 77.340883),
+            zoomControl : false,
+            streetViewControl : false,
+            mapTypeControl : false,
+            zoom : 15,
+            mapTypeId : google.maps.MapTypeId.ROADMAP
+          });
+        }
+      }
+    })
     .directive('ngEnter', function () {
       return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
