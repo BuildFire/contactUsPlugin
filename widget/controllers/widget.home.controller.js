@@ -68,6 +68,17 @@
                   return $sce.trustAsHtml(html);
           };
 
+        WidgetHome.openLinks = function (actionItems) {
+          if (actionItems && actionItems.length) {
+            var options = {};
+            var callback = function (error, result) {
+              if (error) {
+                console.error('Error:', error);
+              }
+            };
+            buildfire.actionItems.list(actionItems, options, callback);
+          }
+        }
 
       }])
 })(window.angular);
