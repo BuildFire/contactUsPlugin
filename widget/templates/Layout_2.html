@@ -4,7 +4,8 @@
     <div class="contact-maps text-center">
       <img src="http://www.placehold.it/1280x720.jpg">
       <div class="contact-address bg-primary">
-        <p class="margin-bottom-zero col-md-12">{{WidgetHome.data.content.address.location}}</p>
+        <p class="margin-bottom-zero col-md-12" ng-show="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.addressTitle}}</p>
+        <p class="margin-bottom-zero col-md-12" ng-hide="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.address.location}}</p>
       </div>
     </div>
     <div class="padded text-center">
