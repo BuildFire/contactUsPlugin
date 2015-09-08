@@ -1,34 +1,21 @@
-<div class="padding-zero"  ng-cloak style="background:url({{bgResize(dataForView.design.bgUrl);}});background-repeat:no-repeat,height:100%,background-size: 100% 100%;">
-	<div class="contact-plugin layout1">
 
-		
-<!--     <data-owl-carousel class="owl-carousel" data-options="{item:1,pagination: true, rewindNav : false,singleItem:true}" id="owlCarousel"> -->
-<!--       <div owl-carousel-item="3" ng-repeat="item in dataForView.array" class="item"> -->
-<!--       <img ng-src="{{item.image_src}}" style="margin:auto; width:100%"  open-link="{{item.imageurl}}"> -->
-<!--       </div> -->
-<!--     </data-owl-carousel> -->
-    
-    <div id="sliderContainer">
-<!--        <carouselslide></carouselslide> -->
+<div class="holder padding-zero">
+  <div class="contact-plugin layout1">
+    <div class="plugin-banner clearfix border-bottom-grey">
+      <div id="carousel" build-fire-carousel=""></div>
     </div>
-		   
+    <div class="padded text-center">
+      <a class="text-primary" ng-click="WidgetHome.openLinks(WidgetHome.data.content.links)">Contact info</a>
+      <hr class="small">
+      <p class="margin-bottom-zero" ng-show="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.addressTitle}}</p>
+      <p class="margin-bottom-zero" ng-hide="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.address.location}}</p>
 
-		<div class="padded text-center">
-			<a class="text-primary"   ng-click="showItemlist1();">Contact Us</a>
-			<hr class="small" >
-			<p class="text-primary margin-bottom-zero cont-add"   ng-show="dataForView.content.addresstitle">{{dataForView.content.addresstitle}}</p>
-			
-			<div ng-hide="dataForView.content.addresstitle">
-					<p class="text-primary margin-bottom-zero cont-add" ng-show="dataForView.content.address">{{dataForView.content.address}}</p>
-					
-			</div>
-		</div>
-		<div class="contact-maps text-center" ng-if="dataForView.content.checkboxMode" >
-			<div class="newMap" mapdirective  ></div>
-		</div>
-		<div class="padded"  ng-show = "dataForView.content.bodyclass">
-			<div ng-bind-html="dataForView.content.bodyclass"></div>
-		</div>
-		
-	</div>
+    </div>
+    <div class="contact-maps text-center">
+      <img src="http://www.placehold.it/1280x720.jpg">
+    </div>
+    <div class="padded">
+      <p ng-bind-html="WidgetHome.safeHtml(WidgetHome.data.content.description)">'</p>
+    </div>
+  </div>
 </div>
