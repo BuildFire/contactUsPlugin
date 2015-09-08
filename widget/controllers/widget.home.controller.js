@@ -2,8 +2,8 @@
 
 (function (angular) {
   angular.module('contactUsPluginWidget')
-    .controller('WidgetHomeCtrl', ['$routeParams', 'Buildfire', 'DataStore', '$scope', 'TAG_NAMES', 'Location', 'LAYOUTS', '$rootScope',
-      function ($routeParams, Buildfire, DataStore, $scope, TAG_NAMES, Location, LAYOUTS, $rootScope) {
+    .controller('WidgetHomeCtrl', ['$routeParams', 'Buildfire', 'DataStore', '$scope', 'TAG_NAMES', 'Location', 'LAYOUTS', '$rootScope','$sce',
+      function ($routeParams, Buildfire, DataStore, $scope, TAG_NAMES, Location, LAYOUTS, $rootScope, $sce) {
         var WidgetHome = this;
         var currentListLayout = null;
         WidgetHome.data = null;
@@ -63,6 +63,11 @@
         $scope.$on("$destroy", function () {
           DataStore.clearListener();
         });
+          WidgetHome.safeHtml = function (html) {
+              if (html)
+                  return $sce.trustAsHtml(html);
+          };
+
 
       }])
 })(window.angular);
