@@ -59,17 +59,19 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
     describe('ContentHome.masterData', function () {
         it('it should pass if ContentHome.masterData match the result', function () {
             expect(ContentHome.masterData).toEqual({
-                "content": {
-                    "carouselImages": [],
+              "content": {
+                "carouselImages": [],
                     "description": '<p>&nbsp;<br></p>',
                     "addressTitle": "",
                     "address": {},
-                    "links": []
-                },
+                "links": [],
+                    "showMap": true
+            },
                 "design": {
-                    "listLayout": LAYOUTS.listLayouts[0].name,
+                "listLayout": LAYOUTS.listLayouts[0].name,
                     "itemBgImage": ""
-                }
+            }
+
             });
         });
     });
@@ -83,7 +85,8 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
                     "description": '<p>&nbsp;<br></p>',
                     "addressTitle": "",
                     "address": {},
-                    "links": []
+                    "links": [],
+                    "showMap": true
                 },
                 "design": {
                     "listLayout": LAYOUTS.listLayouts[0].name,
