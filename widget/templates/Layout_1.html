@@ -7,7 +7,9 @@
     <div class="padded text-center">
       <a class="text-primary" ng-click="WidgetHome.openLinks(WidgetHome.data.content.links)">Contact info</a>
       <hr class="small">
-      <p class="margin-bottom-zero">{{WidgetHome.data.content.address.location}}</p>
+      <p class="margin-bottom-zero" ng-show="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.addressTitle}}</p>
+      <p class="margin-bottom-zero" ng-hide="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.address.location}}</p>
+
     </div>
     <div class="contact-maps text-center">
       <img src="http://www.placehold.it/1280x720.jpg">
