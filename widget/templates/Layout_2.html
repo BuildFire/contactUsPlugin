@@ -11,15 +11,14 @@
     </div>
     <div class="padded text-center">
       <div class="plugin-banner clearfix">
-        <div class="plugin-slider text-center">
-          <div class="plugin-slide pull-left">
-            <img class="border-radius-four" src="http://www.placehold.it/140x100">
-          </div>
-          <div class="plugin-slide pull-left hidden">
-            <img class="border-radius-four" src="http://www.placehold.it/140x100">
-          </div>
-          <div class="plugin-slide pull-left hidden">
-            <img class="border-radius-four" src="http://www.placehold.it/140x100">
+        <div class="plugin-slider text-center" image-carousel="{{WidgetHome.data.content.carouselImages.length}}">
+          <div class="plugin-slide item"
+               data-ng-repeat="image in WidgetHome.data.content.carouselImages | filter:isDefined">
+            <a href="{{image.url}}" data-ng-if="image.url"
+               target="{{image.openIn}}"><img
+                ng-src="{{image.iconUrl | getImageUrl : 140 : 100}}"></a>
+            <img data-ng-if="!image.url"
+                 ng-src="{{image.iconUrl | getImageUrl : 140 : 100}}">
           </div>
         </div>
       </div>

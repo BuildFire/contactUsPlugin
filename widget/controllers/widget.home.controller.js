@@ -42,6 +42,7 @@
         });
 
         var onUpdateCallback = function (event) {
+          $scope.imagesUpdated = false;
           if (event && event.tag === TAG_NAMES.CONTACT_INFO) {
             WidgetHome.data = event.data;
             if (!WidgetHome.data.design)
@@ -57,6 +58,13 @@
             }
           }
           currentListLayout = WidgetHome.data.design.listLayout;
+
+          if(event.data.content){
+            $scope.imagesUpdated = true;
+          }
+          else{
+            $scope.imagesUpdated = false;
+          }
         };
         DataStore.onUpdate().then(null, null, onUpdateCallback);
 
