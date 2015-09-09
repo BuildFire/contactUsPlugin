@@ -59,18 +59,18 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
     describe('ContentHome.masterData', function () {
         it('it should pass if ContentHome.masterData match the result', function () {
             expect(ContentHome.masterData).toEqual({
-              "content": {
-                "carouselImages": [],
+                "content": {
+                    "carouselImages": [],
                     "description": '<p>&nbsp;<br></p>',
                     "addressTitle": "",
                     "address": {},
-                "links": [],
+                    "links": [],
                     "showMap": true
-            },
+                },
                 "design": {
-                "listLayout": LAYOUTS.listLayouts[0].name,
-                    "itemBgImage": ""
-            }
+                    "listLayout": LAYOUTS.listLayouts[0].name,
+                    "backgroundImage": ""
+                }
 
             });
         });
@@ -90,12 +90,12 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
                 },
                 "design": {
                     "listLayout": LAYOUTS.listLayouts[0].name,
-                    "itemBgImage": ""
+                    "backgroundImage": ""
                 }
             });
         });
     });
-    it('it should pass if ContentHome.showDialog changes ContentHome.data.content.links in success case', function () {
+    it('it should pass if ContentHome.showDialog accept ContentHome.data.content.links', function () {
         Buildfire.actionItems = {
 
             showDialog: function (a,d, func) {
@@ -107,7 +107,7 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
         scope.$digest();
         expect(ContentHome.data.content.links[0].addLinks[0]).toEqual('test');
     });
-    it('it should pass if ContentHome.showDialog changes ContentHome.data.content.links in success case', function () {
+    it('it should pass if ContentHome.showDialog in Edit links ContentHome.data.content.links in success case', function () {
         var link = {editLinks:['test']},index = 0;
         Buildfire.actionItems = {
 
@@ -119,11 +119,25 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
 
         ContentHome.openEditLinkPopup(link, index);
     });
-    it('it should pass if ContentHome.showDialog changes ContentHome.data.content.links in success case', function () {
+    it('it should pass if ContentHome.showDialog accept the index', function () {
         var index = 0;
         ContentHome.removeLink(index);
-        //expect(ContentHome.data.content.links).toEqual('test');
 
     });
+
+    it('it should pass if it get the changed data', function () {
+        ContentHome.currentAddress = "";
+        ContentHome.currentCoordinates = "";
+        ContentHome.data = {};
+        var obj = {
+            "location" : "Delhi",
+            "coordinates" : "19.2012,20.1234"
+        };
+
+        ContentHome.setLocation(obj);
+        expect(ContentHome.currentAddress).toEqual(obj.location);
+        expect(ContentHome.currentCoordinates).toEqual(obj.coordinates);
+    });
+
 })
 ;

@@ -63,12 +63,12 @@ describe('Unit : contactUsPlugin design.home.controller.js', function () {
                 });
                 return deferred.promise;
             });
-            DesignHome.contactUsDesignData={
+            DesignHome.data={
                 design:{backgroundImage:''}
             };
             DesignHome.addBackgroundImage();
             $rootScope.$digest();
-            expect(DesignHome.contactUsDesignData.design.backgroundImage).toEqual('');
+            expect(DesignHome.data.design.backgroundImage).toEqual('');
         });
     });
     describe('Function :DesignHome.changeListLayout', function () {
@@ -76,12 +76,11 @@ describe('Unit : contactUsPlugin design.home.controller.js', function () {
             expect(typeof DesignHome.changeListLayout).toEqual('function');
         });
         it('it should pass if  DesignHome.contactUsDesignData.design.listLayout is equals to "Layout_1" after passing parameter "Layout_1" to DesignHome.changeListLayout', function () {
-            DesignHome.contactUsDesignData={
+            DesignHome.data={
                 design:{listLayout:''}
             };
             DesignHome.changeListLayout('Layout_1');
-            $rootScope.$digest();
-            expect( DesignHome.contactUsDesignData.design.listLayout).toEqual('Layout_1');
+            expect( DesignHome.data.design.listLayout).toEqual('Layout_1');
         });
     });
     describe('Function :DesignHome.removeBackgroundImage', function () {
@@ -89,13 +88,14 @@ describe('Unit : contactUsPlugin design.home.controller.js', function () {
             expect(typeof DesignHome.removeBackgroundImage).toEqual('function');
         });
         it('it should pass if DesignHome.data.design.itemDetailsBgImage is equals to null after function DesignHome.removeItemDetailsBackgroundImage call', function () {
-            DesignHome.contactUsDesignData={
+            DesignHome.data={
                 design:{backgroundImage:''}
             };
             DesignHome.removeBackgroundImage();
             $rootScope.$digest();
-            expect(DesignHome.contactUsDesignData.design.backgroundImage).toEqual(null);
+            expect(DesignHome.data.design.backgroundImage).toEqual(null);
         });
     });
+
 })
 ;
