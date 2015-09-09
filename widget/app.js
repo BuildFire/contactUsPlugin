@@ -33,12 +33,32 @@
         }
       };
     }])
-    .directive("buildFireCarousel", ["$rootScope", function ($rootScope) {
+    .directive("googleMap", function () {
       return {
-        restrict: 'A',
+        template: "<div></div>",
+        replace: true,
+        scope: {coordinates: '='},
         link: function (scope, elem, attrs) {
-          $rootScope.$broadcast("Carousel:LOADED");
+          scope.$watch('coordinates', function (newValue, oldValue) {
+            if (newValue) {
+              scope.coordinates = newValue;
+              if (scope.coordinates.length) {
+                var map = new google.maps.Map(elem[0], {
+                  center: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
+                  zoomControl: false,
+                  streetViewControl: false,
+                  mapTypeControl: false,
+                  zoom: 15,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+                var marker = new google.maps.Marker({
+                  position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
+                  map: map
+                });
+              }
+            }
+          }, true);
         }
-      };
-    }]);
+      }
+    });
 })(window.angular, window.buildfire);

@@ -67,7 +67,7 @@
                   mapTypeControl: false,
                   zoom: 15,
                   mapTypeId: google.maps.MapTypeId.ROADMAP
-                });;
+                });
                 var marker = new google.maps.Marker({
                   position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
                   map: map

@@ -11,8 +11,10 @@
       <p class="margin-bottom-zero" ng-hide="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.address.location}}</p>
 
     </div>
-    <div class="contact-maps text-center">
-      <img src="http://www.placehold.it/1280x720.jpg">
+    <div class="contact-maps text-center"
+         ng-if="WidgetHome.data.content.address">
+      <div google-map style="height: 192px"
+           coordinates="WidgetHome.data.content.address.location_coordinates"></div>
     </div>
     <div class="padded">
       <p ng-bind-html="WidgetHome.safeHtml(WidgetHome.data.content.description)">'</p>
