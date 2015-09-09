@@ -12,7 +12,7 @@
 
     </div>
     <div class="contact-maps text-center"
-         ng-if="WidgetHome.data.content.address">
+         ng-if="WidgetHome.data.content.address && WidgetHome.data.content.showMap">
       <div google-map style="height: 192px"
            coordinates="WidgetHome.data.content.address.location_coordinates"></div>
     </div>
