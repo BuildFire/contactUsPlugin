@@ -59,18 +59,18 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
     describe('ContentHome.masterData', function () {
         it('it should pass if ContentHome.masterData match the result', function () {
             expect(ContentHome.masterData).toEqual({
-              "content": {
-                "carouselImages": [],
+                "content": {
+                    "carouselImages": [],
                     "description": '<p>&nbsp;<br></p>',
                     "addressTitle": "",
                     "address": {},
-                "links": [],
+                    "links": [],
                     "showMap": true
-            },
+                },
                 "design": {
-                "listLayout": LAYOUTS.listLayouts[0].name,
-                    "itemBgImage": ""
-            }
+                    "listLayout": LAYOUTS.listLayouts[0].name,
+                    "backgroundImage": ""
+                }
 
             });
         });
@@ -90,7 +90,7 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
                 },
                 "design": {
                     "listLayout": LAYOUTS.listLayouts[0].name,
-                    "itemBgImage": ""
+                    "backgroundImage": ""
                 }
             });
         });
@@ -130,12 +130,12 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
         ContentHome.currentCoordinates = "";
         ContentHome.data = {};
         var obj = {
-            "loaction" : "dELHI",
+            "location" : "Delhi",
             "coordinates" : "19.2012,20.1234"
         };
 
         ContentHome.setLocation(obj);
-        expect(ContentHome.currentAddress).toEqual(obj.loaction);
+        expect(ContentHome.currentAddress).toEqual(obj.location);
         expect(ContentHome.currentCoordinates).toEqual(obj.coordinates);
     });
 
