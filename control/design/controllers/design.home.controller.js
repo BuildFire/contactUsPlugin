@@ -64,7 +64,6 @@
           var _data = {
             design: {
               listLayout: "",
-              itemLayout: "",
               backgroundImage: ""
             },
             content: {
