@@ -95,7 +95,35 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
             });
         });
     });
+    it('it should pass if ContentHome.showDialog changes ContentHome.data.content.links in success case', function () {
+        Buildfire.actionItems = {
 
+            showDialog: function (a,d, func) {
+            func(null, {addLinks:['test']});
+            }
+        };
 
+        ContentHome.openAddLinkPopup();
+        scope.$digest();
+        expect(ContentHome.data.content.links[0].addLinks[0]).toEqual('test');
+    });
+    it('it should pass if ContentHome.showDialog changes ContentHome.data.content.links in success case', function () {
+        var link = {editLinks:['test']},index = 0;
+        Buildfire.actionItems = {
+
+            showDialog: function (link,d, func) {
+                console.log(123);
+                func(null, {editLinks:['test']});
+            }
+        };
+
+        ContentHome.openEditLinkPopup(link, index);
+    });
+    it('it should pass if ContentHome.showDialog changes ContentHome.data.content.links in success case', function () {
+        var index = 0;
+        ContentHome.removeLink(index);
+        //expect(ContentHome.data.content.links).toEqual('test');
+
+    });
 })
 ;
