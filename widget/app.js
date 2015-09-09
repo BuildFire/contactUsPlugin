@@ -60,5 +60,26 @@
           }, true);
         }
       }
-    });
+    })
+    .directive("backgroundImage", ['$filter', function ($filter) {
+      return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+          var getImageUrlFilter = $filter("getImageUrl");
+          var setBackgroundImage = function (backgroundImage) {
+            if (backgroundImage) {
+              element.css(
+                'background', '#010101 url('
+                + getImageUrlFilter(backgroundImage, 342, 770, 'resize')
+                + ') repeat fixed top center');
+            } else {
+              element.css('background', 'none');
+            }
+          };
+          attrs.$observe('backgroundImage', function (newValue) {
+            setBackgroundImage(newValue);
+          });
+        }
+      };
+    }]);
 })(window.angular, window.buildfire);

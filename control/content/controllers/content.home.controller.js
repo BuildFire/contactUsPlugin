@@ -16,7 +16,7 @@
           },
           "design": {
             "listLayout": LAYOUTS.listLayouts[0].name,
-            "itemBgImage": ""
+            "backgroundImage": ""
           }
         };
         var ContentHome = this;
