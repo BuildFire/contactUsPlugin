@@ -56,6 +56,8 @@
         replace: true,
         scope: {coordinates: '='},
         link: function (scope, elem, attrs) {
+          var geocoder = new google.maps.Geocoder();
+          var location;
           scope.$watch('coordinates', function (newValue, oldValue) {
             if (newValue) {
               scope.coordinates = newValue;
@@ -70,7 +72,8 @@
                 });
                 var marker = new google.maps.Marker({
                   position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
-                  map: map
+                  map: map,
+                  draggable:true
                 });
               }
             }

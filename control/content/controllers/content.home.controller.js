@@ -97,9 +97,6 @@
                 console.error('Error while getting data', err);
                 if (tmrDelay)clearTimeout(tmrDelay);
               }
-              else if (err && err.code === STATUS_CODE.NOT_FOUND) {
-                saveData(JSON.parse(angular.toJson(ContentHome.data)), TAG_NAMES.CONTACT_INFO);
-              }
             };
           DataStore.get(TAG_NAMES.CONTACT_INFO).then(success, error);
         };
@@ -221,6 +218,8 @@
                 location: ContentHome.currentAddress,
                 location_coordinates: [ContentHome.currentAddress.split(",")[0].trim(), ContentHome.currentAddress.split(",")[1].trim()]
               };
+              ContentHome.currentAddress = ContentHome.data.content.address.location;
+              ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
             } else {
               errorCallback();
             }
