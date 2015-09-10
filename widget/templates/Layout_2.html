@@ -16,9 +16,9 @@
                data-ng-repeat="image in WidgetHome.data.content.carouselImages | filter:isDefined">
             <a href="{{image.url}}" data-ng-if="image.url"
                target="{{image.openIn}}"><img
-                ng-src="{{image.iconUrl | getImageUrl : 140 : 100}}"></a>
+                ng-src="{{image.iconUrl | getImageUrl : 175 : 100}}"></a>
             <img data-ng-if="!image.url"
-                 ng-src="{{image.iconUrl | getImageUrl : 140 : 100}}">
+                 ng-src="{{image.iconUrl | getImageUrl : 175 : 100}}">
           </div>
         </div>
       </div>
