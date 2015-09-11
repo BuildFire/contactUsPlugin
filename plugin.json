@@ -1,6 +1,6 @@
 {
   "author":"BuildFire"
-  ,"pluginName":"contactUsPlugin"
+  ,"pluginName":"Contact Us"
   ,"pluginDescription":"Helps to allow users to add the contact information for their business into the app."
   ,"supportEmail":"support@buildfire.com"
   ,"pluginIcon":"icon.png"
@@ -18,5 +18,7 @@
   }
   ,"widget":{
 
-  }
+  },
+  "features" : [],
+  "languages" : ["en"]
 }
