@@ -42,21 +42,30 @@
         });
 
         var onUpdateCallback = function (event) {
-          if (event && event.tag === TAG_NAMES.CONTACT_INFO) {
-            WidgetHome.data = event.data;
-            if (!WidgetHome.data.design)
-              WidgetHome.data.design = {};
-          }
-          if (currentListLayout != WidgetHome.data.design.listLayout && view && WidgetHome.data.content.carouselImages) {
-            view._destroySlider();
-            view = null;
-          }
-          else {
-            if (view) {
-              view.loadItems(WidgetHome.data.content.carouselImages);
+          setTimeout(function() {
+            $scope.imagesUpdated = false;
+            $scope.$digest();
+            if (event && event.tag === TAG_NAMES.CONTACT_INFO) {
+              WidgetHome.data = event.data;
+              if (!WidgetHome.data.design)
+                WidgetHome.data.design = {};
             }
-          }
-          currentListLayout = WidgetHome.data.design.listLayout;
+            if (!WidgetHome.data.design.listLayout) {
+              WidgetHome.data.design.listLayout = LAYOUTS.listLayouts[0].name;
+            }
+            if (currentListLayout != WidgetHome.data.design.listLayout && view && WidgetHome.data.content.carouselImages) {
+              view._destroySlider();
+              view = null;
+            }
+            else {
+              if (view) {
+                view.loadItems(WidgetHome.data.content.carouselImages);
+              }
+            }
+            currentListLayout = WidgetHome.data.design.listLayout;
+            $scope.imagesUpdated = !!event.data.content;
+            $scope.$digest();
+          },0);
         };
         DataStore.onUpdate().then(null, null, onUpdateCallback);
 

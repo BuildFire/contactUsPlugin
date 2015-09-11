@@ -16,12 +16,12 @@
         };
         /*On layout click event*/
         DesignHome.changeListLayout = function (layoutName) {
-          if (layoutName && DesignHome.contactUsDesignData.design) {
-            DesignHome.contactUsDesignData.design.listLayout = layoutName;
+          if (layoutName && DesignHome.data.design) {
+            DesignHome.data.design.listLayout = layoutName;
 
             saveData(function (err, data) {
                   if (err) {
-                    return DesignHome.contactUsDesignData = angular.copy(DesignHomeMaster);
+                    return DesignHome.data = angular.copy(DesignHomeMaster);
                   }
                   else if (data && data.obj) {
                     return DesignHomeMaster = data.obj;
@@ -37,7 +37,7 @@
         function saveData(callback) {
           callback = callback || function () {
               };
-          Buildfire.datastore.save(DesignHome.contactUsDesignData, TAG_NAMES.CONTACT_INFO, callback);
+          Buildfire.datastore.save(DesignHome.data, TAG_NAMES.CONTACT_INFO, callback);
         }
 
         /* background image add <start>*/
@@ -46,7 +46,7 @@
           if (error) {
             console.error('Error:', error);
           } else {
-            DesignHome.contactUsDesignData.design.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
+            DesignHome.data.design.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
             $scope.$digest();
 
           }
@@ -55,16 +55,15 @@
           Buildfire.imageLib.showDialog(options, callback);
         };
         DesignHome.removeBackgroundImage = function () {
-          DesignHome.contactUsDesignData.design.backgroundImage = null;
+          DesignHome.data.design.backgroundImage = null;
         };
         /* background image add </end>*/
 
         /*Initialize initial data and objects*/
         function init() {
-          var contactUsDesignData = {
+          var _data = {
             design: {
               listLayout: "",
-              itemLayout: "",
               backgroundImage: ""
             },
             content: {
@@ -77,16 +76,16 @@
               Console.log('------------Error in Design of People Plugin------------', err);
             }
             else if (data && data.data) {
-              DesignHome.contactUsDesignData = angular.copy(data.data);
-              if (!DesignHome.contactUsDesignData.design)
-                DesignHome.contactUsDesignData.design = {};
-              if (!DesignHome.contactUsDesignData.design.listLayout)
-                DesignHome.contactUsDesignData.design.listLayout = DesignHome.layouts.listLayouts[0].name;
+              DesignHome.data = angular.copy(data.data);
+              if (!DesignHome.data.design)
+                DesignHome.data.design = {};
+              if (!DesignHome.data.design.listLayout)
+                DesignHome.data.design.listLayout = DesignHome.layouts.listLayouts[0].name;
               DesignHomeMaster = angular.copy(data.data);
               $scope.$digest();
             }
             else {
-              DesignHome.contactUsDesignData = contactUsDesignData;
+              DesignHome.data = _data;
               console.info('------------------unable to load data---------------');
             }
           });
@@ -97,13 +96,13 @@
 
         /*watch the change event and update in database*/
         $scope.$watch(function () {
-          return DesignHome.contactUsDesignData;
+          return DesignHome.data;
         }, function (newObj) {
-          console.log("Updated Object:",newObj)
+          console.log("Updated Object:",newObj);
           if (newObj)
-            Buildfire.datastore.save(DesignHome.contactUsDesignData, TAG_NAMES.CONTACT_INFO, function (err, data) {
+            Buildfire.datastore.save(DesignHome.data, TAG_NAMES.CONTACT_INFO, function (err, data) {
               if (err) {
-                return DesignHome.contactUsDesignData = angular.copy(DesignHomeMaster);
+                return DesignHome.data = angular.copy(DesignHomeMaster);
               }
               else if (data && data.obj) {
                 return DesignHomeMaster = data.obj;

@@ -16,7 +16,7 @@
           },
           "design": {
             "listLayout": LAYOUTS.listLayouts[0].name,
-            "itemBgImage": ""
+            "backgroundImage": ""
           }
         };
         var ContentHome = this;
@@ -78,6 +78,14 @@
           var success = function (result) {
               console.info('init success result:', result);
               ContentHome.data = result.data;
+                if(angular.isUndefined(ContentHome.data.content))
+                {
+                  ContentHome.data={
+                    "content":{
+                      showMap:true
+                    }
+                  }
+                }
               if (ContentHome.data.content) {
                 if (!ContentHome.data.content.carouselImages)
                   editor.loadItems([]);
@@ -96,9 +104,6 @@
               if (err && err.code !== STATUS_CODE.NOT_FOUND) {
                 console.error('Error while getting data', err);
                 if (tmrDelay)clearTimeout(tmrDelay);
-              }
-              else if (err && err.code === STATUS_CODE.NOT_FOUND) {
-                saveData(JSON.parse(angular.toJson(ContentHome.data)), TAG_NAMES.CONTACT_INFO);
               }
             };
           DataStore.get(TAG_NAMES.CONTACT_INFO).then(success, error);
@@ -212,7 +217,16 @@
           ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
           $scope.$digest();
         };
-
+        ContentHome.setDraggedLocation= function(data){
+            ContentHome.data.content.address = {
+            type: ADDRESS_TYPE.LOCATION,
+            location: data.location,
+            location_coordinates: data.coordinates
+          };
+          ContentHome.currentAddress = ContentHome.data.content.address.location;
+          ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
+          $scope.$digest();
+        }
         ContentHome.setCoordinates = function () {
           function successCallback(resp) {
             if (resp) {
@@ -221,6 +235,8 @@
                 location: ContentHome.currentAddress,
                 location_coordinates: [ContentHome.currentAddress.split(",")[0].trim(), ContentHome.currentAddress.split(",")[1].trim()]
               };
+              ContentHome.currentAddress = ContentHome.data.content.address.location;
+              ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
             } else {
               errorCallback();
             }

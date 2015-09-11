@@ -56,6 +56,19 @@ describe('Unit : contactUs Plugin widget.home.controller.js', function () {
         });
     });
 
+    describe('$destroy', function() {
+        it('should invoke when get $destroy', function() {
+            $rootScope.$broadcast('$destroy');
+        });
+    });
+
+    describe('Carousel:LOADED', function() {
+        it('should invoke when get Carousel:LOADED', function() {
+            $rootScope.$broadcast('Carousel:LOADED');
+        });
+    });
+
+
 
 
 

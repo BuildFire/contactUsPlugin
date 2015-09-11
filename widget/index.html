@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app="contactUsPluginWidget">
 <head>
 
@@ -8,14 +8,18 @@
   <link rel="stylesheet" href="../../../styles/appStyle.css">
   <link rel="stylesheet" href="../../../styles/helper.css">
   <link rel="stylesheet" href="../../../scripts/owlCarousel/owlCarousel.css">
+  <link rel="stylesheet" href="css/widget.app.css">
 
   <!--Angular, jQuery & Owl Carousel -->
   <script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
   <script src="../../../scripts/buildfire.js"></script>
-  <script type="text/javascript" src="../../../scripts/owlCarousel/owlCarousel.js"></script>
-  <script src="../../../scripts/buildfire/components/carousel/carousel.js"></script>
+  <script type="text/javascript"
+          src="../../../scripts/owlCarousel/owlCarousel.js"></script>
+  <script
+      src="../../../scripts/buildfire/components/carousel/carousel.js"></script>
   <script src="../../../scripts/angular/angular.min.js"></script>
   <script src="../../../scripts/angular/angular-route.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 
   <!-- Meta -->
   <meta charset="utf-8">
@@ -25,13 +29,12 @@
   <script src="app.js" type="application/javascript"></script>
   <script src="enums.js" type="application/javascript"></script>
   <script src="app.services.js" type="application/javascript"></script>
-  <script src="controllers/widget.home.controller.js" type="application/javascript"></script>
-	<!--<script
-    src="http://maps.googleapis.com/maps/api/js?sensor=false?key=AIzaSyD94EXLxKUBcidyIL0nTAic7ryZus2C0fw"></script>-->
-    
+  <script src="controllers/widget.home.controller.js"
+          type="application/javascript"></script>
+
 
 </head>
-	<body>
-		<div ng-view></div>
-	</body>
+<body>
+<div ng-view></div>
+</body>
 </html>

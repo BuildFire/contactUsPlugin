@@ -8,7 +8,7 @@
       <div class="screen layouticon pull-left">
         <a class="border-radius-three default-background-hover text-center">
           <img
-                  ng-src="images/{{DesignHome.contactUsDesignData.design.listLayout}}.png">
+                  ng-src="images/{{DesignHome.data.design.listLayout}}.png">
         </a>
       </div>
       <div class="screen layoutgrid pull-right border-grey border-radius-three margin-left-zero">
@@ -29,10 +29,10 @@
     <div class="screens clearfix">
       <div class="screen text-center layouticon pull-left">
         <a class="border-radius-three default-background-hover" ng-click="DesignHome.addBackgroundImage()">
-          <span class="add-icon" ng-hide="DesignHome.contactUsDesignData.design.backgroundImage">+</span>
-          <img ng-show="DesignHome.contactUsDesignData.design.backgroundImage" ng-src="{{DesignHome.contactUsDesignData.design.backgroundImage | getImageUrl : 82:110}}">
+          <span class="add-icon" ng-hide="DesignHome.data.design.backgroundImage">+</span>
+          <img ng-show="DesignHome.data.design.backgroundImage" ng-src="{{DesignHome.data.design.backgroundImage | getImageUrl : 82:110}}">
         </a>
-        <span class="icon btn-icon btn-delete-icon btn-danger btn-close transition-third" ng-show="DesignHome.contactUsDesignData.design.backgroundImage" ng-click="DesignHome.removeBackgroundImage()"></span>
+        <span class="icon btn-icon btn-delete-icon btn-danger btn-close transition-third" ng-show="DesignHome.data.design.backgroundImage" ng-click="DesignHome.removeBackgroundImage()"></span>
       </div>
     </div>
   </div>
