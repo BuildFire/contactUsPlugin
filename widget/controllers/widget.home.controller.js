@@ -50,6 +50,9 @@
               if (!WidgetHome.data.design)
                 WidgetHome.data.design = {};
             }
+            if (!WidgetHome.data.design.listLayout) {
+              WidgetHome.data.design.listLayout = LAYOUTS.listLayouts[0].name;
+            }
             if (currentListLayout != WidgetHome.data.design.listLayout && view && WidgetHome.data.content.carouselImages) {
               view._destroySlider();
               view = null;
@@ -60,7 +63,6 @@
               }
             }
             currentListLayout = WidgetHome.data.design.listLayout;
-
             $scope.imagesUpdated = !!event.data.content;
             $scope.$digest();
           },0);
