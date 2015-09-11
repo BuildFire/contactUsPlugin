@@ -54,7 +54,7 @@
       return {
         template: "<div></div>",
         replace: true,
-        scope: {coordinates: '='},
+        scope: {coordinates: '=',draggedGeoData: '&draggedFn'},
         link: function (scope, elem, attrs) {
           var geocoder = new google.maps.Geocoder();
           var location;
@@ -76,7 +76,27 @@
                   draggable:true
                 });
               }
+              google.maps.event.addListener(marker, 'dragend', function (event) {
+                scope.coordinates = [event.latLng.lng(), event.latLng.lat()];
+                geocoder.geocode({
+                  latLng: marker.getPosition()
+                }, function(responses) {
+                  if (responses && responses.length > 0) {
+                    scope.location  = responses[0].formatted_address;
+                    scope.draggedGeoData({
+                      data: {
+                        location: scope.location,
+                        coordinates: scope.coordinates
+                      }
+                    });
+                  } else {
+                    location = 'Cannot determine address at this location.';
+                  }
+
+                });
+             });
             }
+
           }, true);
         }
       }

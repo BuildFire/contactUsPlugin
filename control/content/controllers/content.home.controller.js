@@ -209,7 +209,16 @@
           ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
           $scope.$digest();
         };
-
+        ContentHome.setDraggedLocation= function(data){
+            ContentHome.data.content.address = {
+            type: ADDRESS_TYPE.LOCATION,
+            location: data.location,
+            location_coordinates: data.coordinates
+          };
+          ContentHome.currentAddress = ContentHome.data.content.address.location;
+          ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
+          $scope.$digest();
+        }
         ContentHome.setCoordinates = function () {
           function successCallback(resp) {
             if (resp) {

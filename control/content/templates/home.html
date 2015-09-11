@@ -50,10 +50,9 @@
   </div>
 </div>
 <hr class="none">
-
 <div class="item row" ng-if="ContentHome.currentCoordinates">
   <div class="col-md-9 pull-right">
-    <div google-map coordinates="ContentHome.currentCoordinates"
+    <div google-map dragged-fn="ContentHome.setDraggedLocation(data)" coordinates="ContentHome.currentCoordinates"
          style="height: 200px; position: relative;"></div>
   </div>
 </div>
