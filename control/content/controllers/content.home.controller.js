@@ -78,6 +78,14 @@
           var success = function (result) {
               console.info('init success result:', result);
               ContentHome.data = result.data;
+                if(angular.isUndefined(ContentHome.data.content))
+                {
+                  ContentHome.data={
+                    "content":{
+                      showMap:true
+                    }
+                  }
+                }
               if (ContentHome.data.content) {
                 if (!ContentHome.data.content.carouselImages)
                   editor.loadItems([]);
