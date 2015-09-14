@@ -1,5 +1,5 @@
 
-<div class="holder padding-zero">
+<div class="holder padding-zero" background-image="{{WidgetHome.data.design.backgroundImage}}">
   <div class="contact-plugin layout2">
     <div class="contact-maps text-center" ng-if="WidgetHome.data.content.address && WidgetHome.data.content.showMap">
       <div google-map style="height: 192px"
@@ -26,7 +26,7 @@
         <a class="text-primary" ng-show="WidgetHome.data.content.links[0]" ng-click="WidgetHome.openLinks(WidgetHome.data.content.links)">Contact info</a>
       </div>
     </div>
-    <hr class="small margin-zero">
+    <hr class="small margin-zero" ng-show="WidgetHome.data.content.links[0]">
     <div class="padded">
       <p ng-bind-html="WidgetHome.safeHtml(WidgetHome.data.content.description)">'</p>    </div>
   </div>
