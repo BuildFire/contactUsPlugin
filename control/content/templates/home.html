@@ -31,7 +31,8 @@
            placeholder="Enter street address or geo coordinates (Longitude,Latitude)"
            google-location-search callback-fn="ContentHome.setLocation(data)"
            ng-model="ContentHome.currentAddress"
-           ng-enter="ContentHome.setCoordinates()">
+           ng-enter="ContentHome.setCoordinates()"
+           ng-change="ContentHome.clearData()">
     <br>
 
     <div class="alert alert-danger alert-sm text-center"
