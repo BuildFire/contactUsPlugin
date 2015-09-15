@@ -1,5 +1,5 @@
 describe('Unit : contactUs Plugin content.home.controller.js', function () {
-    var ContentHome, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q;
+    var ContentHome, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q, Utils;
     beforeEach(module('contactUsPluginContent'));
     var editor;
     beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _TAG_NAMES_, _STATUS_CODE_, _LAYOUTS_, _STATUS_MESSAGES_) {
@@ -11,6 +11,7 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
         STATUS_CODE = _STATUS_CODE_;
         STATUS_MESSAGES = _STATUS_MESSAGES_;
         LAYOUTS = _LAYOUTS_;
+       // Utils = __Utils__;
         Buildfire = {
             components: {
                 carousel: {
@@ -24,6 +25,7 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
             }
         };
         ActionItems = jasmine.createSpyObj('ActionItems', ['showDialog']);
+        Utils = jasmine.createSpyObj('Utils', ['validLongLats']);
         Buildfire.components.carousel = jasmine.createSpyObj('Buildfire.components.carousel', ['editor','onAddItems']);
 
     }));
@@ -37,7 +39,8 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
             ActionItems: ActionItems,
             STATUS_CODE: STATUS_CODE,
             CONTENT_TYPE: CONTENT_TYPE,
-            LAYOUTS: LAYOUTS
+            LAYOUTS: LAYOUTS,
+            Utils:Utils
         });
     });
 
@@ -125,7 +128,7 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
 
     });
 
-    it('it should pass if it get the changed data', function () {
+    it('#setLocation it should pass if it get the changed data', function () {
         ContentHome.currentAddress = "";
         ContentHome.currentCoordinates = "";
         ContentHome.data = {};
@@ -138,6 +141,43 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
         expect(ContentHome.currentAddress).toEqual(obj.location);
         expect(ContentHome.currentCoordinates).toEqual(obj.coordinates);
     });
+    it('#setDraggedLocation it should pass if it get the changed data', function () {
+        ContentHome.currentAddress = "";
+        ContentHome.currentCoordinates = "";
+        ContentHome.data = {};
+        var obj = {
+            "location" : "Delhi",
+            "coordinates" : "19.2012,20.1234"
+        };
+        ContentHome.setDraggedLocation(obj);
+        expect(ContentHome.currentAddress).toEqual(obj.location);
+        expect(ContentHome.currentCoordinates).toEqual(obj.coordinates);
+    });
 
+
+    it('#setCoordinates it should pass if it get the changed data', function () {
+        ContentHome.currentAddress = "";
+        ContentHome.currentCoordinates = "";
+        ContentHome.data = {};
+        Utils.validLongLats.and.callFake(function () {
+            var deferred = q.defer();
+            deferred.resolve( {
+                "location" : ["19.2012, 20.1234"],
+                "location_coordinates" : ["19.2012, 20.1234"]
+            });
+            return deferred.promise;
+        });
+        ContentHome.setCoordinates();
+        $rootScope.$digest();
+       expect(ContentHome.data.content.address.location).toEqual("19.2012, 20.1234");
+        expect(ContentHome.currentCoordinates).toEqual('19.2012, 20.1234');
+
+    });
+    it('#clearData it should pass if data is null', function () {
+        ContentHome.clearData();
+        expect(ContentHome.data.content.address).toEqual(null);
+        expect(ContentHome.data.content.links).toEqual(null);
+        expect(ContentHome.currentCoordinates).toEqual(null);
+    });
 })
 ;

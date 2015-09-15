@@ -218,6 +218,8 @@
           $scope.$digest();
         };
         ContentHome.setDraggedLocation= function(data){
+          if (!ContentHome.data.content)
+            ContentHome.data.content = {};
             ContentHome.data.content.address = {
             type: ADDRESS_TYPE.LOCATION,
             location: data.location,
