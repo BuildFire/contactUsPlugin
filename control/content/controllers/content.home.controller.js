@@ -228,7 +228,7 @@
           ContentHome.currentAddress = ContentHome.data.content.address.location;
           ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
           $scope.$digest();
-        }
+        };
         ContentHome.setCoordinates = function () {
           function successCallback(resp) {
             if (resp) {
@@ -252,7 +252,7 @@
           }
 
           Utils.validLongLats(ContentHome.currentAddress).then(successCallback, errorCallback);
-        }
+        };
         ContentHome.clearData = function () {
           if (!ContentHome.currentAddress) {
             ContentHome.data.content.address = null;

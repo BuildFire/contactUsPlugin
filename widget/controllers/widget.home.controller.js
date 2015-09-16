@@ -2,7 +2,7 @@
 
 (function (angular) {
   angular.module('contactUsPluginWidget')
-    .controller('WidgetHomeCtrl', ['$routeParams', 'Buildfire', 'DataStore', '$scope', 'TAG_NAMES', 'Location', 'LAYOUTS', '$rootScope','$sce',
+    .controller('WidgetHomeCtrl', ['$routeParams', 'Buildfire', 'DataStore', '$scope', 'TAG_NAMES', 'Location', 'LAYOUTS', '$rootScope', '$sce',
       function ($routeParams, Buildfire, DataStore, $scope, TAG_NAMES, Location, LAYOUTS, $rootScope, $sce) {
         var WidgetHome = this;
         var currentListLayout = null;
@@ -42,13 +42,15 @@
         });
 
         var onUpdateCallback = function (event) {
-          setTimeout(function() {
+          setTimeout(function () {
             $scope.imagesUpdated = false;
             $scope.$digest();
             if (event && event.tag === TAG_NAMES.CONTACT_INFO) {
               WidgetHome.data = event.data;
               if (!WidgetHome.data.design)
                 WidgetHome.data.design = {};
+              if (!WidgetHome.data.content)
+                WidgetHome.data.content = {};
             }
             if (!WidgetHome.data.design.listLayout) {
               WidgetHome.data.design.listLayout = LAYOUTS.listLayouts[0].name;
@@ -65,17 +67,17 @@
             currentListLayout = WidgetHome.data.design.listLayout;
             $scope.imagesUpdated = !!event.data.content;
             $scope.$digest();
-          },0);
+          }, 0);
         };
         DataStore.onUpdate().then(null, null, onUpdateCallback);
 
         $scope.$on("$destroy", function () {
           DataStore.clearListener();
         });
-          WidgetHome.safeHtml = function (html) {
-              if (html)
-                  return $sce.trustAsHtml(html);
-          };
+        WidgetHome.safeHtml = function (html) {
+          if (html)
+            return $sce.trustAsHtml(html);
+        };
 
         WidgetHome.openLinks = function (actionItems) {
           if (actionItems && actionItems.length) {
