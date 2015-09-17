@@ -41,25 +41,21 @@
         }
 
         /* background image add <start>*/
-        var options = {showIcons: false, multiSelection: false};
-        var callback = function (error, result) {
-          if (error) {
-            console.error('Error:', error);
-          } else {
-            DesignHome.data.design.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
-            $scope.$digest();
-
+        var background = new Buildfire.components.images.thumbnail("#background");
+        background.onChange = function (url) {
+          DesignHome.data.design.backgroundImage = url;
+          if (!$scope.$$phase && !$scope.$root.$$phase) {
+            $scope.$apply();
           }
-        };
-        DesignHome.addBackgroundImage = function () {
-          Buildfire.imageLib.showDialog(options, callback);
-        };
-        DesignHome.removeBackgroundImage = function () {
-          DesignHome.data.design.backgroundImage = null;
-        };
-        /* background image add </end>*/
+        }
 
-        /*Initialize initial data and objects*/
+        background.onDelete = function (url) {
+          DesignHome.data.design.backgroundImage = "";
+          if (!$scope.$$phase && !$scope.$root.$$phase) {
+            $scope.$apply();
+          }
+        }
+
         function init() {
           var _data = {
             design: {
@@ -71,6 +67,8 @@
               description: ""
             }
           };
+
+          /* background image add </end>*/
           Buildfire.datastore.get(TAG_NAMES.CONTACT_INFO, function (err, data) {
             if (err) {
               Console.log('------------Error in Design of People Plugin------------', err);
@@ -82,6 +80,9 @@
               if (!DesignHome.data.design.listLayout)
                 DesignHome.data.design.listLayout = DesignHome.layouts.listLayouts[0].name;
               DesignHomeMaster = angular.copy(data.data);
+              if (DesignHome.data.design.backgroundImage) {
+                background.loadbackground(DesignHome.data.design.backgroundImage);
+              }
               $scope.$digest();
             }
             else {

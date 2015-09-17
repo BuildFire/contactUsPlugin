@@ -9,11 +9,48 @@
         WidgetHome.data = null;
         //create new instance of buildfire carousel viewer
         var view = null;
+        /*declare the device width heights*/
+        WidgetHome.deviceHeight = window.innerHeight;
+        WidgetHome.deviceWidth = window.innerWidth;
+
+        /*initialize the device width heights*/
+        function initDeviceSize(callback) {
+          WidgetHome.deviceHeight = window.innerHeight;
+          WidgetHome.deviceWidth = window.innerWidth;
+          if (callback) {
+            if (WidgetHome.deviceWidth == 0 || WidgetHome.deviceHeight == 0) {
+              setTimeout(function () {
+                initDeviceSize(callback);
+              }, 500);
+            } else {
+              callback();
+              if (!$scope.$$phase && !$scope.$root.$$phase) {
+                $scope.$apply();
+              }
+            }
+          }
+        }
+
+        /*crop image on the basis of width heights*/
+        WidgetHome.cropImage = function (url, settings) {
+          var options = {};
+          if (!url) {
+            return "";
+          }
+          else {
+            if (settings.height) {
+              options.height = settings.height;
+            }
+            if (settings.width) {
+              options.width = settings.width;
+            }
+            return Buildfire.imageLib.cropImage(url, options);
+          }
+        };
 
         /*
          * Fetch user's data from datastore
          */
-
         var init = function () {
           var success = function (result) {
               WidgetHome.data = result.data;
