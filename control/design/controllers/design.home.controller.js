@@ -15,7 +15,7 @@
           }]
         };
         /*On layout click event*/
-        DesignHome.changeListLayout = function (layoutName) {
+        DesignHome.changeItemLayout = function (layoutName) {
           if (layoutName && DesignHome.data.design) {
             DesignHome.data.design.listLayout = layoutName;
 
@@ -47,14 +47,14 @@
           if (!$scope.$$phase && !$scope.$root.$$phase) {
             $scope.$apply();
           }
-        }
+        };
 
         background.onDelete = function (url) {
           DesignHome.data.design.backgroundImage = "";
           if (!$scope.$$phase && !$scope.$root.$$phase) {
             $scope.$apply();
           }
-        }
+        };
 
         function init() {
           var _data = {
