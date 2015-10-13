@@ -1,5 +1,5 @@
 describe('Unit : contactUs Plugin widget.home.controller.js', function () {
-  var WidgetHome, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q;
+  var WidgetHome, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q, view;
   beforeEach(module('contactUsPluginWidget'));
   var editor;
   beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _TAG_NAMES_, _STATUS_CODE_, _LAYOUTS_, _STATUS_MESSAGES_) {
@@ -11,6 +11,9 @@ describe('Unit : contactUs Plugin widget.home.controller.js', function () {
     STATUS_CODE = _STATUS_CODE_;
     STATUS_MESSAGES = _STATUS_MESSAGES_;
     LAYOUTS = _LAYOUTS_;
+    view = {
+      loadItems: function(){}
+    };
     Buildfire = {
       components: {
         carousel: {
@@ -19,17 +22,18 @@ describe('Unit : contactUs Plugin widget.home.controller.js', function () {
           },
           viewer: function (name) {
             return {}
-          }
+          },
+          view: function () {}
         }
       }
     };
     ActionItems = jasmine.createSpyObj('ActionItems', ['showDialog']);
-    Buildfire.components.carousel = jasmine.createSpyObj('Buildfire.components.carousel', ['editor', 'onAddItems']);
+    Buildfire.components.carousel = jasmine.createSpyObj('Buildfire.components.carousel', ['editor', 'onAddItems', "view"]);
 
   }));
 
   beforeEach(function () {
-    ContentHome = $controller('WidgetHomeCtrl', {
+    WidgetHome = $controller('WidgetHomeCtrl', {
       $scope: scope,
       $q: q,
       Buildfire: Buildfire,
@@ -43,7 +47,7 @@ describe('Unit : contactUs Plugin widget.home.controller.js', function () {
 
   describe('Units: units should be Defined', function () {
     it('it should pass if ContentHome is defined', function () {
-      expect(ContentHome).not.toBeUndefined();
+      expect(WidgetHome).not.toBeUndefined();
     });
     it('it should pass if Buildfire is defined', function () {
       expect(Buildfire).not.toBeUndefined();
@@ -64,6 +68,9 @@ describe('Unit : contactUs Plugin widget.home.controller.js', function () {
 
   describe('Carousel:LOADED', function () {
     it('should invoke when get Carousel:LOADED', function () {
+      WidgetHome.view = {
+        loadItems: function() {}
+      };
       $rootScope.$broadcast('Carousel:LOADED');
     });
   });

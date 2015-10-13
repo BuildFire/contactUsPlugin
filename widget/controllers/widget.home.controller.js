@@ -1,14 +1,14 @@
 'use strict';
 
-(function (angular) {
+(function (angular, buildfire) {
   angular.module('contactUsPluginWidget')
     .controller('WidgetHomeCtrl', ['$routeParams', 'Buildfire', 'DataStore', '$scope', 'TAG_NAMES', 'Location', 'LAYOUTS', '$rootScope', '$sce',
       function ($routeParams, Buildfire, DataStore, $scope, TAG_NAMES, Location, LAYOUTS, $rootScope, $sce) {
         var WidgetHome = this;
         var currentListLayout = null;
-        WidgetHome.data = null;
+        WidgetHome.data = {};
         //create new instance of buildfire carousel viewer
-        var view = null;
+        WidgetHome.view = null;
         /*declare the device width heights*/
         WidgetHome.deviceHeight = window.innerHeight;
         WidgetHome.deviceWidth = window.innerWidth;
@@ -68,13 +68,13 @@
         };
         init();
         $rootScope.$on("Carousel:LOADED", function () {
-          if (!view) {
-            view = new buildfire.components.carousel.view("#carousel", []);
+          if (!WidgetHome.view) {
+            WidgetHome.view = new Buildfire.components.carousel.view("#carousel", []);
           }
           if (WidgetHome.data.content && WidgetHome.data.content.carouselImages) {
-            view.loadItems(WidgetHome.data.content.carouselImages);
+            WidgetHome.view.loadItems(WidgetHome.data.content.carouselImages);
           } else {
-            view.loadItems([]);
+            WidgetHome.view.loadItems([]);
           }
         });
 
@@ -92,13 +92,13 @@
             if (!WidgetHome.data.design.listLayout) {
               WidgetHome.data.design.listLayout = LAYOUTS.listLayouts[0].name;
             }
-            if (currentListLayout != WidgetHome.data.design.listLayout && view && WidgetHome.data.content.carouselImages) {
-              view._destroySlider();
-              view = null;
+            if (currentListLayout != WidgetHome.data.design.listLayout && WidgetHome.view && WidgetHome.data.content.carouselImages) {
+              WidgetHome.view._destroySlider();
+              WidgetHome.view = null;
             }
             else {
-              if (view) {
-                view.loadItems(WidgetHome.data.content.carouselImages);
+              if (WidgetHome.view) {
+                WidgetHome.view.loadItems(WidgetHome.data.content.carouselImages);
               }
             }
             currentListLayout = WidgetHome.data.design.listLayout;
@@ -124,9 +124,9 @@
                 console.error('Error:', error);
               }
             };
-            buildfire.actionItems.list(actionItems, options, callback);
+            Buildfire.actionItems.list(actionItems, options, callback);
           }
         }
 
       }])
-})(window.angular);
+})(window.angular, window.buildfire);

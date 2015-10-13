@@ -5,7 +5,7 @@ describe('Unit : contactUsPlugin design.home.controller.js', function () {
   var $scope, DesignHome, $rootScope, q, $controller, DataStore, TAG_NAMES, STATUS_CODE, STATUS_MESSAGES;
   beforeEach(module('contactUsPluginDesign'));
 
-  beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _DataStore_, _ImageLibrary_, _TAG_NAMES_, _STATUS_CODE_, _STATUS_MESSAGES_) {
+  beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _DataStore_, _TAG_NAMES_, _STATUS_CODE_, _STATUS_MESSAGES_) {
     $rootScope = _$rootScope_;
     q = _$q_;
     $scope = $rootScope.$new();
@@ -24,8 +24,8 @@ describe('Unit : contactUsPlugin design.home.controller.js', function () {
         $scope: $scope,
         data: {
           design: {
-            itemDetailsLayout: 'test',
-            itemDetailsBgImage: 'test1'
+            listLayout: "test",
+            backgroundImage: "test1"
           }
         },
         Buildfire: {

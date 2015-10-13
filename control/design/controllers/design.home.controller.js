@@ -8,11 +8,10 @@
         var DesignHome = this;
         var DesignHomeMaster;
         DesignHome.layouts = {
-          listLayouts: [{
-            name: "Layout_1"
-          }, {
-            name: "Layout_2"
-          }]
+          listLayouts: [
+            {name: "Layout_1"},
+            {name: "Layout_2"}
+          ]
         };
         /*On layout click event*/
         DesignHome.changeItemLayout = function (layoutName) {

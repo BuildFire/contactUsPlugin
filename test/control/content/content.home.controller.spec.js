@@ -141,6 +141,7 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
     expect(ContentHome.currentAddress).toEqual(obj.location);
     expect(ContentHome.currentCoordinates).toEqual(obj.coordinates);
   });
+
   it('#setDraggedLocation it should pass if it get the changed data', function () {
     ContentHome.currentAddress = "";
     ContentHome.currentCoordinates = "";
@@ -154,30 +155,10 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
     expect(ContentHome.currentCoordinates).toEqual(obj.coordinates);
   });
 
-
-  it('#setCoordinates it should pass if it get the changed data', function () {
-    ContentHome.currentAddress = "";
-    ContentHome.currentCoordinates = "";
-    ContentHome.data = {};
-    Utils.validLongLats.and.callFake(function () {
-      var deferred = q.defer();
-      deferred.resolve({
-        "location": ["19.2012, 20.1234"],
-        "location_coordinates": ["19.2012, 20.1234"]
-      });
-      return deferred.promise;
-    });
-    ContentHome.setCoordinates();
-    $rootScope.$digest();
-    expect(ContentHome.data.content.address.location).toEqual("19.2012, 20.1234");
-    expect(ContentHome.currentCoordinates).toEqual('19.2012, 20.1234');
-
-  });
   it('#clearData it should pass if data is null', function () {
     ContentHome.clearData();
     expect(ContentHome.data.content.address).toEqual(null);
     expect(ContentHome.data.content.links).toEqual(null);
     expect(ContentHome.currentCoordinates).toEqual(null);
   });
-})
-;
+});
