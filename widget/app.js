@@ -2,7 +2,14 @@
 
 (function (angular, buildfire) {
   angular.module('contactUsPluginWidget', ['ngRoute'])
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider','$compileProvider', function ($routeProvider,$compileProvider) {
+
+      /**
+       * To make href urls safe on mobile
+       */
+      $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile):/);
+
+
       $routeProvider
         .when('/', {
           templateUrl: 'templates/home.html',
