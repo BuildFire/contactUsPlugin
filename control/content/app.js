@@ -75,6 +75,19 @@
                   map: map,
                   draggable:true
                 });
+
+                var styleOptions = {
+                  name: "Report Error Hide Style"
+                };
+                var MAP_STYLE = [
+                  {
+                    stylers: [
+                      { visibility: "on" }
+                    ]
+                  }];
+                var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
+                map.mapTypes.set("Report Error Hide Style", mapType);
+                map.setMapTypeId("Report Error Hide Style");
               }
               google.maps.event.addListener(marker, 'dragend', function (event) {
                 scope.coordinates = [event.latLng.lng(), event.latLng.lat()];

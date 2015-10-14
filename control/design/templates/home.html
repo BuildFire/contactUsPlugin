@@ -12,7 +12,7 @@
         </a>
       </div>
       <div class="screen layoutgrid pull-right border-grey border-radius-three margin-left-zero">
-        <a ng-repeat="layout in DesignHome.layouts.listLayouts" class="layouticon border-radius-three default-background-hover text-center" ng-click="DesignHome.changeListLayout(layout.name)">
+        <a ng-repeat="layout in DesignHome.layouts.listLayouts" class="layouticon border-radius-three default-background-hover text-center" ng-click="DesignHome.changeItemLayout(layout.name)">
           <img ng-src="images/{{layout.name}}.png">
         </a>
 
@@ -21,19 +21,4 @@
   </div>
 </div>
 <hr>
-<div class="item row clearfix margin-top-thirty">
-  <div class="labels col-md-3 padding-right-zero pull-left">
-    <span>Item List Background Image</span>
-  </div>
-  <div class="main col-md-9 pull-right">
-    <div class="screens clearfix">
-      <div class="screen text-center layouticon pull-left">
-        <a class="border-radius-three default-background-hover" ng-click="DesignHome.addBackgroundImage()">
-          <span class="add-icon" ng-hide="DesignHome.data.design.backgroundImage">+</span>
-          <img ng-show="DesignHome.data.design.backgroundImage" ng-src="{{DesignHome.data.design.backgroundImage | getImageUrl : 82:110}}">
-        </a>
-        <span class="icon btn-icon btn-delete-icon btn-danger btn-close transition-third" ng-show="DesignHome.data.design.backgroundImage" ng-click="DesignHome.removeBackgroundImage()"></span>
-      </div>
-    </div>
-  </div>
-</div>
+  <div id="background"></div>

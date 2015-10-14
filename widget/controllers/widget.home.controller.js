@@ -1,19 +1,56 @@
 'use strict';
 
-(function (angular) {
+(function (angular, buildfire) {
   angular.module('contactUsPluginWidget')
-    .controller('WidgetHomeCtrl', ['$routeParams', 'Buildfire', 'DataStore', '$scope', 'TAG_NAMES', 'Location', 'LAYOUTS', '$rootScope','$sce',
+    .controller('WidgetHomeCtrl', ['$routeParams', 'Buildfire', 'DataStore', '$scope', 'TAG_NAMES', 'Location', 'LAYOUTS', '$rootScope', '$sce',
       function ($routeParams, Buildfire, DataStore, $scope, TAG_NAMES, Location, LAYOUTS, $rootScope, $sce) {
         var WidgetHome = this;
         var currentListLayout = null;
-        WidgetHome.data = null;
+        WidgetHome.data = {};
         //create new instance of buildfire carousel viewer
-        var view = null;
+        WidgetHome.view = null;
+        /*declare the device width heights*/
+        WidgetHome.deviceHeight = window.innerHeight;
+        WidgetHome.deviceWidth = window.innerWidth;
+
+        /*initialize the device width heights*/
+        function initDeviceSize(callback) {
+          WidgetHome.deviceHeight = window.innerHeight;
+          WidgetHome.deviceWidth = window.innerWidth;
+          if (callback) {
+            if (WidgetHome.deviceWidth == 0 || WidgetHome.deviceHeight == 0) {
+              setTimeout(function () {
+                initDeviceSize(callback);
+              }, 500);
+            } else {
+              callback();
+              if (!$scope.$$phase && !$scope.$root.$$phase) {
+                $scope.$apply();
+              }
+            }
+          }
+        }
+
+        /*crop image on the basis of width heights*/
+        WidgetHome.cropImage = function (url, settings) {
+          var options = {};
+          if (!url) {
+            return "";
+          }
+          else {
+            if (settings.height) {
+              options.height = settings.height;
+            }
+            if (settings.width) {
+              options.width = settings.width;
+            }
+            return Buildfire.imageLib.cropImage(url, options);
+          }
+        };
 
         /*
          * Fetch user's data from datastore
          */
-
         var init = function () {
           var success = function (result) {
               WidgetHome.data = result.data;
@@ -31,51 +68,53 @@
         };
         init();
         $rootScope.$on("Carousel:LOADED", function () {
-          if (!view) {
-            view = new buildfire.components.carousel.view("#carousel", []);
+          if (!WidgetHome.view) {
+            WidgetHome.view = new Buildfire.components.carousel.view("#carousel", []);
           }
           if (WidgetHome.data.content && WidgetHome.data.content.carouselImages) {
-            view.loadItems(WidgetHome.data.content.carouselImages);
+            WidgetHome.view.loadItems(WidgetHome.data.content.carouselImages);
           } else {
-            view.loadItems([]);
+            WidgetHome.view.loadItems([]);
           }
         });
 
         var onUpdateCallback = function (event) {
-          setTimeout(function() {
+          setTimeout(function () {
             $scope.imagesUpdated = false;
             $scope.$digest();
             if (event && event.tag === TAG_NAMES.CONTACT_INFO) {
               WidgetHome.data = event.data;
               if (!WidgetHome.data.design)
                 WidgetHome.data.design = {};
+              if (!WidgetHome.data.content)
+                WidgetHome.data.content = {};
             }
             if (!WidgetHome.data.design.listLayout) {
               WidgetHome.data.design.listLayout = LAYOUTS.listLayouts[0].name;
             }
-            if (currentListLayout != WidgetHome.data.design.listLayout && view && WidgetHome.data.content.carouselImages) {
-              view._destroySlider();
-              view = null;
+            if (currentListLayout != WidgetHome.data.design.listLayout && WidgetHome.view && WidgetHome.data.content.carouselImages) {
+              WidgetHome.view._destroySlider();
+              WidgetHome.view = null;
             }
             else {
-              if (view) {
-                view.loadItems(WidgetHome.data.content.carouselImages);
+              if (WidgetHome.view) {
+                WidgetHome.view.loadItems(WidgetHome.data.content.carouselImages);
               }
             }
             currentListLayout = WidgetHome.data.design.listLayout;
             $scope.imagesUpdated = !!event.data.content;
             $scope.$digest();
-          },0);
+          }, 0);
         };
         DataStore.onUpdate().then(null, null, onUpdateCallback);
 
         $scope.$on("$destroy", function () {
           DataStore.clearListener();
         });
-          WidgetHome.safeHtml = function (html) {
-              if (html)
-                  return $sce.trustAsHtml(html);
-          };
+        WidgetHome.safeHtml = function (html) {
+          if (html)
+            return $sce.trustAsHtml(html);
+        };
 
         WidgetHome.openLinks = function (actionItems) {
           if (actionItems && actionItems.length) {
@@ -85,9 +124,9 @@
                 console.error('Error:', error);
               }
             };
-            buildfire.actionItems.list(actionItems, options, callback);
+            Buildfire.actionItems.list(actionItems, options, callback);
           }
         }
 
       }])
-})(window.angular);
+})(window.angular, window.buildfire);

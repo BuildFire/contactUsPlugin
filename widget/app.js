@@ -2,7 +2,14 @@
 
 (function (angular, buildfire) {
   angular.module('contactUsPluginWidget', ['ngRoute'])
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider','$compileProvider', function ($routeProvider,$compileProvider) {
+
+      /**
+       * To make href urls safe on mobile
+       */
+      $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile):/);
+
+
       $routeProvider
         .when('/', {
           templateUrl: 'templates/home.html',
@@ -55,6 +62,28 @@
                   position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
                   map: map
                 });
+                var styleOptions = {
+                  name: "Report Error Hide Style"
+                };
+                var MAP_STYLE = [
+                  {
+                    stylers: [
+                      {visibility: "on"}
+                    ]
+                  }];
+                var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
+                map.mapTypes.set("Report Error Hide Style", mapType);
+                map.setMapTypeId("Report Error Hide Style");
+                marker.addListener('click', function () {
+                  //alert(buildfire.context.device.platform);
+                  /*if (buildfire.context.device.platform == 'ios')
+                   window.open("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                   else
+                   window.open("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);*/
+
+                  window.open("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                });
+
               }
             }
           }, true);

@@ -1,17 +1,16 @@
-
-<div class="holder padding-zero" background-image="{{WidgetHome.data.design.backgroundImage}}">
+<div class="holder padding-zero" >
   <div class="contact-plugin layout2">
-    <div class="contact-maps text-center" ng-if="WidgetHome.data.content.address && WidgetHome.data.content.showMap">
-      <div google-map style="height: 192px"
+    <div class="contact-maps text-center" ng-if="WidgetHome.data.content.addressTitle || WidgetHome.data.content.address.location">
+      <div google-map style="height: 192px" ng-if="WidgetHome.data.content.address && WidgetHome.data.content.showMap"
            coordinates="WidgetHome.data.content.address.location_coordinates"></div>
       <div class="contact-address bg-primary">
         <p class="margin-bottom-zero col-md-12" ng-show="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.addressTitle}}</p>
         <p class="margin-bottom-zero col-md-12" ng-hide="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.address.location}}</p>
       </div>
     </div>
-    <div class="padded text-center">
+    <div class="padded text-center" >
       <div class="plugin-banner clearfix">
-        <div class="plugin-slider text-center" image-carousel="{{WidgetHome.data.content.carouselImages.length}}">
+        <div class="plugin-slider text-center" ng-if="WidgetHome.data.content.carouselImages&&WidgetHome.data.content.carouselImages.length" image-carousel="{{WidgetHome.data.content.carouselImages.length}}">
           <div class="plugin-slide item"
                data-ng-repeat="image in WidgetHome.data.content.carouselImages | filter:isDefined">
             <a href="{{image.url}}" data-ng-if="image.url"
@@ -22,12 +21,14 @@
           </div>
         </div>
       </div>
-      <div class="margin-top-ten">
+
+      <div class="margin-top-ten text-overlay">
         <a class="text-primary" ng-show="WidgetHome.data.content.links[0]" ng-click="WidgetHome.openLinks(WidgetHome.data.content.links)">Contact info</a>
+        <hr class="small margin-zero " ng-show="WidgetHome.data.content.links[0]">
       </div>
     </div>
-    <hr class="small margin-zero" ng-show="WidgetHome.data.content.links[0]">
-    <div class="padded">
-      <p ng-bind-html="WidgetHome.safeHtml(WidgetHome.data.content.description)">'</p>    </div>
+
+    <div class="padded text-overlay">
+      <p ng-bind-html="WidgetHome.safeHtml(WidgetHome.data.content.description)"></p>    </div>
   </div>
 </div>

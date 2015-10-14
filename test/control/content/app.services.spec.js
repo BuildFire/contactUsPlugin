@@ -59,10 +59,10 @@ describe('Unit : contactUsPlugin content services', function () {
     it('Utils.validLongLats should exist and be a function', function () {
       expect(typeof Utils.validLongLats).toEqual('function');
     });
-    it('Utils.validLongLats should return a boolean', function () {
+    it('Utils.validLongLats should return some value in case coordinates are valid', function () {
       var coordinates = "28.6139,77.2090";
       var isValid = Utils.validLongLats(coordinates);
-      expect(isValid).toEqual(true);
+      expect(isValid).toBeDefined();
     });
   });
 });
