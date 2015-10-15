@@ -2,7 +2,7 @@
 
 (function (angular, buildfire) {
   angular.module('contactUsPluginWidget', ['ngRoute'])
-    .config(['$routeProvider','$compileProvider', function ($routeProvider,$compileProvider) {
+    .config(['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
 
       /**
        * To make href urls safe on mobile
@@ -153,5 +153,10 @@
           });
         }
       }
-    });
+    })
+    .run([function () {
+      buildfire.navigation.onBackButtonClick = function () {
+        buildfire.navigation.navigateHome();
+      };
+    }]);
 })(window.angular, window.buildfire);
