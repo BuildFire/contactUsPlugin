@@ -11,7 +11,7 @@ describe('Unit: contactUsPlugin widget app', function () {
     describe('Home route', function () {
       beforeEach(inject(
         function ($httpBackend) {
-          $httpBackend.expectGET('templates/home.html')
+          $httpBackend.expectGET('home.html')
             .respond(200);
           $httpBackend.expectGET('/')
             .respond(200);
