@@ -12,7 +12,7 @@
 
       $routeProvider
         .when('/', {
-          templateUrl: 'templates/home.html',
+          templateUrl: 'home.html',
           controllerAs: 'WidgetHome',
           controller: 'WidgetHomeCtrl'
         })
