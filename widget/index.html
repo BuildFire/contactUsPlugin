@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html ng-app="contactUsPluginWidget">
 <head>
+  <base href="./"/>
 
   <!-- CSS -->
   <link rel="stylesheet" href="../../../styles/siteIcons.css">
@@ -28,85 +29,11 @@
   <script src="app.js" type="application/javascript"></script>
   <script src="enums.js" type="application/javascript"></script>
   <script src="app.services.js" type="application/javascript"></script>
-  <!--<script src="controllers/widget.home.controller.js" type="application/javascript"></script>-->
+  <script src="controllers/widget.home.controller.js" type="application/javascript"></script>
 
 </head>
 <body>
 <div ng-view>
 </div>
-
-<script type="text/ng-template" id="home.html">
-  <div class="overlay background" ng-if="WidgetHome.data.design.backgroundImage && WidgetHome.deviceWidth != 0 && WidgetHome.deviceHeight != 0">
-    <img ng-src="{{ WidgetHome.cropImage(WidgetHome.data.design.backgroundImage, {width: WidgetHome.deviceWidth, height: WidgetHome.deviceHeight}) }}">
-  </div>
-  <div>
-    <div ng-if="WidgetHome.data.design.listLayout"
-         ng-include="WidgetHome.data.design.listLayout + '.html'">
-    </div>
-  </div>
-</script>
-
-<script type="text/ng-template" id="Layout_1.html">
-  <div class="holder padding-zero">
-    <div class="contact-plugin layout1">
-      <div class="plugin-banner clearfix border-bottom-grey">
-        <div id="carousel" build-fire-carousel=""></div>
-      </div>
-      <div class="padded text-center text-overlay" ng-if="WidgetHome.data.content.links[0] || WidgetHome.data.content.addressTitle||WidgetHome.data.content.address.location">
-        <a class="text-primary" ng-show="WidgetHome.data.content.links[0]" ng-click="WidgetHome.openLinks(WidgetHome.data.content.links)">Contact info</a>
-        <hr class="small"  ng-show="WidgetHome.data.content.links[0]">
-        <p class="margin-bottom-zero" ng-show="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.addressTitle}}</p>
-        <p class="margin-bottom-zero" ng-hide="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.address.location}}</p>
-
-      </div>
-      <div class="contact-maps text-center"
-           ng-if="WidgetHome.data.content.address && WidgetHome.data.content.showMap">
-        <div google-map style="height: 192px"
-             coordinates="WidgetHome.data.content.address.location_coordinates"></div>
-      </div>
-      <div class="padded text-overlay">
-        <p ng-bind-html="WidgetHome.safeHtml(WidgetHome.data.content.description)"></p>
-      </div>
-    </div>
-  </div>
-</script>
-
-<script type="text/ng-template" id="Layout_2.html">
-  <div class="holder padding-zero" >
-    <div class="contact-plugin layout2">
-      <div class="contact-maps text-center" ng-if="WidgetHome.data.content.addressTitle || WidgetHome.data.content.address.location">
-        <div google-map style="height: 192px" ng-if="WidgetHome.data.content.address && WidgetHome.data.content.showMap"
-             coordinates="WidgetHome.data.content.address.location_coordinates"></div>
-        <div class="contact-address bg-primary">
-          <p class="margin-bottom-zero col-md-12" ng-show="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.addressTitle}}</p>
-          <p class="margin-bottom-zero col-md-12" ng-hide="WidgetHome.data.content.addressTitle">{{WidgetHome.data.content.address.location}}</p>
-        </div>
-      </div>
-      <div class="padded text-center" >
-        <div class="plugin-banner clearfix">
-          <div class="plugin-slider text-center" ng-if="WidgetHome.data.content.carouselImages&&WidgetHome.data.content.carouselImages.length" image-carousel="{{WidgetHome.data.content.carouselImages.length}}">
-            <div class="plugin-slide item"
-                 data-ng-repeat="image in WidgetHome.data.content.carouselImages | filter:isDefined">
-              <a href="{{image.url}}" data-ng-if="image.url"
-                 target="{{image.openIn}}"><img
-                  ng-src="{{image.iconUrl | getImageUrl : 140 : 100}}"></a>
-              <img data-ng-if="!image.url"
-                   ng-src="{{image.iconUrl | getImageUrl : 140 : 100}}">
-            </div>
-          </div>
-        </div>
-
-        <div class="margin-top-ten text-overlay">
-          <a class="text-primary" ng-show="WidgetHome.data.content.links[0]" ng-click="WidgetHome.openLinks(WidgetHome.data.content.links)">Contact info</a>
-          <hr class="small margin-zero " ng-show="WidgetHome.data.content.links[0]">
-        </div>
-      </div>
-
-      <div class="padded text-overlay">
-        <p ng-bind-html="WidgetHome.safeHtml(WidgetHome.data.content.description)"></p>    </div>
-    </div>
-  </div>
-</script>
-
 </body>
 </html>
