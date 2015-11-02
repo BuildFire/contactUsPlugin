@@ -2,12 +2,12 @@
 
 (function (angular, buildfire) {
   angular.module('contactUsPluginWidget', ['ngRoute'])
-    .config(['$routeProvider','$compileProvider', function ($routeProvider,$compileProvider) {
+    .config(['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
 
       /**
        * To make href urls safe on mobile
        */
-      $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile):/);
+      $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile|file):/);
 
 
       $routeProvider
@@ -75,13 +75,10 @@
                 map.mapTypes.set("Report Error Hide Style", mapType);
                 map.setMapTypeId("Report Error Hide Style");
                 marker.addListener('click', function () {
-                  //alert(buildfire.context.device.platform);
-                  /*if (buildfire.context.device.platform == 'ios')
-                   window.open("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
-                   else
-                   window.open("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);*/
-
-                  window.open("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                  if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+                    window.open("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                  else
+                    window.open("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
                 });
 
               }
@@ -153,5 +150,10 @@
           });
         }
       }
-    });
+    })
+    .run([function () {
+      buildfire.navigation.onBackButtonClick = function () {
+        buildfire.navigation.navigateHome();
+      };
+    }]);
 })(window.angular, window.buildfire);
