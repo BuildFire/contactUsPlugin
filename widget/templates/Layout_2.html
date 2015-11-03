@@ -1,9 +1,7 @@
 <div class="holder padding-zero">
   <div class="contact-plugin layout2">
-    <div class="contact-maps text-center"
-         ng-if="WidgetHome.data.content.addressTitle || WidgetHome.data.content.address.location">
-      <div google-map style="height: 192px"
-           ng-if="WidgetHome.data.content.address && WidgetHome.data.content.showMap"
+    <div class="contact-maps text-center" ng-if="WidgetHome.data.content.addressTitle || WidgetHome.data.content.address.location">
+      <div google-map class="mapSize" ng-if="WidgetHome.data.content.address && WidgetHome.data.content.showMap"
            coordinates="WidgetHome.data.content.address.location_coordinates"></div>
       <div class="contact-address bg-primary">
         <p class="margin-bottom-zero col-md-12"
