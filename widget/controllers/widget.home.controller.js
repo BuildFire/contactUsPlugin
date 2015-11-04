@@ -126,6 +126,13 @@
             };
             Buildfire.actionItems.list(actionItems, options, callback);
           }
+        };
+
+        WidgetHome.onAddressClick = function (long, lat) {
+          if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+            window.open("maps://maps.google.com/maps?daddr=" + lat + "," + long);
+          else
+            window.open("http://maps.google.com/maps?daddr=" + lat + "," + long);
         }
 
       }])
