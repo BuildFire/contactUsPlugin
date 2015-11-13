@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular, buildfire) {
-  angular.module('contactUsPluginWidget', ['ngRoute'])
+  angular.module('contactUsPluginWidget', ['ngRoute', 'ngTouch'])
     .config(['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
 
       /**
