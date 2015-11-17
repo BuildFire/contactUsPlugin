@@ -155,5 +155,17 @@
       buildfire.navigation.onBackButtonClick = function () {
         buildfire.navigation.navigateHome();
       };
-    }]);
+    }]).filter('cropImage', [function () {
+        return function (url, width, height, noDefault) {
+          if(noDefault)
+          {
+            if(!url)
+              return '';
+          }
+          return buildfire.imageLib.cropImage(url, {
+            width: width,
+            height: height
+          });
+        };
+      }]);
 })(window.angular, window.buildfire);
