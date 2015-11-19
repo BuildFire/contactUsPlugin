@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular, buildfire) {
-  angular.module('contactUsPluginWidget', ['ngRoute'])
+  angular.module('contactUsPluginWidget', ['ngRoute', 'ngTouch'])
     .config(['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
 
       /**
@@ -155,5 +155,17 @@
       buildfire.navigation.onBackButtonClick = function () {
         buildfire.navigation.navigateHome();
       };
-    }]);
+    }]).filter('cropImage', [function () {
+        return function (url, width, height, noDefault) {
+          if(noDefault)
+          {
+            if(!url)
+              return '';
+          }
+          return buildfire.imageLib.cropImage(url, {
+            width: width,
+            height: height
+          });
+        };
+      }]);
 })(window.angular, window.buildfire);

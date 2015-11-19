@@ -5,14 +5,16 @@
       <div google-map class="mapSize"
            ng-if="WidgetHome.data.content.address && WidgetHome.data.content.showMap"
            coordinates="WidgetHome.data.content.address.location_coordinates"></div>
-      <div class="contact-address bg-primary">
+      <div class="contact-address info-bar titleBarBackgroundTheme">
         <p class="margin-bottom-zero col-md-12"
            ng-show="WidgetHome.data.content.addressTitle">
-          {{WidgetHome.data.content.addressTitle}}</p>
+          <a class="titleBarTextAndIcons" ng-click="WidgetHome.onAddressClick(WidgetHome.data.content.address.location_coordinates[0],WidgetHome.data.content.address.location_coordinates[1])">
+            {{WidgetHome.data.content.addressTitle}}</a></p>
 
-        <p class="margin-bottom-zero col-md-12"
+        <p class="margin-bottom-zero titleBarTextAndIcons col-md-12"
            ng-hide="WidgetHome.data.content.addressTitle">
-          {{WidgetHome.data.content.address.location}}</p>
+          <a class="titleBarTextAndIcons" ng-click="WidgetHome.onAddressClick(WidgetHome.data.content.address.location_coordinates[0],WidgetHome.data.content.address.location_coordinates[1])">
+            {{WidgetHome.data.content.address.location}}</a></p>
       </div>
     </div>
     <div class="padded text-center">
@@ -35,7 +37,7 @@
         <a class="text-primary" ng-show="WidgetHome.data.content.links[0]"
            ng-click="WidgetHome.openLinks(WidgetHome.data.content.links)">Contact
           info</a>
-        <hr class="small margin-zero "
+        <hr class="small "
             ng-show="WidgetHome.data.content.links[0]">
       </div>
     </div>
