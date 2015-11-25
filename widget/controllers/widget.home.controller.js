@@ -10,8 +10,9 @@
         //create new instance of buildfire carousel viewer
         WidgetHome.view = null;
         /*declare the device width heights*/
-        WidgetHome.deviceHeight = window.innerHeight;
-        WidgetHome.deviceWidth = window.innerWidth;
+        $rootScope.deviceHeight = window.innerHeight;
+        $rootScope.deviceWidth = window.innerWidth;
+        $rootScope.backgroundImage="";
 
         /*initialize the device width heights*/
         function initDeviceSize(callback) {
@@ -60,6 +61,13 @@
                 WidgetHome.data.design.listLayout = LAYOUTS.listLayouts[0].name;
               }
               currentListLayout = WidgetHome.data.design.listLayout;
+                if(WidgetHome.data.design.backgroundImage){
+                  $rootScope.backgroundImage = WidgetHome.data.design.backgroundImage;
+                }
+                else
+                 {
+                  $rootScope.backgroundImage = "";
+                 }
             }
             , error = function (err) {
               console.error('Error while getting data', err);
@@ -89,6 +97,12 @@
               if (!WidgetHome.data.content)
                 WidgetHome.data.content = {};
             }
+            if(WidgetHome.data.design.backgroundImage){
+              $rootScope.backgroundImage = WidgetHome.data.design.backgroundImage;
+            }else
+            {
+              $rootScope.backgroundImage = "";
+            }
             if (!WidgetHome.data.design.listLayout) {
               WidgetHome.data.design.listLayout = LAYOUTS.listLayouts[0].name;
             }
@@ -104,6 +118,7 @@
             currentListLayout = WidgetHome.data.design.listLayout;
             $scope.imagesUpdated = !!event.data.content;
             $scope.$digest();
+            $rootScope.$digest();
           }, 0);
         };
         DataStore.onUpdate().then(null, null, onUpdateCallback);
