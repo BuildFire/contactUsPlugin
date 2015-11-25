@@ -129,6 +129,7 @@
         };
 
         WidgetHome.onAddressClick = function (long, lat) {
+          alert(">>>>>>>>>>>>>>>>>>>" + buildfire.context.device);
           if (buildfire.context.device && buildfire.context.device.platform == 'ios')
             window.open("maps://maps.google.com/maps?daddr=" + lat + "," + long);
           else
