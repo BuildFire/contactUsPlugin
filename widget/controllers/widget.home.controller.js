@@ -144,12 +144,11 @@
         };
 
         WidgetHome.onAddressClick = function (long, lat) {
-          alert(">>>>>>>>>>>>>>>>>>>" + buildfire.context.device);
-          if (buildfire.context.device && buildfire.context.device.platform == 'ios')
-            window.open("maps://maps.google.com/maps?daddr=" + lat + "," + long);
+           if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+             buildfire.navigation.openWindow("maps://maps.google.com/maps?daddr=" + lat + "," + long)
           else
-            window.open("http://maps.google.com/maps?daddr=" + lat + "," + long);
-        }
+             buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + lat + "," + long)
+         }
 
       }])
 })(window.angular, window.buildfire);
