@@ -17,7 +17,7 @@
             {{WidgetHome.data.content.address.location}}</a></p>
       </div>
     </div>
-    <div class="padded text-center">
+    <div class="padded">
       <div class="plugin-banner clearfix">
         <div class="plugin-slider text-center"
              ng-if="WidgetHome.data.content.carouselImages && WidgetHome.data.content.carouselImages.length"
@@ -33,17 +33,18 @@
         </div>
       </div>
 
-      <div class="margin-top-ten text-overlay">
+      <div class="margin-top-ten text-overlay text-center">
         <a class="text-primary" ng-show="WidgetHome.data.content.links[0]"
            ng-click="WidgetHome.openLinks(WidgetHome.data.content.links)">Contact
           info</a>
         <hr class="small "
             ng-show="WidgetHome.data.content.links[0]">
       </div>
+        <div class="text-overlay">
+            <p ng-bind-html="WidgetHome.safeHtml(WidgetHome.data.content.description)"></p>
+        </div>
     </div>
 
-    <div class="padded text-overlay">
-      <p ng-bind-html="WidgetHome.safeHtml(WidgetHome.data.content.description)"></p>
-    </div>
+
   </div>
 </div>
