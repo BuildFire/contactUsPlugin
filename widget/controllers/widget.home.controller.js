@@ -13,7 +13,7 @@
         $rootScope.deviceHeight = window.innerHeight;
         $rootScope.deviceWidth = window.innerWidth;
         $rootScope.backgroundImage="";
-
+        WidgetHome.device = null;
         /*initialize the device width heights*/
         function initDeviceSize(callback) {
           WidgetHome.deviceHeight = window.innerHeight;
@@ -68,6 +68,13 @@
                  {
                   $rootScope.backgroundImage = "";
                  }
+                var getDevice = function(error, data){
+                  if(data)
+                    WidgetHome.device  = data.device;
+                  else
+                    console.log("Error while getting the device context data", error)
+                }
+                buildfire.getContext(getDevice);
             }
             , error = function (err) {
               console.error('Error while getting data', err);
@@ -144,7 +151,7 @@
         };
 
         WidgetHome.onAddressClick = function (long, lat) {
-           if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+            if (WidgetHome.device && WidgetHome.device.platform == 'ios')
              buildfire.navigation.openWindow("maps://maps.google.com/maps?daddr=" + lat + "," + long)
           else
              buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + lat + "," + long)
