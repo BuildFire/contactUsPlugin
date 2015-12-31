@@ -1,3 +1,17 @@
+/* Plugin CSS */
+.contact-plugin.layout2 .contact-maps{
+	position:relative;
+}
+.contact-plugin.layout2 .plugin-slider .plugin-slide{
+	background:none;
+}
+.contact-plugin.layout2 .plugin-slider, 
+.contact-plugin.layout2 .plugin-slider .contact-slide{
+	max-height:100px;
+	background:none;
+}
+/* End Plugin CSS */
+
 /* Styles for home page carousel - to align and style the slider items*/
 .plugin-banner {
     overflow: hidden;
