@@ -256,7 +256,6 @@
         ContentHome.clearData = function () {
           if (!ContentHome.currentAddress) {
             ContentHome.data.content.address = null;
-            ContentHome.data.content.links = null;
             ContentHome.currentCoordinates =null;
           }
         };
