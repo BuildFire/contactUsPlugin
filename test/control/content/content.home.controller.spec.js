@@ -158,7 +158,6 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
   it('#clearData it should pass if data is null', function () {
     ContentHome.clearData();
     expect(ContentHome.data.content.address).toEqual(null);
-    expect(ContentHome.data.content.links).toEqual(null);
     expect(ContentHome.currentCoordinates).toEqual(null);
   });
 });
