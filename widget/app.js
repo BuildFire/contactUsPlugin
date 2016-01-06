@@ -1,8 +1,15 @@
 'use strict';
 
 (function (angular, buildfire) {
-  angular.module('contactUsPluginWidget', ['ngRoute'])
-    .config(['$routeProvider', function ($routeProvider) {
+  angular.module('contactUsPluginWidget', ['ngRoute', 'ngTouch'])
+    .config(['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
+
+      /**
+       * To make href urls safe on mobile
+       */
+      $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile|file):/);
+
+
       $routeProvider
         .when('/', {
           templateUrl: 'templates/home.html',
@@ -55,6 +62,25 @@
                   position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
                   map: map
                 });
+                var styleOptions = {
+                  name: "Report Error Hide Style"
+                };
+                var MAP_STYLE = [
+                  {
+                    stylers: [
+                      {visibility: "on"}
+                    ]
+                  }];
+                var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
+                map.mapTypes.set("Report Error Hide Style", mapType);
+                map.setMapTypeId("Report Error Hide Style");
+                marker.addListener('click', function () {
+                  if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+                    window.open("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                  else
+                    window.open("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                });
+
               }
             }
           }, true);
@@ -124,5 +150,22 @@
           });
         }
       }
-    });
+    })
+    .run([function () {
+      buildfire.navigation.onBackButtonClick = function () {
+        buildfire.navigation.navigateHome();
+      };
+    }]).filter('cropImage', [function () {
+        return function (url, width, height, noDefault) {
+          if(noDefault)
+          {
+            if(!url)
+              return '';
+          }
+          return buildfire.imageLib.cropImage(url, {
+            width: width,
+            height: height
+          });
+        };
+      }]);
 })(window.angular, window.buildfire);

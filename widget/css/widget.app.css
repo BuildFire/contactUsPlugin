@@ -16,3 +16,40 @@
 .plugin-banner {
     overflow: hidden;
 }
+
+
+/* To hide map report error link */
+
+.gmnoprint a{
+    display:none;
+}
+
+/* To overlay texts on background */
+.text-overlay{
+    position:relative
+}
+
+/*background image css class*/
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.overlay.background {
+    position: fixed;
+    height: 100%;
+}
+
+.overlay.background img {
+    height: 100%;
+}
+
+.owl-carousel .owl-controls .owl-dots {
+    text-align: center;
+}
+
+.mapSize{
+height: 192px;
+}

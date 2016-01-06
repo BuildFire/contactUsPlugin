@@ -1,0 +1,8 @@
+.gmnoprint a{
+    display:none;
+}
+
+.mapSize{
+    height: 200px;
+    position: relative;
+}
