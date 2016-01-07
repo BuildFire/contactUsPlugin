@@ -42,7 +42,7 @@ describe('Unit : contactUsPlugin design.home.controller.js', function () {
             }
           },
           datastore: {
-            get: function () { },
+            get: function (a,b) {b(null,{data:{listLayout:'',backgroundImage:"g"}}); },
             save: function () { }
           }
         }
