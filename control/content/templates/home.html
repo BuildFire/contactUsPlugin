@@ -30,19 +30,23 @@
     <span>Address</span>
   </div>
   <div class="main col-md-9 pull-right">
-    <input type="text" class="form-control"
+    <input id="googleMapAutocomplete" type="text" class="form-control"
            placeholder="Enter street address or geo coordinates (Longitude,Latitude)"
            google-location-search callback-fn="ContentHome.setLocation(data)"
            ng-model="ContentHome.currentAddress"
            ng-enter="ContentHome.setCoordinates()"
-           ng-change="ContentHome.clearData()">
+           ng-change="ContentHome.clearData()"
+           ng-paste="ContentHome.locationAutocompletePaste();">
     <br>
 
     <div class="alert alert-danger alert-sm text-center"
          ng-show="ContentHome.validCoordinatesFailure">Please enter valid
       coordinates
     </div>
-
+      <div class="alert alert-danger alert-sm text-center"
+           ng-show="ContentHome.validCopyAddressFailure">Please enter valid
+          address
+      </div>
     <div class="display-map margin-top-ten">
       <div class="checkbox checkbox-primary">
         <input type="checkbox"
