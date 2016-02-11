@@ -153,7 +153,7 @@
     })
     .run([function () {
       buildfire.navigation.onBackButtonClick = function () {
-        buildfire.navigation.navigateHome();
+          buildfire.navigation._goBackOne();
       };
     }]).filter('cropImage', [function () {
         return function (url, width, height, noDefault) {
