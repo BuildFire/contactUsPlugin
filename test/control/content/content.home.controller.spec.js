@@ -42,6 +42,20 @@ describe('Unit : contactUs Plugin content.home.controller.js', function () {
       LAYOUTS: LAYOUTS,
       Utils: Utils
     });
+    ContentHome.data = {
+        "content": {
+            "carouselImages": [],
+            "description": '<p>&nbsp;<br></p>',
+            "addressTitle": "",
+            "address": {},
+            "links": [],
+            "showMap": true
+        },
+        "design": {
+            "listLayout": LAYOUTS.listLayouts[0].name,
+            "backgroundImage": ""
+        }
+    }
   });
 
   describe('Units: units should be Defined', function () {
