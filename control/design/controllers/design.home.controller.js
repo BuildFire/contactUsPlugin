@@ -85,7 +85,7 @@
               $scope.$digest();
             }
             else {
-              DesignHome.data = _data;
+              DesignHome.data = angular.copy(_data);
               console.info('------------------unable to load data---------------');
             }
           });

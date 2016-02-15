@@ -21,7 +21,7 @@
                 };
                 var ContentHome = this;
                 ContentHome.masterData = null;
-                ContentHome.data = angular.copy(_data);
+//                ContentHome.data = angular.copy(_data);
                 ContentHome.validCoordinatesFailure = false;
 
                 // create a new instance of the buildfire carousel editor
@@ -78,21 +78,25 @@
                     var success = function (result) {
                             console.info('init success result:', result);
                             ContentHome.data = result.data;
-                            if (angular.isUndefined(ContentHome.data.content)) {
-                                ContentHome.data = {
-                                    "content": {
-                                        showMap: true
+                            if(!ContentHome.data) {
+                                ContentHome.data = angular.copy(_data);
+                            } else {
+                                if (angular.isUndefined(ContentHome.data.content)) {
+                                    ContentHome.data = {
+                                        "content": {
+                                            showMap: true
+                                        }
                                     }
                                 }
-                            }
-                            if (ContentHome.data.content) {
-                                if (!ContentHome.data.content.carouselImages)
-                                    editor.loadItems([]);
-                                else
-                                    editor.loadItems(ContentHome.data.content.carouselImages);
-                                if (ContentHome.data.content.address && ContentHome.data.content.address.location) {
-                                    ContentHome.currentAddress = ContentHome.data.content.address.location;
-                                    ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
+                                if (ContentHome.data.content) {
+                                    if (!ContentHome.data.content.carouselImages)
+                                        editor.loadItems([]);
+                                    else
+                                        editor.loadItems(ContentHome.data.content.carouselImages);
+                                    if (ContentHome.data.content.address && ContentHome.data.content.address.location) {
+                                        ContentHome.currentAddress = ContentHome.data.content.address.location;
+                                        ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
+                                    }
                                 }
                             }
 
