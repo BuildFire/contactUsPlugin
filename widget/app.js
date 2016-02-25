@@ -76,9 +76,9 @@
                 map.setMapTypeId("Report Error Hide Style");
                 marker.addListener('click', function () {
                   if (buildfire.context.device && buildfire.context.device.platform == 'ios')
-                    buildfire.navigation.openWindow("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                    buildfire.navigation.openWindow("maps://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0], '_system');
                   else
-                    buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0]);
+                    buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0], '_system');
                 });
 
               }
