@@ -152,9 +152,9 @@
 
         WidgetHome.onAddressClick = function (long, lat) {
             if (WidgetHome.device && WidgetHome.device.platform == 'ios')
-             buildfire.navigation.openWindow("maps://maps.google.com/maps?daddr=" + lat + "," + long, '_system');
+              Buildfire.navigation.openWindow("maps://maps.google.com/maps?daddr=" + lat + "," + long, '_system');
           else
-             buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + lat + "," + long, '_system');
+              Buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + lat + "," + long, '_system');
          }
 
       }])
