@@ -97,9 +97,10 @@
         /*watch the change event and update in database*/
         $scope.$watch(function () {
           return DesignHome.data;
-        }, function (newObj) {
-          console.log("Updated Object:",newObj);
-          if (newObj)
+        }, function (newObj, oldObj) {
+          //console.log("Updated Object:",newObj);
+          if (newObj!= oldObj&& oldObj){
+            console.log("Updated Object:",newObj);
             Buildfire.datastore.save(DesignHome.data, TAG_NAMES.CONTACT_INFO, function (err, data) {
               if (err) {
                 return DesignHome.data = angular.copy(DesignHomeMaster);
@@ -110,6 +111,7 @@
               }
               $scope.$digest();
             });
+          }
         }, true);
 
       }]);
