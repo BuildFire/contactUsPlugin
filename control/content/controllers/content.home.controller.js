@@ -90,7 +90,7 @@
                     $scope.$digest();
                 };
 
-                updateMasterItem(_data);
+                updateMasterItem(_dummyData);
 
                 ContentHome.bodyWYSIWYGOptions = {
                     plugins: 'advlist autolink link image lists charmap print preview',
