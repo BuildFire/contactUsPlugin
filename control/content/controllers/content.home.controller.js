@@ -19,8 +19,44 @@
                         "backgroundImage": ""
                     }
                 };
+
+               // var initDummyFlag=true;
+
+                //init dummy data
+                var _dummyData= {
+                    content: {
+                        showMap:true,
+                        carouselImages: [{
+                            action: "noAction",
+                            iconUrl: "http://fortunednagroup.com/wp-content/uploads/employee1.jpg",
+                            title: "image"
+                        },
+                            {
+                                action: "noAction",
+                                iconUrl: "http://smslaw.com.au/wp-content/uploads/2014/07/employee.jpg",
+                                title: "image"
+                            },
+                            {
+                                action: "noAction",
+                                iconUrl: "http://cdn2.hubspot.net/hub/105358/file-486221503-png/images/winter-blues-how-to-keep-your-employees-motivated-and-productive.png?t=1458850411530",
+                                title: "image"
+                            }],
+                        description : "<p>World IT technology</p>",
+                        addressTitle:"London",
+                        address:{
+                            type:"Location",
+                            location:"London, UK",
+                            location_coordinates:[-0.12775829999998223, 51.5073509]
+                        },
+                        links:[]
+                    },
+                    design:{
+                        listLayout:"Layout_1",
+                        backgroundImage:"http://buildfire.imgix.net/b55ee984-a8e8-11e5-88d3-124798dea82d/d3a73620-f7f4-11e5-a9d8-55461c8fe352.jpg?w=88"
+                    }
+                };
                 var ContentHome = this;
-                ContentHome.masterData = null;
+                ContentHome.masterData = _dummyData;
 //                ContentHome.data = angular.copy(_data);
                 ContentHome.validCoordinatesFailure = false;
 
@@ -54,7 +90,7 @@
                     $scope.$digest();
                 };
 
-                updateMasterItem(_data);
+                updateMasterItem(_dummyData);
 
                 ContentHome.bodyWYSIWYGOptions = {
                     plugins: 'advlist autolink link image lists charmap print preview',
@@ -76,6 +112,8 @@
                  * */
                 var init = function () {
                     var success = function (result) {
+                        if (result && result.id && result.data) {
+                          //  initDummyFlag=false;
                             console.info('init success result:', result);
                             ContentHome.data = result.data;
                             if(!ContentHome.data) {
@@ -102,6 +140,21 @@
 
                             updateMasterItem(ContentHome.data);
                             if (tmrDelay)clearTimeout(tmrDelay);
+                        }else{
+                            //initDummyFlag=true;
+                            ContentHome.data=_dummyData;
+                         //   $scope.$digest();
+                            if (ContentHome.data.content) {
+                                if (!ContentHome.data.content.carouselImages)
+                                    editor.loadItems([]);
+                                else
+                                    editor.loadItems(ContentHome.data.content.carouselImages);
+                                if (ContentHome.data.content.address && ContentHome.data.content.address.location) {
+                                    ContentHome.currentAddress = ContentHome.data.content.address.location;
+                                    ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
+                                }
+                            }
+                        }
                         }
                         , error = function (err) {
                             if (err && err.code !== STATUS_CODE.NOT_FOUND) {
@@ -205,7 +258,9 @@
                  * watch for changes in data and trigger the saveDataWithDelay function on change
                  * */
                 $scope.$watch(function () {
-                    return ContentHome.data;
+
+                        return ContentHome.data;
+
                 }, saveDataWithDelay, true);
 
                 ContentHome.setLocation = function (data) {

@@ -8,6 +8,40 @@
         var currentListLayout = null;
         WidgetHome.data = {};
         //create new instance of buildfire carousel viewer
+
+        var _dummyData= {
+          content: {
+             showMap:true,
+              carouselImages: [{
+                  action: "noAction",
+                  iconUrl: "http://fortunednagroup.com/wp-content/uploads/employee1.jpg",
+                  title: "image"
+                },
+               {
+                action: "noAction",
+                 iconUrl: "http://smslaw.com.au/wp-content/uploads/2014/07/employee.jpg",
+                 title: "image"
+               },
+              {
+              action: "noAction",
+                iconUrl: "http://cdn2.hubspot.net/hub/105358/file-486221503-png/images/winter-blues-how-to-keep-your-employees-motivated-and-productive.png?t=1458850411530",
+                title: "image"
+              }],
+              description : "<p>World IT technology</p>",
+              addressTitle:"London",
+              address:{
+                type:"Location",
+                location:"London, UK",
+                location_coordinates:[-0.12775829999998223, 51.5073509]
+            },
+            links:[]
+          },
+          design:{
+            listLayout:"Layout_1",
+              backgroundImage:"http://buildfire.imgix.net/b55ee984-a8e8-11e5-88d3-124798dea82d/d3a73620-f7f4-11e5-a9d8-55461c8fe352.jpg?w=88"
+          }
+        };
+
         WidgetHome.view = null;
         /*declare the device width heights*/
         $rootScope.deviceHeight = window.innerHeight;
@@ -54,20 +88,26 @@
          */
         var init = function () {
           var success = function (result) {
-              WidgetHome.data = result.data;
-              if (!WidgetHome.data.design)
-                WidgetHome.data.design = {};
-              if (!WidgetHome.data.design.listLayout) {
-                WidgetHome.data.design.listLayout = LAYOUTS.listLayouts[0].name;
-              }
-              currentListLayout = WidgetHome.data.design.listLayout;
+                if(!result.id){
+                  console.log('NO DATA AVAILABLE');
+                  WidgetHome.data=_dummyData;
+                }else{
+                  WidgetHome.data = result.data;
+                }
+                if (!WidgetHome.data.design){
+                  WidgetHome.data.design = {};
+                }
+                if (!WidgetHome.data.design.listLayout) {
+                  WidgetHome.data.design.listLayout = LAYOUTS.listLayouts[0].name;
+                }
+                currentListLayout = WidgetHome.data.design.listLayout;
                 if(WidgetHome.data.design.backgroundImage){
                   $rootScope.backgroundImage = WidgetHome.data.design.backgroundImage;
                 }
                 else
-                 {
+                {
                   $rootScope.backgroundImage = "";
-                 }
+                }
                 var getDevice = function(error, data){
                   if(data)
                     WidgetHome.device  = data.device;
@@ -75,6 +115,7 @@
                     console.log("Error while getting the device context data", error)
                 }
                 buildfire.getContext(getDevice);
+
             }
             , error = function (err) {
               console.error('Error while getting data', err);

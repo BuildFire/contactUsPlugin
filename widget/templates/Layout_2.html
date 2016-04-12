@@ -21,7 +21,8 @@
       <div class="plugin-banner clearfix">
         <div class="plugin-slider text-center"
              ng-if="WidgetHome.data.content.carouselImages && WidgetHome.data.content.carouselImages.length"
-             image-carousel="{{WidgetHome.data.content.carouselImages.length}}">
+             image-carousel="{{WidgetHome.data.content.carouselImages.length}}"
+             ng-style="WidgetHome.data.content.carouselImages.length > 0 ? {'min-height': 70 + 'px' } : {}">
           <div class="plugin-slide item"
                data-ng-repeat="image in WidgetHome.data.content.carouselImages | filter:isDefined">
             <a href="{{image.url}}" data-ng-if="image.url"
