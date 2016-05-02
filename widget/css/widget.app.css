@@ -53,3 +53,13 @@
 .mapSize{
 height: 192px;
 }
+
+.map-overlay-label{
+    position: absolute;
+    bottom: 0px;
+    display: inline-block;
+    width: 100%;
+    padding: 8px 0px;
+    opacity: 0.8;
+    left:0px
+}
