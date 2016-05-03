@@ -53,3 +53,15 @@
 .mapSize{
 height: 192px;
 }
+
+.holder .info-bar{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    padding:10px 0;
+    opacity:0.85;
+    z-index:9;
+    -webkit-transform:translate3d(0,0,0);
+}
+
