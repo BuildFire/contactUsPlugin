@@ -10,7 +10,11 @@
                         "carouselImages": [],
                         "description": '<p>&nbsp;<br></p>',
                         "addressTitle": "",
-                        "address": {},
+                        "address": {
+                            type:"",
+                            location:"",
+                            location_coordinates:[]
+                        },
                         "links": [],
                         "showMap": true
                     },
@@ -28,32 +32,28 @@
                         showMap:true,
                         carouselImages: [{
                             action: "noAction",
-                            iconUrl: "http://fortunednagroup.com/wp-content/uploads/employee1.jpg",
+                            iconUrl: "http://buildfire.imgix.net/1462345835888-04866688400506973/6ac49110-11c7-11e6-92ea-27ed66023d52.jpeg?fit=crop&w=342&h=193",
                             title: "image"
-                        },
+                             },
                             {
                                 action: "noAction",
-                                iconUrl: "http://smslaw.com.au/wp-content/uploads/2014/07/employee.jpg",
-                                title: "image"
-                            },
-                            {
-                                action: "noAction",
-                                iconUrl: "http://cdn2.hubspot.net/hub/105358/file-486221503-png/images/winter-blues-how-to-keep-your-employees-motivated-and-productive.png?t=1458850411530",
+                                iconUrl: "http://buildfire.imgix.net/1462345835888-04866688400506973/6bf3c240-11c7-11e6-ad08-375cc71b6ca7.jpg?fit=crop&w=342&h=193",
                                 title: "image"
                             }],
-                        description : "<p>World IT technology</p>",
-                        addressTitle:"London",
+                        description : "<p>With the wysiwyg, you can include text and lists, embed images, embed videos, and link to webpages, emails, phone numbers and more. Check out the tutorial on the wysiwyg for detailed information.</p>",
+                        addressTitle:"",
                         address:{
                             type:"Location",
-                            location:"London, UK",
-                            location_coordinates:[-0.12775829999998223, 51.5073509]
+                            location:"501 Pacific Hwy, San Diego, CA 92101, USA",
+                            location_coordinates:[-117.17096400000003,32.7100444]
                         },
-                        links:[]
+                        links:[{"title":"Call","action":"callNumber","phoneNumber":"6195551234"},{"title":"Email","action":"sendEmail"}]
                     },
                     design:{
                         listLayout:"Layout_1",
-                        backgroundImage:"http://buildfire.imgix.net/b55ee984-a8e8-11e5-88d3-124798dea82d/d3a73620-f7f4-11e5-a9d8-55461c8fe352.jpg?w=88"
-                    }
+                        backgroundImage:""
+                    },
+                    default : true
                 };
                 var ContentHome = this;
                 ContentHome.masterData = _dummyData;
@@ -261,6 +261,9 @@
                         }
                         if (tmrDelay) {
                             clearTimeout(tmrDelay);
+                        }
+                        if(newObj.default){
+                            newObj= _data;
                         }
                         tmrDelay = setTimeout(function () {
                             saveData(JSON.parse(angular.toJson(newObj)), TAG_NAMES.CONTACT_INFO);
