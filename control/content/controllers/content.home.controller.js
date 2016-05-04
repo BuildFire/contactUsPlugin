@@ -16,7 +16,7 @@
                             location_coordinates:[]
                         },
                         "links": [],
-                        "showMap": true
+                        "showMap": false
                     },
                     "design": {
                         "listLayout": LAYOUTS.listLayouts[0].name,
@@ -131,6 +131,7 @@
                             ContentHome.data = result.data;
                             if(!ContentHome.data) {
                                 ContentHome.data = angular.copy(_data);
+                                $scope.$apply();
                             } else {
                                 if (angular.isUndefined(ContentHome.data.content)) {
                                     ContentHome.data = {
@@ -264,6 +265,9 @@
                         }
                         if(newObj.default){
                             newObj= _data;
+                            ContentHome.data=newObj;
+                            editor.loadItems([]);
+                            ContentHome.currentAddress="";
                         }
                         tmrDelay = setTimeout(function () {
                             saveData(JSON.parse(angular.toJson(newObj)), TAG_NAMES.CONTACT_INFO);
