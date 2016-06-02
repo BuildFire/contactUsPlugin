@@ -118,6 +118,7 @@
           DataStore.get(TAG_NAMES.CONTACT_INFO).then(success, error);
         };
         init();
+        $scope.$on('$viewContentLoaded', function(){
         $rootScope.$on("Carousel:LOADED", function () {
           if (!WidgetHome.view) {
             WidgetHome.view = new Buildfire.components.carousel.view("#carousel", []);
@@ -127,6 +128,7 @@
           } else {
             WidgetHome.view.loadItems([]);
           }
+        });
         });
 
         var onUpdateCallback = function (event) {
