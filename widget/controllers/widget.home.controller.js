@@ -7,7 +7,13 @@
         var WidgetHome = this;
         var currentListLayout = null;
         WidgetHome.data = {};
-        //create new instance of buildfire carousel viewer
+
+        //Refresh data on pulling the tile bar
+
+        buildfire.datastore.onRefresh(function () {
+          init();
+          $scope.$digest();
+        });
 
         var _dummyData= {
           content: {
@@ -37,7 +43,9 @@
           }
         };
 
+        //create new instance of buildfire carousel viewer
         WidgetHome.view = null;
+
         /*declare the device width heights*/
         $rootScope.deviceHeight = window.innerHeight;
         $rootScope.deviceWidth = window.innerWidth || 320;
@@ -108,7 +116,7 @@
                     WidgetHome.device  = data.device;
                   else
                     console.log("Error while getting the device context data", error)
-                }
+                };
                 buildfire.getContext(getDevice);
 
             }
@@ -131,7 +139,7 @@
         });
         });
 
-        var onUpdateCallback = function (event) {
+       /* var onUpdateCallback = function (event) {
           setTimeout(function () {
             $scope.imagesUpdated = false;
             $scope.$digest();
@@ -166,7 +174,7 @@
             $rootScope.$digest();
           }, 0);
         };
-        DataStore.onUpdate().then(null, null, onUpdateCallback);
+        DataStore.onUpdate().then(null, null, onUpdateCallback);*/
 
         $scope.$on("$destroy", function () {
           DataStore.clearListener();
