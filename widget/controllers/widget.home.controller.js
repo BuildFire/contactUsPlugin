@@ -201,7 +201,15 @@
               buildfire.navigation.openWindow("maps://maps.google.com/maps?daddr=" + lat + "," + long, '_system');
           else
               buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + lat + "," + long, '_system');
-         }
+         };
+
+        WidgetHome.executeOperation = function(item){
+          buildfire.actionItems.execute(item, function (err, result) {
+            if (err) {
+              console.warn('Error opening slider action: ', err);
+            }
+          });
+        }
 
       }])
 })(window.angular, window.buildfire);
