@@ -25,8 +25,11 @@
              ng-style="WidgetHome.data.content.carouselImages.length > 0 ? {'min-height': 70 + 'px' } : {}">
           <div class="plugin-slide item"
                data-ng-repeat="image in WidgetHome.data.content.carouselImages | filter:isDefined">
-            <img ng-click="WidgetHome.executeOperation(image)"
-                 ng-src="{{image.iconUrl | getImageUrl : 140 : 100}}">
+            <a href="{{image.url}}" data-ng-if="image.url"
+               target="{{image.openIn}}"><img load-image
+                data-final-src="{{image.iconUrl}}"  crop-width="140" crop-height="100" crop-type="crop" ></a>
+            <img data-ng-if="!image.url" load-image
+                 data-final-src="{{image.iconUrl}}"  crop-width="140" crop-height="100" crop-type="crop" >
           </div>
         </div>
       </div>
