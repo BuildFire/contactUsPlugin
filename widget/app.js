@@ -18,7 +18,7 @@
         })
         .otherwise('/');
     }])
-    .filter('getImageUrl', ['Buildfire', function (Buildfire) {
+  /*  .filter('getImageUrl', ['Buildfire', function (Buildfire) {
       return function (url, width, height, type) {
         if (type == 'resize')
           return Buildfire.imageLib.resizeImage(url, {
@@ -31,7 +31,7 @@
             height: height
           });
       }
-    }])
+    }])*/
     .directive("buildFireCarousel", ["$rootScope", function ($rootScope) {
       return {
         restrict: 'A',
@@ -87,7 +87,7 @@
         }
       }
     })
-    .directive("backgroundImage", ['$filter', function ($filter) {
+ /*   .directive("backgroundImage", ['$filter', function ($filter) {
       return {
         restrict: 'A',
         link: function (scope, element, attrs) {
@@ -107,7 +107,7 @@
           });
         }
       };
-    }])// Directive for adding  Image carousel on widget layout 2
+    }])*/// Directive for adding  Image carousel on widget layout 2
     .directive('imageCarousel', function () {
       return {
         restrict: 'A',
@@ -167,5 +167,71 @@
             height: height
           });
         };
-      }]);
+      }]).directive('backImg', ["$rootScope", function ($rootScope) {
+      return function (scope, element, attrs) {
+        attrs.$observe('backImg', function (value) {
+          var img = '';
+          if (value) {
+            buildfire.imageLib.local.cropImage(value, {
+              width: $rootScope.deviceWidth,
+              height: $rootScope.deviceHeight
+            }, function (err, imgUrl) {
+              if (imgUrl) {
+                img = imgUrl;
+                element.attr("style", 'background:url(' + img + ') !important ; background-size: cover !important;');
+              } else {
+                img = '';
+                element.attr("style", 'background-color:white');
+              }
+              element.css({
+                'background-size': 'cover'
+              });
+            });
+            // img = $filter("cropImage")(value, $rootScope.deviceWidth, $rootScope.deviceHeight, true);
+          }
+          else {
+            img = "";
+            element.attr("style", 'background-color:white');
+            element.css({
+              'background-size': 'cover'
+            });
+          }
+        });
+      };
+    }]) .directive("loadImage", ['Buildfire', function (Buildfire) {
+      return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+         // element.attr("src", "../../../styles/media/holder-" + attrs.loadImage + ".gif");
+
+          var _img = attrs.finalSrc;
+          if (attrs.cropType == 'resize') {
+            Buildfire.imageLib.local.resizeImage(_img, {
+              width: attrs.cropWidth,
+              height: attrs.cropHeight
+            }, function (err, imgUrl) {
+              _img = imgUrl;
+              replaceImg(_img);
+            });
+          } else {
+            Buildfire.imageLib.local.cropImage(_img, {
+              width: attrs.cropWidth,
+              height: attrs.cropHeight
+            }, function (err, imgUrl) {
+              _img = imgUrl;
+              replaceImg(_img);
+            });
+          }
+
+          function replaceImg(finalSrc) {
+            var elem = $("<img>");
+            elem[0].onload = function () {
+              element.attr("src", finalSrc);
+              elem.remove();
+            };
+            elem.attr("src", finalSrc);
+          }
+        }
+      };
+    }]);
 })(window.angular, window.buildfire);
