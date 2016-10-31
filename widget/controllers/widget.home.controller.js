@@ -2,8 +2,8 @@
 
 (function (angular, buildfire) {
   angular.module('contactUsPluginWidget')
-    .controller('WidgetHomeCtrl', ['$routeParams', 'Buildfire', 'DataStore', '$scope', 'TAG_NAMES', 'Location', 'LAYOUTS', '$rootScope', '$sce',
-      function ($routeParams, Buildfire, DataStore, $scope, TAG_NAMES, Location, LAYOUTS, $rootScope, $sce) {
+    .controller('WidgetHomeCtrl', ['$routeParams', 'Buildfire', 'DataStore', '$scope', 'TAG_NAMES', 'Location', 'LAYOUTS', '$rootScope', '$sce', '$timeout',
+      function ($routeParams, Buildfire, DataStore, $scope, TAG_NAMES, Location, LAYOUTS, $rootScope, $sce, $timeout) {
         var WidgetHome = this;
         var currentListLayout = null;
         WidgetHome.data = {};
@@ -214,8 +214,10 @@
                 console.error('Error:', error);
               }
             };
-			$event.preventDefault();
-			Buildfire.actionItems.list(actionItems, options, callback);
+            $event.preventDefault();
+            $timeout(function(){
+                Buildfire.actionItems.list(actionItems, options, callback);	
+            });
           }
         };
 
