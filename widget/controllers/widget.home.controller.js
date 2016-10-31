@@ -206,7 +206,7 @@
           }
         };
 
-        WidgetHome.openLinks = function (actionItems) {
+        WidgetHome.openLinks = function (actionItems, $event) {
           if (actionItems && actionItems.length) {
             var options = {};
             var callback = function (error, result) {
@@ -214,7 +214,8 @@
                 console.error('Error:', error);
               }
             };
-            Buildfire.actionItems.list(actionItems, options, callback);
+			$event.preventDefault();
+			Buildfire.actionItems.list(actionItems, options, callback);
           }
         };
 
