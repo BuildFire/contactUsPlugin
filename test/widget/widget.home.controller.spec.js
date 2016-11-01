@@ -1,8 +1,8 @@
 describe('Unit : contactUs Plugin widget.home.controller.js', function () {
-    var WidgetHome, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q, view;
+    var WidgetHome, scope, $rootScope, $controller, Buildfire, ActionItems, TAG_NAMES, STATUS_CODE, LAYOUTS, STATUS_MESSAGES, CONTENT_TYPE, q, view, $event, $timeout;
     beforeEach(module('contactUsPluginWidget'));
     var editor;
-    beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _TAG_NAMES_, _STATUS_CODE_, _LAYOUTS_, _STATUS_MESSAGES_) {
+    beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _TAG_NAMES_, _STATUS_CODE_, _LAYOUTS_, _STATUS_MESSAGES_, _$timeout_) {
         $rootScope = _$rootScope_;
         q = _$q_;
         scope = $rootScope.$new();
@@ -37,6 +37,11 @@ describe('Unit : contactUs Plugin widget.home.controller.js', function () {
                 list: jasmine.createSpy()
             }
         };
+        $event = {
+            preventDefault: function(){
+            }
+        };
+        $timeout = _$timeout_;
         ActionItems = jasmine.createSpyObj('ActionItems', ['showDialog']);
         Buildfire.components.carousel = jasmine.createSpyObj('Buildfire.components.carousel', ['editor', 'onAddItems', "view"]);
 
@@ -49,6 +54,7 @@ describe('Unit : contactUs Plugin widget.home.controller.js', function () {
             Buildfire: Buildfire,
             TAG_NAMES: TAG_NAMES,
             ActionItems: ActionItems,
+			$event: $event,
             STATUS_CODE: STATUS_CODE,
             CONTENT_TYPE: CONTENT_TYPE,
             LAYOUTS: LAYOUTS,
@@ -115,12 +121,13 @@ describe('Unit : contactUs Plugin widget.home.controller.js', function () {
 
     describe('WidgetHome.openLinks', function () {
         it('should pass if it calls actionItems list if the actionItems is valid and is not empty', function () {
-            WidgetHome.openLinks([{a: 1}]);
+            WidgetHome.openLinks([{a: 1}], $event);
+			$timeout.flush();
             expect(Buildfire.actionItems.list).toHaveBeenCalled();
         });
 
         it('should pass if it doesnt call actionItems list method if the actionItems is empty', function () {
-            WidgetHome.openLinks([]);
+            WidgetHome.openLinks([], $event);
             expect(Buildfire.actionItems.list).not.toHaveBeenCalled();
         });
     });
