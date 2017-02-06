@@ -153,7 +153,7 @@ describe('Unit : contactUs Plugin widget.home.controller.js', function () {
         it('should pass if it returns html when valid string is passed', function () {
             WidgetHome.device = {platform: 'ios'};
             WidgetHome.onAddressClick(1, 1);
-            expect(spy).toHaveBeenCalledWith('maps://maps.google.com/maps?daddr=1,1', '_system');
+            expect(spy).toHaveBeenCalledWith('maps://maps.apple.com?q=1,1', '_system');
         });
 
         it('should pass if it returns html when valid string is passed', function () {
