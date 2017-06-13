@@ -1,26 +1,28 @@
 {
-  "author":"BuildFire"
-  ,"pluginName":"Contact Us"
-  ,"pluginDescription":"The Contact Us plugin enables you to provide important contact information to your users such as hours of operation, instant directions, phone number, email, social links, and more."
-  ,"supportEmail":"support@buildfire.com"
-  ,"supportSite":"http://support.appdocumentation.com/knowledge-base/contact-us-plugin/"
-  ,"pluginIcon":"icon.png"
-  ,"offlineModeEnabled": true
-  ,"licenseKey": "a4sd6-as654asd6as545a65s4d6a-65asd564a"
-  ,"control":{
-    "content":{
-      "enabled":true
+  "author": "BuildFire",
+  "pluginName": "Contact Us",
+  "pluginDescription": "The Contact Us plugin enables you to provide important contact information to your users such as hours of operation, instant directions, phone number, email, social links, and more.",
+  "supportEmail": "support@buildfire.com",
+  "supportSite": "http://support.appdocumentation.com/knowledge-base/contact-us-plugin/",
+  "pluginIcon": "icon.png",
+  "offlineModeEnabled": true,
+  "licenseKey": "a4sd6-as654asd6as545a65s4d6a-65asd564a",
+  "control": {
+    "content": {
+      "enabled": true
+    },
+    "design": {
+      "enabled": true
+    },
+    "settings": {
+      "enabled": false
     }
-    , "design":{
-      "enabled":true
-    }
-    , "settings":{
-      "enabled":false
-    }
-  }
-  ,"widget":{
-
   },
-  "features" : [],
-  "languages" : ["en"]
+  "widget": {
+    "enabled": true
+  },
+  "features": [],
+  "languages": [
+    "en"
+  ]
 }
