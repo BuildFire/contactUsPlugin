@@ -2,6 +2,7 @@
   "name": "contactusplugin",
   "version": "1.0.0",
   "description": "",
+   "supportSite":"http://learn.appdocumentation.com/plugin-tutorials/contact-us-plugin",
   "scripts": {
     "postinstall": "./node_modules/.bin/bower install",
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
