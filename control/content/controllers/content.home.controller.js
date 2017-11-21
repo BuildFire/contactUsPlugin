@@ -295,7 +295,7 @@
 
                     ContentHome.currentAddress = ContentHome.data.content.address.location;
                     ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 ContentHome.setDraggedLocation = function (data) {
                     if (!ContentHome.data.content)
@@ -307,31 +307,47 @@
                     };
                     ContentHome.currentAddress = ContentHome.data.content.address.location;
                     ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 ContentHome.setCoordinates = function () {
+                    var latlng = '';
+                    console.log('ng-enter---------------------called------------------', ContentHome.currentAddress);
                     function successCallback(resp) {
+                        console.log('Successfully validated coordinates-----------', resp);
                         if (resp) {
-                            ContentHome.data.content.address = {
-                                type: ADDRESS_TYPE.COORDINATES,
-                                location: ContentHome.currentAddress,
-                                location_coordinates: [ContentHome.currentAddress.split(",")[0].trim(), ContentHome.currentAddress.split(",")[1].trim()]
+
+
+                            var lat = parseFloat(ContentHome.currentAddress.split(",")[0].trim()),
+                                lng = parseFloat(ContentHome.currentAddress.split(",")[1].trim());
+
+                            ContentHome.data.address = {
+                                lng: lng,
+                                lat: lat,
+                                aName: ContentHome.currentAddress
                             };
-                            ContentHome.currentAddress = ContentHome.data.content.address.location;
-                            ContentHome.currentCoordinates = ContentHome.data.content.address.location_coordinates;
+
+                            ContentHome.currentAddress = ContentHome.currentAddress;
+                            ContentHome.currentCoordinates = [lng, lat];
+                            ContentHome.setLocation({location: ContentHome.currentAddress, coordinates: ContentHome.currentCoordinates});
+                            if (!$scope.$$phase)$scope.$digest();
                         } else {
-                            errorCallback();
+                            //errorCallback();
                         }
                     }
 
                     function errorCallback(err) {
+                        console.error('Error while validating coordinates------------', err);
                         ContentHome.validCoordinatesFailure = true;
                         $timeout(function () {
                             ContentHome.validCoordinatesFailure = false;
                         }, 5000);
                     }
 
-                    Utils.validLongLats(ContentHome.currentAddress).then(successCallback, errorCallback);
+                    if (ContentHome.currentAddress) {
+                        latlng = ContentHome.currentAddress.split(',')[1] + "," + ContentHome.currentAddress.split(',')[0]
+                    }
+
+                    Utils.validLongLats(latlng).then(successCallback, errorCallback);
                 };
                 ContentHome.clearData = function () {
                     if (!ContentHome.currentAddress) {
@@ -368,6 +384,9 @@
                                     error();
                                 }
                             });
+                        }  else if (ContentHome.currentAddress && ContentHome.currentAddress.split(',').length) {
+                            console.log('Location found---------------------', ContentHome.currentAddress.split(',').length, ContentHome.currentAddress.split(','));
+                            ContentHome.setCoordinates();
                         }
                         else {
                             error();
