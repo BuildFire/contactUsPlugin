@@ -46,13 +46,7 @@
     height: 100%;
 }
 
-.hide {
-    display: none !important;
-}
 
-.show {
-    display: block !important;
-}
 #carousel {
     width: 100%;
     min-width:100%;
