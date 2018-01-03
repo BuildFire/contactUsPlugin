@@ -13,45 +13,12 @@
 
         //Refresh data on pulling the tile bar
         function initCarousel(carouselImages){
-
           var carouselContainer = document.getElementById("carousel");
-          if (carouselImages && carouselImages.length > 0) {
-            /*
-             if more than one image add carousel else add image directly to the carousel container
-             */
-            if (carouselImages.length > 1) {
-
-              var carousel = new buildfire.components.carousel.view({
-                selector: carouselContainer,
-                items: carouselImages,
-                speed: 1000
-              });
-
-            } else {
-              //add image directly to carousel container without adding the carousel lib
-              carouselContainer.innerHTML = '';
-              //append image tag
-              var img = document.createElement('img');
-              img.setAttribute("src", buildfire.imageLib.cropImage(carouselImages[0].iconUrl, {
-                width: window.innerWidth,
-                height: Math.ceil(9 * (window.innerWidth) / 16)
-              }));
-              img.alt = "Carousel Image";
-              carouselContainer.appendChild(img);
-              img.addEventListener("click", function () {
-                buildfire.actionItems.execute(carouselImages[0], function (err, result) {
-                  if (err) {
-                    console.warn('Error openning slider action: ', err);
-                  }
-                });
-              });
-            }
-
-            carouselContainer.classList.remove('hide');
-          } else {
-            carouselContainer.classList.add('hide');
-          }
-
+          var carousel = new buildfire.components.carousel.view({
+            selector: carouselContainer,
+            items: carouselImages,
+            speed: 1000
+          });
         }
         buildfire.datastore.onRefresh(function () {
           init(function (err) {
