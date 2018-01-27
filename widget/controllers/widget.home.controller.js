@@ -12,21 +12,17 @@
         WidgetHome.view = null;
 
         //Refresh data on pulling the tile bar
-        function initCarousel(carouselImages){
-          var carouselContainer = document.getElementById("carousel");
-          var carousel = new buildfire.components.carousel.view({
-            selector: carouselContainer,
-            items: carouselImages,
-            speed: 1000
-          });
-        }
+
         buildfire.datastore.onRefresh(function () {
           init(function (err) {
             if (!err) {
-
+              if (!WidgetHome.view) {
+                WidgetHome.view = new Buildfire.components.carousel.view("#carousel", []);
+              }
               if (WidgetHome.data.content && WidgetHome.data.content.carouselImages) {
-                initCarousel(WidgetHome.data.content.carouselImages);
-
+                WidgetHome.view.loadItems(WidgetHome.data.content.carouselImages);
+              } else {
+                WidgetHome.view.loadItems([]);
               }
             }
           });
@@ -147,8 +143,13 @@
         init(function(){});
         $scope.$on('$viewContentLoaded', function () {
           $rootScope.$on("Carousel:LOADED", function () {
+            if (!WidgetHome.view) {
+              WidgetHome.view = new Buildfire.components.carousel.view("#carousel", []);
+            }
             if (WidgetHome.data.content && WidgetHome.data.content.carouselImages) {
-              initCarousel(WidgetHome.data.content.carouselImages);
+              WidgetHome.view.loadItems(WidgetHome.data.content.carouselImages);
+            } else {
+              WidgetHome.view.loadItems([]);
             }
           });
         });
@@ -177,8 +178,8 @@
               WidgetHome.view = null;
             }
             else {
-             {
-                initCarousel(WidgetHome.data.content.carouselImages);
+              if (WidgetHome.view) {
+                WidgetHome.view.loadItems(WidgetHome.data.content.carouselImages);
               }
             }
             currentListLayout = WidgetHome.data.design.listLayout;
