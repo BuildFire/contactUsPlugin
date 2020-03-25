@@ -5,6 +5,7 @@
    "supportSite":"http://learn.appdocumentation.com/plugin-tutorials/contact-us-plugin",
   "scripts": {
     "postinstall": "./node_modules/.bin/bower install",
+    "build": "cd .. && rm -rf contactUsPlugin.zip && zip -r contactUsPlugin.zip contactUsPlugin/ -x *node_modules* *.git*",
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
   },
   "license": "ISC",
