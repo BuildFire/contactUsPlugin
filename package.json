@@ -2,7 +2,7 @@
   "name": "contactusplugin",
   "version": "1.0.0",
   "description": "",
-   "supportSite":"http://learn.appdocumentation.com/plugin-tutorials/contact-us-plugin",
+  "supportSite": "http://learn.appdocumentation.com/plugin-tutorials/contact-us-plugin",
   "scripts": {
     "postinstall": "./node_modules/.bin/bower install",
     "build": "cd .. && rm -rf contactUsPlugin.zip && zip -r contactUsPlugin.zip contactUsPlugin/ -x *node_modules* *.git*",
