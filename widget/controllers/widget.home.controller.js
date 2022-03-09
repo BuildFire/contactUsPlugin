@@ -226,6 +226,11 @@
         };
 
         WidgetHome.openLinks = function (actionItems, $event) {
+          actionItems.map((el, index) => {
+            if (el.action === 'callNumber') 
+              actionItems[index].phoneNumber = el.phoneNumber.replace(/\s/g, '');
+          });
+
           if (actionItems && actionItems.length) {
             var options = {};
             var callback = function (error, result) {
