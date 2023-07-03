@@ -1,0 +1,19 @@
+{
+    "sections": {
+        "general": {
+            "title": "General",
+            "labels": {
+                "contactInfo": {
+                    "title": "Contact Info",
+                    "defaultValue": "Contact Info",
+                    "placeholder": "Contact Info"
+                },
+                "Done": {
+                    "title": "Done",
+                    "defaultValue": "Done",
+                    "placeholder": "Done"
+                }
+            }
+        }
+    }
+}

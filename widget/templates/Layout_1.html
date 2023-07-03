@@ -7,8 +7,9 @@
     </div>
     <div class="padded text-center text-overlay"
          ng-if="WidgetHome.data.content.links[0] || WidgetHome.data.content.addressTitle||WidgetHome.data.content.address.location">
-      <a class="btn btn-primary" ng-show="WidgetHome.data.content.links[0]"
-         ng-click="WidgetHome.openLinks(WidgetHome.data.content.links, $event)">Contact
+      <a class="contact-info-button btn btn-primary" ng-show="WidgetHome.data.content.links[0]"
+         ng-click="WidgetHome.openLinks(WidgetHome.data.content.links, $event)"
+         bfString="general.contactInfo">Contact
         info</a>
       <hr class="small" ng-show="WidgetHome.data.content.links[0]">
       <p class="margin-bottom-zero text-primary"

@@ -1,4 +1,19 @@
 /* Plugin CSS */
+.contact-plugin.layout1 .contact-info-button{
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.contact-plugin.layout2 .contact-info-button{
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .contact-plugin.layout2 .contact-maps{
 	position:relative;
 }
@@ -51,7 +66,7 @@
 }
 
 .mapSize{
-height: 192px;
+    height: 192px;
 }
 
 .holder .info-bar{
