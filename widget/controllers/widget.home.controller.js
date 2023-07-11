@@ -7,6 +7,7 @@
         var WidgetHome = this;
         var currentListLayout = null;
         WidgetHome.data = {};
+        WidgetHome.closeButtonText = 'Done';
 
         //create new instance of buildfire carousel viewer
         WidgetHome.view = null;
@@ -150,6 +151,12 @@
                 console.log("Error while getting the device context data", error)
             };
             buildfire.getContext(getDevice);
+
+            buildfire.language.get({stringKey: "general.done"}, (err, result) => {
+              if (err) return console.error("Error while retrieving string value", err);
+              WidgetHome.closeButtonText = result;
+            });
+
             cb();
 
           }
@@ -232,7 +239,7 @@
           });
 
           if (actionItems && actionItems.length) {
-            var options = {};
+            var options = {closeButtonText : WidgetHome.closeButtonText};
             var callback = function (error, result) {
               if (error) {
                 console.error('Error:', error);

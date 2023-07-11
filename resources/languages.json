@@ -8,9 +8,10 @@
                     "defaultValue": "Contact Info",
                     "placeholder": "Contact Info"
                 },
-                "Done": {
+                "done": {
                     "title": "Done",
                     "defaultValue": "Done",
+                    "maxLength":15,
                     "placeholder": "Done"
                 }
             }
