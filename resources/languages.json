@@ -1,0 +1,22 @@
+{
+    "sections": {
+        "general": {
+            "title": "General",
+            "labels": {
+                "contactInfo": {
+                    "title": "Contact Info",
+                    "defaultValue": "Contact Info",
+                    "placeholder": "Contact Info",
+                    "toolTip":"Contact Info button label"
+                },
+                "done": {
+                    "title": "Done",
+                    "defaultValue": "Done",
+                    "maxLength":15,
+                    "placeholder": "Done",
+                    "toolTip":"Close contact information dialog label"
+                }
+            }
+        }
+    }
+}
