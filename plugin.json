@@ -1,7 +1,7 @@
 {
   "author": "BuildFire",
   "pluginName": "Contact Us",
-  "pluginDescription": "The Contact Us plugin enables you to provide important contact information to your users such as hours of operation, instant directions, phone number, email, social links, and more. Keywords: contact, contacts",
+  "pluginDescription": "Enhance customer experience with our contact management solution.",
   "supportEmail": "support@buildfire.com",
   "supportSite": "http://learn.appdocumentation.com/plugin-tutorials/contact-us-plugin/",
   "pluginIcon": "icon.png",
@@ -38,5 +38,31 @@
   "features": [],
   "languages": [
     "en"
+  ],
+  "media": [
+    {
+      "type": "image-resource",
+      "path": "1-Plugin.png"
+    },
+    {
+      "type": "image-resource",
+      "path": "2-Benefits.png"
+    },
+    {
+      "type": "image-resource",
+      "path": "3-Use-Cases.png"
+    },
+    {
+      "type": "image-resource",
+      "path": "4-Content-Tab.png"
+    },
+    {
+      "type": "image-resource",
+      "path": "5-Analytics-Tab.png"
+    },
+    {
+      "type": "youtube-video",
+      "path": "https://www.youtube.com/watch?v=1feRDJyp9U0"
+    }
   ]
 }
