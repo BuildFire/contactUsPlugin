@@ -42,23 +42,23 @@
   "media": [
     {
       "type": "image-resource",
-      "path": "1-Plugin.png"
+      "path": "1-plugin.png"
     },
     {
       "type": "image-resource",
-      "path": "2-Benefits.png"
+      "path": "2-benefits.png"
     },
     {
       "type": "image-resource",
-      "path": "3-Use-Cases.png"
+      "path": "3-use-cases.png"
     },
     {
       "type": "image-resource",
-      "path": "4-Content-Tab.png"
+      "path": "4-content-tab.png"
     },
     {
       "type": "image-resource",
-      "path": "5-Analytics-Tab.png"
+      "path": "5-analytics-tab.png"
     },
     {
       "type": "youtube-video",
