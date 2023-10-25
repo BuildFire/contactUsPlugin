@@ -158,4 +158,218 @@
         }
       }
     }])
+    .factory('DefaultInfo', ['LAYOUTS', function(LAYOUTS) {
+      return {
+        content: {
+          carouselImages: [],
+          description: '<p>&nbsp;<br></p>',
+          addressTitle: '',
+          address: {
+            type:'',
+            location:'',
+            location_coordinates: [],
+          },
+          links: [],
+          showMap: false
+        },
+        design: {
+          listLayout: LAYOUTS.listLayouts[0].name,
+          backgroundImage: ''
+        }
+      }
+    }])
+    .factory('AIStateSeeder', ['DefaultInfo', 'DataStore', 'TAG_NAMES', function(DefaultInfo, DataStore, TAG_NAMES, ) {
+      let stateSeederInstance;
+      let ContactInfo = DefaultInfo;
+      const jsonTemplate = {
+        imagesURLs: [],
+        description: '',
+        phoneNumber: '',
+        email: '',
+        location: '',
+      }
+
+      const getAddress = function(location) {
+        return new Promise((resolve) => {
+          if (location) {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({'address': location}, function(result, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                resolve(
+                  {
+                    type: 'Location',
+                    location: location,
+                    location_coordinates: [result[0].geometry.location.lng(), result[0].geometry.location.lat()] 
+                  });
+              } else {
+                resolve({
+                  type: 'Location',
+                  location: location,
+                  location_coordinates: [] 
+                });
+              }
+            })
+          } else {
+            resolve(null);
+          }
+        })
+      }
+
+      const parseImageURL = function(url) {
+        const optimizedURL = url.replace('1080x720', '100x100'); 
+        return new Promise((resolve) => {
+          if (url.includes("http")){
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", optimizedURL);
+            xhr.onerror = (error) => {
+              console.warn('provided URL is not a valid image', error);
+              resolve('');
+            }
+            xhr.onload = () => {
+              if (xhr.responseURL.includes('source-404') || xhr.status == 404) {
+                return resolve('');
+              } else {
+                return resolve(xhr.responseURL.replace('h=100', 'h=720').replace('w=100', 'w=1080'));
+              }
+            };
+            xhr.send();
+          } else resolve('');
+        });
+      }
+
+      const getCurrentUser = function () {
+        return new Promise((resolve, reject) => {
+          buildfire.auth.getCurrentUser((err, currentUser) => {
+              if (err) reject(err);
+              resolve(currentUser);
+          });
+        });
+      }
+
+      const _applyDefaults = function (data) {
+        // create HTML div element for the description, to avoid breaking the WYSIWYG
+        const descriptionElement = document.createElement('div');
+        descriptionElement.innerHTML = data.description || '';
+        // default address in case there was no address provided
+        let address = {
+          type: 'Location',
+          location: '501 Pacific Hwy, San Diego, CA 92101, USA',
+          location_coordinates: [-117.17096400000003,32.7100444]
+        }
+        if (data.address) {
+          address = data.address;
+        }
+        if (data.imagesURLs && data.imagesURLs.length) {
+          for (let i = 0; i < data.imagesURLs.length; i++) {
+            data.imagesURLs[i] = {
+              action: 'noAction',
+              iconUrl: data.imagesURLs[i],
+              title: 'image'
+            }
+          }
+        } else {
+          data.imagesURLs = [];
+        }
+
+        // add links based on the contact info provided 
+        let links = [];
+        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        if (data.email && data.email.match(emailRegex)) {
+          links.push({
+            title: 'Email',
+            action:'sendEmail',
+            email: data.email
+          });
+        }
+        if (data.phoneNumber) {
+          links.push({
+            title:'Call',
+            action:'callNumber',
+            phoneNumber: data.phoneNumber
+          });
+        }
+        return {
+          showMap: true,
+          carouselImages: data.imagesURLs,
+          description : descriptionElement.outerHTML,
+          addressTitle: 'Navigate to Location',
+          address: address,
+          links: links,
+        }
+      }
+
+      const handleAIReq = function(callback ,err, response) {
+        if (
+          err ||
+          !response ||
+          typeof response !== 'object' ||
+          !Object.keys(response).length || !response.data
+        ) {
+          return buildfire.dialog.toast({
+            message: 'Bad AI request, please try changing your request.',
+            type: 'danger',
+          });
+        }
+        
+        let optimizedURLs = [];
+        let promises = response.data.imagesURLs.map(url => {
+          return parseImageURL(url)
+        });
+
+        Promise.allSettled(promises).then(parsingResults => {
+          parsingResults.forEach(parsingResult => {
+            if (parsingResult.status == 'fulfilled' && parsingResult.value) {
+              optimizedURLs.push(parsingResult.value);
+            }
+          })
+          response.data.imagesURLs = optimizedURLs;
+          DataStore.get(TAG_NAMES.CONTACT_INFO).then(info => {
+            if (info && info.data && Object.keys(info.data).length) {
+              ContactInfo = info.data;
+            }
+            getAddress(response.data.location).then(locationResult => {
+              response.data.address = locationResult;
+              ContactInfo.content = _applyDefaults(response.data);
+              DataStore.save(ContactInfo, TAG_NAMES.CONTACT_INFO).then(() => {
+                stateSeederInstance?.requestResult?.complete();
+                callback();
+              }).catch(err => {
+                stateSeederInstance?.requestResult?.complete();
+                console.warn('error saving data to datastore', err);
+                return buildfire.dialog.toast({
+                  message: 'Something went wrong, try again later.',
+                  type: 'danger',
+                });
+              });
+            });
+          }).catch(err => {
+            stateSeederInstance?.requestResult?.complete();
+            console.warn('error getting data from datastore', err);
+            return buildfire.dialog.toast({
+              message: 'Something went wrong, try again later.',
+              type: 'danger',
+            });
+          });
+        });
+      };
+
+      return {
+        initStateSeeder: function(callback) {
+          getCurrentUser().then(user => {
+            stateSeederInstance = new buildfire.components.aiStateSeeder({
+              generateOptions: {
+              userMessage: `Generate a contact us information related to [business-type] located in [San Diego, CA, USA].\nFor phone number use [+1 555 555-1234].\nFor email use [${user?.email || ''}].`,
+              maxRecords: 5,
+              systemMessage:
+                  'images are two 1080x720 images URLs related to location, use source.unsplash.com for images, URL should not have premium_photo or source.unsplash.com/random. return description as HTML',
+              jsonTemplate: jsonTemplate,
+              callback: handleAIReq.bind(this, callback),
+              hintText: 'Replace values between brackets to match your requirements.',
+              },
+          }).smartShowEmptyState();
+          });
+        return true;
+        },
+      }
+    }])
 })(window.angular, window.buildfire);
