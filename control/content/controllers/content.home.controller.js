@@ -3,9 +3,10 @@
 (function (angular) {
     angular
         .module('contactUsPluginContent')
-        .controller('ContentHomeCtrl', ['$scope', 'Buildfire', 'DataStore', 'TAG_NAMES', 'STATUS_CODE', 'ADDRESS_TYPE', 'Utils', '$timeout', 'DefaultInfo', 'AIStateSeeder',
-            function ($scope, Buildfire, DataStore, TAG_NAMES, STATUS_CODE, ADDRESS_TYPE, Utils, $timeout, DefaultInfo, AIStateSeeder) {
-                AIStateSeeder.initStateSeeder(() => {init()});
+        .controller('ContentHomeCtrl', ['$scope', 'Buildfire', 'DataStore', 'TAG_NAMES', 'STATUS_CODE', 'ADDRESS_TYPE', 'Utils', '$timeout', 'DefaultInfo', 'AIStateSeeder', '$rootScope',
+            function ($scope, Buildfire, DataStore, TAG_NAMES, STATUS_CODE, ADDRESS_TYPE, Utils, $timeout, DefaultInfo, AIStateSeeder, $rootScope) {
+                AIStateSeeder.initStateSeeder();
+                $rootScope.initContentHome = () => {init()};
                 var _data = DefaultInfo;
                 var ContentHome = this;
                ContentHome.data = angular.copy(_data);

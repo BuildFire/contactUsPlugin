@@ -178,7 +178,7 @@
         }
       }
     }])
-    .factory('AIStateSeeder', ['DefaultInfo', 'DataStore', 'TAG_NAMES', function(DefaultInfo, DataStore, TAG_NAMES, ) {
+    .factory('AIStateSeeder', ['DefaultInfo', 'DataStore', 'TAG_NAMES', '$rootScope', function(DefaultInfo, DataStore, TAG_NAMES, $rootScope ) {
       let stateSeederInstance;
       let ContactInfo = DefaultInfo;
       const jsonTemplate = {
@@ -198,7 +198,7 @@
                 resolve(
                   {
                     type: 'Location',
-                    location: location,
+                    location: result[0].formatted_address || location,
                     location_coordinates: [result[0].geometry.location.lng(), result[0].geometry.location.lat()] 
                   });
               } else {
@@ -207,13 +207,13 @@
                   location: location,
                   location_coordinates: [] 
                 });
-              }
-            })
+              };
+            });
           } else {
             resolve(null);
-          }
-        })
-      }
+          };
+        });
+      };
 
       const parseImageURL = function(url) {
         const optimizedURL = url.replace('1080x720', '100x100'); 
@@ -278,7 +278,8 @@
           links.push({
             title: 'Email',
             action:'sendEmail',
-            email: data.email
+            email: data.email,
+            subject: 'Contact US',
           });
         }
         if (data.phoneNumber) {
@@ -298,7 +299,7 @@
         }
       }
 
-      const handleAIReq = function(callback ,err, response) {
+      const handleAIReq = function(err, response) {
         if (
           err ||
           !response ||
@@ -332,7 +333,7 @@
               ContactInfo.content = _applyDefaults(response.data);
               DataStore.save(ContactInfo, TAG_NAMES.CONTACT_INFO).then(() => {
                 stateSeederInstance?.requestResult?.complete();
-                callback();
+                $rootScope.initContentHome();
               }).catch(err => {
                 stateSeederInstance?.requestResult?.complete();
                 console.warn('error saving data to datastore', err);
@@ -354,16 +355,16 @@
       };
 
       return {
-        initStateSeeder: function(callback) {
+        initStateSeeder: function() {
           getCurrentUser().then(user => {
             stateSeederInstance = new buildfire.components.aiStateSeeder({
               generateOptions: {
-              userMessage: `Generate a contact us information related to [business-type] located in [San Diego, CA, USA].\nFor phone number use [+1 555 555-1234].\nFor email use [${user?.email || ''}].`,
+              userMessage: `Generate a contact us information related to [business-type] located in [target-region].\nFor phone number use [+1 555 555-1234].\nFor email use [${user?.email || ''}].`,
               maxRecords: 5,
               systemMessage:
                   'images are two 1080x720 images URLs related to location, use source.unsplash.com for images, URL should not have premium_photo or source.unsplash.com/random. return description as HTML',
               jsonTemplate: jsonTemplate,
-              callback: handleAIReq.bind(this, callback),
+              callback: handleAIReq.bind(this),
               hintText: 'Replace values between brackets to match your requirements.',
               },
           }).smartShowEmptyState();
