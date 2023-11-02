@@ -135,5 +135,24 @@
         }
       };
     }])
-  ;
+    .factory('DefaultInfo', ['LAYOUTS', function(LAYOUTS) {
+      return {
+        content: {
+          carouselImages: [],
+          description: '<p>&nbsp;<br></p>',
+          addressTitle: '',
+          address: {
+            type:'',
+            location:'',
+            location_coordinates:[]
+          },
+          links: [],
+          showMap: false
+        },
+        design: {
+          listLayout: LAYOUTS.listLayouts[0].name,
+          backgroundImage: ''
+        }
+      }
+    }])
 })(window.angular, window.buildfire);

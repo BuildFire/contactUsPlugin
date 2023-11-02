@@ -2,8 +2,8 @@
 
 (function (angular, buildfire) {
   angular.module('contactUsPluginWidget')
-    .controller('WidgetHomeCtrl', ['$routeParams', 'Buildfire', 'DataStore', '$scope', 'TAG_NAMES', 'Location', 'LAYOUTS', '$rootScope', '$sce', '$timeout',
-      function ($routeParams, Buildfire, DataStore, $scope, TAG_NAMES, Location, LAYOUTS, $rootScope, $sce, $timeout) {
+    .controller('WidgetHomeCtrl', ['Buildfire', 'DataStore', '$scope', 'TAG_NAMES',  'LAYOUTS', '$rootScope', '$sce', '$timeout', 'DefaultInfo',
+      function (Buildfire, DataStore, $scope, TAG_NAMES, LAYOUTS, $rootScope, $sce, $timeout, DefaultInfo) {
         var WidgetHome = this;
         var currentListLayout = null;
         WidgetHome.data = {};
@@ -29,38 +29,7 @@
           });
         });
 
-        var _dummyData = {
-          content: {
-            showMap: true,
-            carouselImages: [{
-              action: "noAction",
-              iconUrl: "http://buildfire.imgix.net/1462345835888-04866688400506973/6ac49110-11c7-11e6-92ea-27ed66023d52.jpeg?fit=crop&w=342&h=193",
-              title: "image"
-            },
-            {
-              action: "noAction",
-              iconUrl: "http://buildfire.imgix.net/1462345835888-04866688400506973/6bf3c240-11c7-11e6-ad08-375cc71b6ca7.jpg?fit=crop&w=342&h=193",
-              title: "image"
-            }],
-            description: "<p>With the wysiwyg, you can include text and lists, embed images, embed videos, and link to webpages, emails, phone numbers and more. Check out the tutorial on the wysiwyg for detailed information.</p>",
-            addressTitle: "",
-            address: {
-              type: "Location",
-              location: "501 Pacific Hwy, San Diego, CA 92101, USA",
-              location_coordinates: [-117.17096400000003, 32.7100444]
-            },
-            links: [{
-              "title": "Call",
-              "action": "callNumber",
-              "phoneNumber": "6195551234"
-            }, { "title": "Email", "action": "sendEmail" }]
-          },
-          design: {
-            listLayout: "Layout_1",
-            backgroundImage: ""
-          }
-        };
-
+        var _data = DefaultInfo;
         /*declare the device width heights*/
         $rootScope.deviceHeight = window.innerHeight;
         $rootScope.deviceWidth = window.innerWidth || 320;
@@ -124,7 +93,7 @@
           var success = function (result) {
             if (!result.id) {
               console.log('NO DATA AVAILABLE');
-              WidgetHome.data = _dummyData;
+              WidgetHome.data = _data;
             } else {
               WidgetHome.data = result.data;
             }

@@ -3,8 +3,8 @@
 (function (angular, window) {
   angular
     .module('contactUsPluginDesign')
-    .controller('DesignHomeCtrl', ['$scope','Buildfire','LAYOUTS','DataStore','TAG_NAMES',
-      function ($scope, Buildfire, LAYOUTS,DataStore,TAG_NAMES) {
+    .controller('DesignHomeCtrl', ['$scope','Buildfire','LAYOUTS','DataStore','TAG_NAMES', 'DefaultInfo',
+      function ($scope, Buildfire, LAYOUTS, DataStore, TAG_NAMES, DefaultInfo) {
         var DesignHome = this;
         var DesignHomeMaster;
         DesignHome.layouts = {
@@ -14,37 +14,7 @@
           ]
         };
 
-        //init dummy data
-        var _dummyData= {
-          content: {
-            showMap:true,
-            carouselImages: [{
-              action: "noAction",
-              iconUrl: "http://buildfire.imgix.net/1462345835888-04866688400506973/6ac49110-11c7-11e6-92ea-27ed66023d52.jpeg?fit=crop&w=342&h=193",
-              title: "image"
-            },
-              {
-                action: "noAction",
-                iconUrl: "http://buildfire.imgix.net/1462345835888-04866688400506973/6bf3c240-11c7-11e6-ad08-375cc71b6ca7.jpg?fit=crop&w=342&h=193",
-                title: "image"
-              }],
-            description : "<p>With the wysiwyg, you can include text and lists, embed images, embed videos, and link to webpages, emails, phone numbers and more. Check out the tutorial on the wysiwyg for detailed information.</p>",
-            addressTitle:"",
-            address:{
-              type:"Location",
-              location:"501 Pacific Hwy, San Diego, CA 92101, USA",
-              location_coordinates:[-117.17096400000003,32.7100444]
-            },
-            links:[{"title":"Call","action":"callNumber","phoneNumber":"6195551234"},{"title":"Email","action":"sendEmail"}]
-          },
-          design:{
-            listLayout:"Layout_1",
-            backgroundImage:""
-          }
-        };
-
-        DesignHomeMaster=_dummyData;
-
+        DesignHomeMaster = DefaultInfo;
 
         /*On layout click event*/
         DesignHome.changeItemLayout = function (layoutName) {
@@ -89,7 +59,7 @@
         };
 
         function init() {
-          var _data = _dummyData;
+          var _data = DefaultInfo;
 
           /* background image add </end>*/
           Buildfire.datastore.get(TAG_NAMES.CONTACT_INFO, function (err, data) {

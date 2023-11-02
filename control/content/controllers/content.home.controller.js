@@ -3,61 +3,13 @@
 (function (angular) {
     angular
         .module('contactUsPluginContent')
-        .controller('ContentHomeCtrl', ['$scope', 'Buildfire', 'LAYOUTS', 'DataStore', 'TAG_NAMES', 'STATUS_CODE', 'ADDRESS_TYPE', 'Utils', '$timeout',
-            function ($scope, Buildfire, LAYOUTS, DataStore, TAG_NAMES, STATUS_CODE, ADDRESS_TYPE, Utils, $timeout) {
-                var _data = {
-                    "content": {
-                        "carouselImages": [],
-                        "description": '<p>&nbsp;<br></p>',
-                        "addressTitle": "",
-                        "address": {
-                            type:"",
-                            location:"",
-                            location_coordinates:[]
-                        },
-                        "links": [],
-                        "showMap": false
-                    },
-                    "design": {
-                        "listLayout": LAYOUTS.listLayouts[0].name,
-                        "backgroundImage": ""
-                    }
-                };
-
-               // var initDummyFlag=true;
-
-                //init dummy data
-                var _dummyData= {
-                    content: {
-                        showMap:true,
-                        carouselImages: [{
-                            action: "noAction",
-                            iconUrl: "http://buildfire.imgix.net/1462345835888-04866688400506973/6ac49110-11c7-11e6-92ea-27ed66023d52.jpeg?fit=crop&w=342&h=193",
-                            title: "image"
-                             },
-                            {
-                                action: "noAction",
-                                iconUrl: "http://buildfire.imgix.net/1462345835888-04866688400506973/6bf3c240-11c7-11e6-ad08-375cc71b6ca7.jpg?fit=crop&w=342&h=193",
-                                title: "image"
-                            }],
-                        description : "<p>With the wysiwyg, you can include text and lists, embed images, embed videos, and link to webpages, emails, phone numbers and more. Check out the tutorial on the wysiwyg for detailed information.</p>",
-                        addressTitle:"",
-                        address:{
-                            type:"Location",
-                            location:"501 Pacific Hwy, San Diego, CA 92101, USA",
-                            location_coordinates:[-117.17096400000003,32.7100444]
-                        },
-                        links:[{"title":"Call","action":"callNumber","phoneNumber":"6195551234"},{"title":"Email","action":"sendEmail"}]
-                    },
-                    design:{
-                        listLayout:"Layout_1",
-                        backgroundImage:""
-                    },
-                    default : true
-                };
+        .controller('ContentHomeCtrl', ['$scope', 'Buildfire', 'DataStore', 'TAG_NAMES', 'STATUS_CODE', 'ADDRESS_TYPE', 'Utils', '$timeout', 'DefaultInfo', 'AIStateSeeder', '$rootScope',
+            function ($scope, Buildfire, DataStore, TAG_NAMES, STATUS_CODE, ADDRESS_TYPE, Utils, $timeout, DefaultInfo, AIStateSeeder, $rootScope) {
+                AIStateSeeder.initStateSeeder();
+                $rootScope.initContentHome = () => {init()};
+                var _data = DefaultInfo;
                 var ContentHome = this;
-                ContentHome.masterData = _dummyData;
-//                ContentHome.data = angular.copy(_data);
+               ContentHome.data = angular.copy(_data);
                 ContentHome.validCoordinatesFailure = false;
 
                 // create a new instance of the buildfire carousel editor
@@ -103,7 +55,7 @@
                     $scope.$digest();
                 };
 
-                updateMasterItem(_dummyData);
+                updateMasterItem(_data);
 
                 ContentHome.bodyWYSIWYGOptions = {
                     plugins: 'advlist autolink link image lists charmap print preview',
@@ -126,7 +78,6 @@
                 var init = function () {
                     var success = function (result) {
                         if (result && result.id && result.data) {
-                          //  initDummyFlag=false;
                             console.info('init success result:', result);
                             ContentHome.data = result.data;
                             if(!ContentHome.data) {
@@ -155,9 +106,9 @@
                             updateMasterItem(ContentHome.data);
                             if (tmrDelay)clearTimeout(tmrDelay);
                         }else{
-                            //initDummyFlag=true;
-                            ContentHome.data=_dummyData;
-                         //   $scope.$digest();
+
+                            ContentHome.data= _data;
+
                             if (ContentHome.data.content) {
                                 if (!ContentHome.data.content.carouselImages)
                                     editor.loadItems([]);

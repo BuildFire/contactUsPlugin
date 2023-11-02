@@ -48,6 +48,22 @@
               });
             }
           });
+          // fix google places autocomplete dropdown position
+          setTimeout(() => {
+            const target = document.querySelector('.pac-container');
+            if (target) {
+              const observer = new MutationObserver(() => {
+                document.querySelectorAll('.pac-item span, .pac-item')
+                  .forEach((n) => n.classList.add('needsclick'));
+                const autocompleteBoundaries = document.getElementById('googleMapAutocomplete').getBoundingClientRect();
+                target.style.top = (autocompleteBoundaries.top + autocompleteBoundaries.height )+ 'px';
+              });
+              observer.observe(target, { childList: true,     attributes: true,
+                characterData: true,
+              });
+            }
+            console.log('observer target :', target);
+          }, 2000);
         }
       };
     })
