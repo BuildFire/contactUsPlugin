@@ -72,7 +72,7 @@
 
         var changeTarget = function (description) {
 
-          var tempElement = document.createElement('html');
+          var tempElement = document.createElement('div');
           tempElement.innerHTML = description;
 
           var links = tempElement.getElementsByTagName('a');
