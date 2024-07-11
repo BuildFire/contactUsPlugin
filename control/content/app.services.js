@@ -199,13 +199,13 @@
                   {
                     type: 'Location',
                     location: result[0].formatted_address || location,
-                    location_coordinates: [result[0].geometry.location.lng(), result[0].geometry.location.lat()] 
+                    location_coordinates: [result[0].geometry.location.lng(), result[0].geometry.location.lat()]
                   });
               } else {
                 resolve({
                   type: 'Location',
                   location: location,
-                  location_coordinates: [] 
+                  location_coordinates: []
                 });
               };
             });
@@ -216,11 +216,10 @@
       };
 
       const parseImageURL = function(url) {
-        const optimizedURL = url.replace('1080x720', '100x100'); 
         return new Promise((resolve) => {
           if (url.includes("http")){
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", optimizedURL);
+            xhr.open("GET", url);
             xhr.onerror = (error) => {
               console.warn('provided URL is not a valid image', error);
               resolve('');
@@ -229,7 +228,7 @@
               if (xhr.responseURL.includes('source-404') || xhr.status == 404) {
                 return resolve('');
               } else {
-                return resolve(xhr.responseURL.replace('h=100', 'h=720').replace('w=100', 'w=1080'));
+                return resolve(xhr.responseURL);
               }
             };
             xhr.send();
@@ -271,7 +270,7 @@
           data.imagesURLs = [];
         }
 
-        // add links based on the contact info provided 
+        // add links based on the contact info provided
         let links = [];
         const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
         if (data.email && data.email.match(emailRegex)) {
@@ -304,14 +303,15 @@
           err ||
           !response ||
           typeof response !== 'object' ||
-          !Object.keys(response).length || !response.data
+          !Object.keys(response).length || !response.data || !response.data.imagesURLs || !response.data.imagesURLs.length
         ) {
+          stateSeederInstance?.requestResult?.complete();
           return buildfire.dialog.toast({
             message: 'Bad AI request, please try changing your request.',
             type: 'danger',
           });
         }
-        
+
         let optimizedURLs = [];
         let promises = response.data.imagesURLs.map(url => {
           return parseImageURL(url)
@@ -362,7 +362,7 @@
               userMessage: `Generate a contact us information related to [business-type] located in [target-region].\nFor phone number use [+1 555 555-1234].\nFor email use [${user?.email || ''}].`,
               maxRecords: 5,
               systemMessage:
-                  'images are two 1080x720 images URLs related to location, use source.unsplash.com for images, URL should not have premium_photo or source.unsplash.com/random. return description as HTML',
+                  'imagesURLs are two images related to the business type or the target region, topic should be transformed to kebab-case, use https://app.buildfire.com/api/stockImages/?topic={topic}&imageType=medium. return description as HTML',
               jsonTemplate: jsonTemplate,
               callback: handleAIReq.bind(this),
               hintText: 'Replace values between brackets to match your requirements.',
