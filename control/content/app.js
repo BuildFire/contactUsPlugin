@@ -8,7 +8,13 @@
         .when('/', {
           templateUrl: 'templates/home.html',
           controllerAs: 'ContentHome',
-          controller: 'ContentHomeCtrl'
+          controller: 'ContentHomeCtrl',
+          resolve: {
+            ScriptLoaderService: function (ScriptLoaderService) {
+              return ScriptLoaderService.loadScript();
+            }
+          }
+
         })
         .otherwise('/');
     }])
@@ -27,8 +33,13 @@
       }
     }])
     .service('ScriptLoaderService', ['$q', function ($q) {
-      this.loadScript = function (url) {
+      this.loadScript = function () {
         const deferred = $q.defer();
+
+        const {apiKeys} = buildfire.getContext();
+        const {googleMapKey} = apiKeys;
+        const url = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=${googleMapKey}`;
+
         const script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = url;
@@ -54,19 +65,6 @@
         return deferred.promise;
       };
     }])
-    .run(['ScriptLoaderService', function(ScriptLoaderService) {
-      const {apiKeys} = buildfire.getContext();
-      const {googleMapKey} = apiKeys;
-      const googleMapsURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=${googleMapKey}`;
-
-      ScriptLoaderService.loadScript(googleMapsURL)
-        .then(() => {
-          console.info("Successfully loaded Google's Maps SDK.");
-        })
-        .catch(() => {
-          console.error("Failed to load Google Maps SDK.");
-        });
-    }])
     .directive('googleLocationSearch', function () {
       return {
         restrict: 'A',
@@ -75,7 +73,6 @@
           var options = {
             types: ['geocode', 'establishment']
           };
-          if (!window.google) return ;
           var autocomplete = new google.maps.places.Autocomplete(element[0], options);
           autocomplete.addListener('place_changed', function () {
             var place = autocomplete.getPlace();

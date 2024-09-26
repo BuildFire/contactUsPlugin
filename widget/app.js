@@ -8,13 +8,16 @@
        * To make href urls safe on mobile
        */
       $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile|file):/);
-
-
       $routeProvider
         .when('/', {
           templateUrl: 'templates/home.html',
           controllerAs: 'WidgetHome',
-          controller: 'WidgetHomeCtrl'
+          controller: 'WidgetHomeCtrl',
+          resolve: {
+            ScriptLoaderService: function (ScriptLoaderService) {
+              return ScriptLoaderService.loadScript();
+            }
+          }
         })
         .otherwise('/');
     }])
@@ -40,81 +43,75 @@
         }
       };
     }])
-    .directive("googleMap",['ScriptLoaderService', function (ScriptLoaderService) {
+
+    .directive("googleMap", function () {
       return {
         template: "<div></div>",
         replace: true,
-        scope: {coordinates: '='},
+        scope: { coordinates: '=' },
         link: function (scope, elem, attrs) {
           scope.$watch('coordinates', function (newValue, oldValue) {
             if (newValue) {
-              ScriptLoaderService.loadScript()
-                .then(() => {
-                  scope.coordinates = newValue;
-                  if (scope.coordinates.length) {
-                    var map = new google.maps.Map(elem[0], {
-                      center: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
-                      zoomControl: false,
-                      streetViewControl: false,
-                      mapTypeControl: false,
-                      zoom: 15,
-                      mapTypeId: google.maps.MapTypeId.ROADMAP
-                    });
-                    var marker = new google.maps.Marker({
-                      position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
-                      map: map
-                    });
-                    var styleOptions = {
-                      name: "Report Error Hide Style"
-                    };
-                    var MAP_STYLE = [
-                      {
-                        stylers: [
-                          {visibility: "on"}
-                        ]
-                      }];
-                    var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
-                    map.mapTypes.set("Report Error Hide Style", mapType);
-                    map.setMapTypeId("Report Error Hide Style");
-                    marker.addListener('click', function () {
-                      if (buildfire.context.device && buildfire.context.device.platform.toLowerCase() == 'ios')
-                        buildfire.navigation.openWindow("maps://maps.apple.com?q=" + scope.coordinates[1] + "," + scope.coordinates[0], '_system');
-                      else
-                        buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0], '_system');
-                    });
-
-                  }
-                })
-                .catch(() => {
-                  console.error("Failed to load Google Maps SDK.");
+              scope.coordinates = newValue;
+              if (scope.coordinates.length) {
+                var map = new google.maps.Map(elem[0], {
+                  center: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
+                  zoomControl: false,
+                  streetViewControl: false,
+                  mapTypeControl: false,
+                  zoom: 15,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+                var marker = new google.maps.Marker({
+                  position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
+                  map: map
+                });
+                var styleOptions = {
+                  name: "Report Error Hide Style"
+                };
+                var MAP_STYLE = [
+                  {
+                    stylers: [
+                      {visibility: "on"}
+                    ]
+                  }];
+                var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
+                map.mapTypes.set("Report Error Hide Style", mapType);
+                map.setMapTypeId("Report Error Hide Style");
+                marker.addListener('click', function () {
+                  if (buildfire.context.device && buildfire.context.device.platform.toLowerCase() == 'ios')
+                    buildfire.navigation.openWindow("maps://maps.apple.com?q=" + scope.coordinates[1] + "," + scope.coordinates[0], '_system');
+                  else
+                    buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + scope.coordinates[1] + "," + scope.coordinates[0], '_system');
                 });
 
+              }
             }
           }, true);
         }
-      }
-    }])
+      };
+    })
     /*   .directive("backgroundImage", ['$filter', function ($filter) {
-         return {
-           restrict: 'A',
-           link: function (scope, element, attrs) {
-             var getImageUrlFilter = $filter("getImageUrl");
-             var setBackgroundImage = function (backgroundImage) {
-               if (backgroundImage) {
-                 element.css(
-                   'background', '#010101 url('
-                   + getImageUrlFilter(backgroundImage, 342, 770, 'resize')
-                   + ') repeat fixed top center');
-               } else {
-                 element.css('background', 'none');
-               }
-             };
-             attrs.$observe('backgroundImage', function (newValue) {
-               setBackgroundImage(newValue);
-             });
-           }
-         };
-       }])*/// Directive for adding  Image carousel on widget layout 2
+        return {
+          restrict: 'A',
+          link: function (scope, element, attrs) {
+            var getImageUrlFilter = $filter("getImageUrl");
+            var setBackgroundImage = function (backgroundImage) {
+              if (backgroundImage) {
+                element.css(
+                  'background', '#010101 url('
+                  + getImageUrlFilter(backgroundImage, 342, 770, 'resize')
+                  + ') repeat fixed top center');
+              } else {
+                element.css('background', 'none');
+              }
+            };
+            attrs.$observe('backgroundImage', function (newValue) {
+              setBackgroundImage(newValue);
+            });
+          }
+     };
+      }])*/// Directive for adding  Image carousel on widget layout 2
     .directive('imageCarousel', function () {
       return {
         restrict: 'A',
@@ -200,6 +197,7 @@
         return deferred.promise;
       };
     }])
+
     .run([function () {
       buildfire.navigation.onBackButtonClick = function () {
         buildfire.navigation._goBackOne();
@@ -282,5 +280,6 @@
         }
       }
     };
-  }]);
+    }]);
+
 })(window.angular, window.buildfire);
