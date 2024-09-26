@@ -135,7 +135,9 @@
           console.log(longitude, latitude);
           var valid = (inRange(-90, latitude, 90) && inRange(-180, longitude, 180));
           if (valid) {
-            $http.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + GOOGLE_KEYS.API_KEY)
+            const { apiKeys } = buildfire.getContext();
+            const { googleMapKey } = apiKeys;
+            $http.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + googleMapKey)
               .then(function (response) {
                 // this callback will be called asynchronously
                 // when the response is available
@@ -190,31 +192,50 @@
       }
 
       const getAddress = function(location) {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
+          if (window.isGoogleMapsFail) {
+            buildfire.dialog.alert({
+              title: 'Error',
+              message: 'Failed to load Google Maps API.',
+            });
+            return reject(new Error('Google Maps API failed to load'));
+          }
+
           if (location) {
-            const geocoder = new google.maps.Geocoder();
-            geocoder.geocode({'address': location}, function(result, status) {
-              if (status == google.maps.GeocoderStatus.OK) {
-                resolve(
-                  {
+            try {
+              const geocoder = new google.maps.Geocoder();
+              window.gm_authFailure = () => {
+                window.isGoogleMapsFail = true;
+                buildfire.dialog.alert({
+                  title: 'Error',
+                  message: 'Failed to load Google Maps API.',
+                });
+                return reject(new Error('Google Maps API failed to load'));
+              };
+
+
+              geocoder.geocode({ 'address': location }, function(result, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                  resolve({
                     type: 'Location',
                     location: result[0].formatted_address || location,
-                    location_coordinates: [result[0].geometry.location.lng(), result[0].geometry.location.lat()]
+                    location_coordinates: [
+                      result[0].geometry.location.lng(),
+                      result[0].geometry.location.lat()
+                    ]
                   });
-              } else {
-                resolve({
-                  type: 'Location',
-                  location: location,
-                  location_coordinates: []
-                });
-              };
-            });
+                } else {
+                  return reject(new Error('Geocoding failed'));
+                }
+              });
+            } catch (err) {
+              return reject(new Error('Error in geocoding process'));
+            }
           } else {
             resolve(null);
-          };
+          }
         });
       };
-
       const parseImageURL = function(url) {
         return new Promise((resolve) => {
           if (url.includes("http")){
@@ -342,6 +363,13 @@
                   type: 'danger',
                 });
               });
+            }).catch(err => {
+              stateSeederInstance?.requestResult?.complete();
+              console.warn('error getting address', err);
+              return buildfire.dialog.toast({
+                message: 'Something went wrong, try again later.',
+                type: 'danger',
+              });
             });
           }).catch(err => {
             stateSeederInstance?.requestResult?.complete();
@@ -353,7 +381,6 @@
           });
         });
       };
-
       return {
         initStateSeeder: function() {
           getCurrentUser().then(user => {

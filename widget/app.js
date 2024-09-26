@@ -8,30 +8,33 @@
        * To make href urls safe on mobile
        */
       $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile|file):/);
-
-
       $routeProvider
         .when('/', {
           templateUrl: 'templates/home.html',
           controllerAs: 'WidgetHome',
-          controller: 'WidgetHomeCtrl'
+          controller: 'WidgetHomeCtrl',
+          resolve: {
+            ScriptLoaderService: function (ScriptLoaderService) {
+              return ScriptLoaderService.loadScript();
+            }
+          }
         })
         .otherwise('/');
     }])
-  /*  .filter('getImageUrl', ['Buildfire', function (Buildfire) {
-      return function (url, width, height, type) {
-        if (type == 'resize')
-          return Buildfire.imageLib.resizeImage(url, {
-            width: width,
-            height: height
-          });
-        else
-          return Buildfire.imageLib.cropImage(url, {
-            width: width,
-            height: height
-          });
-      }
-    }])*/
+    /*  .filter('getImageUrl', ['Buildfire', function (Buildfire) {
+        return function (url, width, height, type) {
+          if (type == 'resize')
+            return Buildfire.imageLib.resizeImage(url, {
+              width: width,
+              height: height
+            });
+          else
+            return Buildfire.imageLib.cropImage(url, {
+              width: width,
+              height: height
+            });
+        }
+      }])*/
     .directive("buildFireCarousel", ["$rootScope", function ($rootScope) {
       return {
         restrict: 'A',
@@ -40,11 +43,12 @@
         }
       };
     }])
+
     .directive("googleMap", function () {
       return {
         template: "<div></div>",
         replace: true,
-        scope: {coordinates: '='},
+        scope: { coordinates: '=' },
         link: function (scope, elem, attrs) {
           scope.$watch('coordinates', function (newValue, oldValue) {
             if (newValue) {
@@ -85,29 +89,29 @@
             }
           }, true);
         }
-      }
-    })
- /*   .directive("backgroundImage", ['$filter', function ($filter) {
-      return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-          var getImageUrlFilter = $filter("getImageUrl");
-          var setBackgroundImage = function (backgroundImage) {
-            if (backgroundImage) {
-              element.css(
-                'background', '#010101 url('
-                + getImageUrlFilter(backgroundImage, 342, 770, 'resize')
-                + ') repeat fixed top center');
-            } else {
-              element.css('background', 'none');
-            }
-          };
-          attrs.$observe('backgroundImage', function (newValue) {
-            setBackgroundImage(newValue);
-          });
-        }
       };
-    }])*/// Directive for adding  Image carousel on widget layout 2
+    })
+    /*   .directive("backgroundImage", ['$filter', function ($filter) {
+        return {
+          restrict: 'A',
+          link: function (scope, element, attrs) {
+            var getImageUrlFilter = $filter("getImageUrl");
+            var setBackgroundImage = function (backgroundImage) {
+              if (backgroundImage) {
+                element.css(
+                  'background', '#010101 url('
+                  + getImageUrlFilter(backgroundImage, 342, 770, 'resize')
+                  + ') repeat fixed top center');
+              } else {
+                element.css('background', 'none');
+              }
+            };
+            attrs.$observe('backgroundImage', function (newValue) {
+              setBackgroundImage(newValue);
+            });
+          }
+     };
+      }])*/// Directive for adding  Image carousel on widget layout 2
     .directive('imageCarousel', function () {
       return {
         restrict: 'A',
@@ -151,87 +155,131 @@
         }
       }
     })
+    .service('ScriptLoaderService', ['$q', function ($q) {
+      this.loadScript = function () {
+        const { apiKeys } = buildfire.getContext();
+        const { googleMapKey } = apiKeys;
+        const url = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=${googleMapKey}`;
+
+        const deferred = $q.defer();
+
+        // Check if script is already loaded
+        if (document.querySelector(`script[src="${url}"]`)) {
+          console.info('Google Maps script is already loaded.');
+          deferred.resolve();
+          return deferred.promise;
+        }
+
+        // If not loaded, create and load the script
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+
+        script.onload = function () {
+          console.info(`Successfully loaded script: ${url}`);
+          deferred.resolve();
+        };
+
+        script.onerror = function () {
+          console.error(`Failed to load script: ${url}`);
+          deferred.reject('Failed to load script.');
+        };
+
+        window.gm_authFailure = () => {
+          buildfire.dialog.alert({
+            title: 'Error',
+            message: 'Failed to load Google Maps API.',
+          });
+          deferred.reject('Failed to load Google Maps API.');
+        };
+
+        document.head.appendChild(script);
+        return deferred.promise;
+      };
+    }])
+
     .run([function () {
       buildfire.navigation.onBackButtonClick = function () {
-          buildfire.navigation._goBackOne();
+        buildfire.navigation._goBackOne();
       };
     }]).filter('cropImage', [function () {
-        return function (url, width, height, noDefault) {
-          if(noDefault)
-          {
-            if(!url)
-              return '';
-          }
-          return buildfire.imageLib.cropImage(url, {
-            width: width,
-            height: height
-          });
-        };
-      }]).directive('backImg', ["$rootScope", function ($rootScope) {
-      return function (scope, element, attrs) {
-        attrs.$observe('backImg', function (value) {
-          var img = '';
-          if (value) {
-            buildfire.imageLib.local.cropImage(value, {
-              width: $rootScope.deviceWidth,
-              height: $rootScope.deviceHeight
-            }, function (err, imgUrl) {
-              if (imgUrl) {
-                img = imgUrl;
-                element.attr("style", 'background:url(' + img + ') !important ; background-size: cover !important;');
-              } else {
-                img = '';
-                element.attr("style", 'background-color:white');
-              }
-              element.css({
-                'background-size': 'cover !important'
-              });
-            });
-            // img = $filter("cropImage")(value, $rootScope.deviceWidth, $rootScope.deviceHeight, true);
-          }
-          else {
-            img = "";
-            element.attr("style", 'background-color:white');
+    return function (url, width, height, noDefault) {
+      if(noDefault)
+      {
+        if(!url)
+          return '';
+      }
+      return buildfire.imageLib.cropImage(url, {
+        width: width,
+        height: height
+      });
+    };
+  }]).directive('backImg', ["$rootScope", function ($rootScope) {
+    return function (scope, element, attrs) {
+      attrs.$observe('backImg', function (value) {
+        var img = '';
+        if (value) {
+          buildfire.imageLib.local.cropImage(value, {
+            width: $rootScope.deviceWidth,
+            height: $rootScope.deviceHeight
+          }, function (err, imgUrl) {
+            if (imgUrl) {
+              img = imgUrl;
+              element.attr("style", 'background:url(' + img + ') !important ; background-size: cover !important;');
+            } else {
+              img = '';
+              element.attr("style", 'background-color:white');
+            }
             element.css({
               'background-size': 'cover !important'
             });
-          }
-        });
-      };
-    }]) .directive("loadImage", ['Buildfire', function (Buildfire) {
-      return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-         // element.attr("src", "../../../styles/media/holder-" + attrs.loadImage + ".gif");
-
-          var _img = attrs.finalSrc;
-          if (attrs.cropType == 'resize') {
-            Buildfire.imageLib.local.resizeImage(_img, {
-              width: attrs.cropWidth,
-              height: attrs.cropHeight
-            }, function (err, imgUrl) {
-              _img = imgUrl;
-              replaceImg(_img);
-            });
-          } else {
-            Buildfire.imageLib.local.cropImage(_img, {
-              width: attrs.cropWidth,
-              height: attrs.cropHeight
-            }, function (err, imgUrl) {
-              _img = imgUrl;
-              replaceImg(_img);
-            });
-          }
-
-          function replaceImg(finalSrc) {
-            var elem = $("<img>");
-            elem[0].onload = function () {
-              element.attr("src", finalSrc);
-              elem.remove();
-            };
-            elem.attr("src", finalSrc);
-          }
+          });
+          // img = $filter("cropImage")(value, $rootScope.deviceWidth, $rootScope.deviceHeight, true);
         }
-      };
+        else {
+          img = "";
+          element.attr("style", 'background-color:white');
+          element.css({
+            'background-size': 'cover !important'
+          });
+        }
+      });
+    };
+  }]) .directive("loadImage", ['Buildfire', function (Buildfire) {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attrs) {
+        // element.attr("src", "../../../styles/media/holder-" + attrs.loadImage + ".gif");
+
+        var _img = attrs.finalSrc;
+        if (attrs.cropType == 'resize') {
+          Buildfire.imageLib.local.resizeImage(_img, {
+            width: attrs.cropWidth,
+            height: attrs.cropHeight
+          }, function (err, imgUrl) {
+            _img = imgUrl;
+            replaceImg(_img);
+          });
+        } else {
+          Buildfire.imageLib.local.cropImage(_img, {
+            width: attrs.cropWidth,
+            height: attrs.cropHeight
+          }, function (err, imgUrl) {
+            _img = imgUrl;
+            replaceImg(_img);
+          });
+        }
+
+        function replaceImg(finalSrc) {
+          var elem = $("<img>");
+          elem[0].onload = function () {
+            element.attr("src", finalSrc);
+            elem.remove();
+          };
+          elem.attr("src", finalSrc);
+        }
+      }
+    };
     }]);
+
 })(window.angular, window.buildfire);

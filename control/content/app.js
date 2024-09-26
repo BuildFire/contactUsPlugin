@@ -8,7 +8,13 @@
         .when('/', {
           templateUrl: 'templates/home.html',
           controllerAs: 'ContentHome',
-          controller: 'ContentHomeCtrl'
+          controller: 'ContentHomeCtrl',
+          resolve: {
+            ScriptLoaderService: function (ScriptLoaderService) {
+              return ScriptLoaderService.loadScript();
+            }
+          }
+
         })
         .otherwise('/');
     }])
@@ -25,6 +31,39 @@
             height: height
           });
       }
+    }])
+    .service('ScriptLoaderService', ['$q', function ($q) {
+      this.loadScript = function () {
+        const deferred = $q.defer();
+
+        const {apiKeys} = buildfire.getContext();
+        const {googleMapKey} = apiKeys;
+        const url = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=${googleMapKey}`;
+
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+
+        script.onload = function () {
+          console.info(`Successfully loaded script: ${url}`);
+          deferred.resolve();
+        };
+
+        script.onerror = function () {
+          console.error(`Failed to load script: ${url}`);
+          deferred.reject('Failed to load script.');
+        };
+        window.gm_authFailure = () => {
+          buildfire.dialog.alert({
+            title: 'Error',
+            message: 'Failed to load Google Maps API.',
+          });
+          deferred.reject('Failed to load Google Maps API.');
+        };
+
+        document.head.appendChild(script);
+        return deferred.promise;
+      };
     }])
     .directive('googleLocationSearch', function () {
       return {
