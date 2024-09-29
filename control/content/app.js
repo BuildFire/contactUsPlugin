@@ -18,28 +18,12 @@
         })
         .otherwise('/');
     }])
-    .filter('getImageUrl', ['Buildfire', function (Buildfire) {
-      return function (url, width, height, type) {
-        if (type == 'resize')
-          return Buildfire.imageLib.resizeImage(url, {
-            width: width,
-            height: height
-          });
-        else
-          return Buildfire.imageLib.cropImage(url, {
-            width: width,
-            height: height
-          });
-      }
-    }])
     .service('ScriptLoaderService', ['$q', function ($q) {
       this.loadScript = function () {
         const deferred = $q.defer();
-
         const {apiKeys} = buildfire.getContext();
         const {googleMapKey} = apiKeys;
-        const url = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=${googleMapKey}`;
-
+        const url = `https://maps.googleapis.com/maps/api/js?v=weekly&libraries=places,marker&key=${googleMapKey}`;
         const script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = url;
@@ -65,6 +49,62 @@
         return deferred.promise;
       };
     }])
+    .filter('getImageUrl', ['Buildfire', function (Buildfire) {
+      return function (url, width, height, type) {
+        if (type == 'resize')
+          return Buildfire.imageLib.resizeImage(url, {
+            width: width,
+            height: height
+          });
+        else
+          return Buildfire.imageLib.cropImage(url, {
+            width: width,
+            height: height
+          });
+      }
+    }])
+    .service('VersionCheckService', function() {
+      this.parseVersion = function(versionString) {
+        const parts = versionString.split('.');
+        return parts.map(part => {
+          // Separate numeric part and suffix
+          const numericPart = part.replace(/\D/g, ''); // Extract the number
+          const suffix = part.replace(/\d/g, ''); // Extract non-numeric suffix (e.g., 'beta')
+
+          return {
+            number: parseInt(numericPart, 10) || 0,
+            suffix: suffix || null
+          };
+        });
+      };
+
+      this.compareVersions = function(currentVersion, requiredVersion) {
+        const length = Math.max(currentVersion.length, requiredVersion.length);
+
+        for (let i = 0; i < length; i++) {
+          const curr = currentVersion[i] || { number: 0, suffix: null };
+          const req = requiredVersion[i] || { number: 0, suffix: null };
+
+          if (curr.number > req.number) return 1;
+          if (curr.number < req.number) return -1;
+
+          // Compare suffixes: absence of suffix > presence of suffix (e.g., 3.58.6 > 3.58.6-beta)
+          if (curr.suffix && !req.suffix) return -1; // beta is considered lower than stable
+          if (!curr.suffix && req.suffix) return 1;
+          if (curr.suffix && req.suffix && curr.suffix > req.suffix) return 1;
+          if (curr.suffix && req.suffix && curr.suffix < req.suffix) return -1;
+        }
+
+        return 0;
+      };
+
+      this.isVersionGreaterOrEqual = function() {
+        const currentVersionString = google.maps.version;
+        const currentVersion = this.parseVersion(currentVersionString);
+        const requiredVersion = this.parseVersion('3.60');
+        return this.compareVersions(currentVersion, requiredVersion) >= 0;
+      };
+    })
     .directive('googleLocationSearch', function () {
       return {
         restrict: 'A',
@@ -106,7 +146,7 @@
         }
       };
     })
-    .directive("googleMap", function () {
+    .directive("googleMap", ['VersionCheckService',function (VersionCheckService) {
       return {
         template: "<div></div>",
         replace: true,
@@ -118,18 +158,25 @@
             if (newValue) {
               scope.coordinates = newValue;
               if (scope.coordinates.length) {
-                var map = new google.maps.Map(elem[0], {
+                const options = {
                   center: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
-                  zoomControl: false,
                   streetViewControl: false,
                   mapTypeControl: false,
                   zoom: 15,
-                  mapTypeId: google.maps.MapTypeId.ROADMAP
-                });
-                var marker = new google.maps.Marker({
+                  mapTypeId: google.maps.MapTypeId.ROADMAP,
+                  mapId:'contentPageMap'
+                }
+                if (VersionCheckService.isVersionGreaterOrEqual()) {
+                  options.cameraControl = false;
+                } else {
+                  options.zoomControl = false;
+                }
+                var map = new google.maps.Map(elem[0], options);
+                var marker = new google.maps.marker.AdvancedMarkerElement
+                ({
                   position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
                   map: map,
-                  draggable:true
+                  gmpDraggable:true
                 });
 
                 var styleOptions = {
@@ -148,7 +195,7 @@
               google.maps.event.addListener(marker, 'dragend', function (event) {
                 scope.coordinates = [event.latLng.lng(), event.latLng.lat()];
                 geocoder.geocode({
-                  latLng: marker.getPosition()
+                  latLng: marker.position
                 }, function(responses) {
                   if (responses && responses.length > 0) {
                     scope.location  = responses[0].formatted_address;
@@ -169,7 +216,7 @@
           }, true);
         }
       }
-    })
+    }])
     .directive('ngEnter', function () {
       return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
