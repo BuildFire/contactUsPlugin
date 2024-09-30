@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular) {
-  angular.module('contactUsPluginContent', ['ngRoute', 'ui.tinymce', 'ui.bootstrap', 'ui.sortable'])
+  angular.module('contactUsPluginContent', ['ngRoute', 'ui.tinymce', 'ui.bootstrap', 'ui.sortable', 'utils'])
     //injected ngRoute for routing
     .config(['$routeProvider', function ($routeProvider) {
       $routeProvider
@@ -63,48 +63,6 @@
           });
       }
     }])
-    .service('VersionCheckService', function() {
-      this.parseVersion = function(versionString) {
-        const parts = versionString.split('.');
-        return parts.map(part => {
-          // Separate numeric part and suffix
-          const numericPart = part.replace(/\D/g, ''); // Extract the number
-          const suffix = part.replace(/\d/g, ''); // Extract non-numeric suffix (e.g., 'beta')
-
-          return {
-            number: parseInt(numericPart, 10) || 0,
-            suffix: suffix || null
-          };
-        });
-      };
-
-      this.compareVersions = function(currentVersion, requiredVersion) {
-        const length = Math.max(currentVersion.length, requiredVersion.length);
-
-        for (let i = 0; i < length; i++) {
-          const curr = currentVersion[i] || { number: 0, suffix: null };
-          const req = requiredVersion[i] || { number: 0, suffix: null };
-
-          if (curr.number > req.number) return 1;
-          if (curr.number < req.number) return -1;
-
-          // Compare suffixes: absence of suffix > presence of suffix (e.g., 3.58.6 > 3.58.6-beta)
-          if (curr.suffix && !req.suffix) return -1; // beta is considered lower than stable
-          if (!curr.suffix && req.suffix) return 1;
-          if (curr.suffix && req.suffix && curr.suffix > req.suffix) return 1;
-          if (curr.suffix && req.suffix && curr.suffix < req.suffix) return -1;
-        }
-
-        return 0;
-      };
-
-      this.isVersionGreaterOrEqual = function() {
-        const currentVersionString = google.maps.version;
-        const currentVersion = this.parseVersion(currentVersionString);
-        const requiredVersion = this.parseVersion('3.60');
-        return this.compareVersions(currentVersion, requiredVersion) >= 0;
-      };
-    })
     .directive('googleLocationSearch', function () {
       return {
         restrict: 'A',
@@ -166,7 +124,7 @@
                   mapTypeId: google.maps.MapTypeId.ROADMAP,
                   mapId:'contentPageMap'
                 }
-                if (VersionCheckService.isVersionGreaterOrEqual()) {
+                if (VersionCheckService.isCameraControlVersion()) {
                   options.cameraControl = false;
                 } else {
                   options.zoomControl = false;
