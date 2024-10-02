@@ -260,8 +260,8 @@
       const getCurrentUser = function () {
         return new Promise((resolve, reject) => {
           buildfire.auth.getCurrentUser((err, currentUser) => {
-              if (err) reject(err);
-              resolve(currentUser);
+            if (err) reject(err);
+            resolve(currentUser);
           });
         });
       }
@@ -386,17 +386,17 @@
           getCurrentUser().then(user => {
             stateSeederInstance = new buildfire.components.aiStateSeeder({
               generateOptions: {
-              userMessage: `Generate a contact us information related to [business-type] located in [target-region].\nFor phone number use [+1 555 555-1234].\nFor email use [${user?.email || ''}].`,
-              maxRecords: 5,
-              systemMessage:
+                userMessage: `Generate a contact us information related to [business-type] located in [target-region].\nFor phone number use [+1 555 555-1234].\nFor email use [${user?.email || ''}].`,
+                maxRecords: 5,
+                systemMessage:
                   'imagesURLs are two images related to the business type or the target region, topic should be transformed to kebab-case, use https://app.buildfire.com/api/stockImages/?topic={topic}&imageType=medium. return description as HTML',
-              jsonTemplate: jsonTemplate,
-              callback: handleAIReq.bind(this),
-              hintText: 'Replace values between brackets to match your requirements.',
+                jsonTemplate: jsonTemplate,
+                callback: handleAIReq.bind(this),
+                hintText: 'Replace values between brackets to match your requirements.',
               },
-          }).smartShowEmptyState();
+            }).smartShowEmptyState();
           });
-        return true;
+          return true;
         },
       }
     }])
