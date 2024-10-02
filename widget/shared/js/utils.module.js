@@ -41,8 +41,3 @@ angular.module('utils', [])
           return this.compareVersions(currentVersion, requiredVersion) >= 0;
       };
   });
-
-
-const VersionCheckService = {
-
-}
