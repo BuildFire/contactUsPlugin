@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular) {
-  angular.module('contactUsPluginContent', ['ngRoute', 'ui.tinymce', 'ui.bootstrap', 'ui.sortable'])
+  angular.module('contactUsPluginContent', ['ngRoute', 'ui.tinymce', 'ui.bootstrap', 'ui.sortable', 'utils'])
     //injected ngRoute for routing
     .config(['$routeProvider', function ($routeProvider) {
       $routeProvider
@@ -18,28 +18,12 @@
         })
         .otherwise('/');
     }])
-    .filter('getImageUrl', ['Buildfire', function (Buildfire) {
-      return function (url, width, height, type) {
-        if (type == 'resize')
-          return Buildfire.imageLib.resizeImage(url, {
-            width: width,
-            height: height
-          });
-        else
-          return Buildfire.imageLib.cropImage(url, {
-            width: width,
-            height: height
-          });
-      }
-    }])
     .service('ScriptLoaderService', ['$q', function ($q) {
       this.loadScript = function () {
         const deferred = $q.defer();
-
         const {apiKeys} = buildfire.getContext();
         const {googleMapKey} = apiKeys;
-        const url = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=${googleMapKey}`;
-
+        const url = `https://maps.googleapis.com/maps/api/js?v=weekly&libraries=places,marker&key=${googleMapKey}`;
         const script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = url;
@@ -64,6 +48,20 @@
         document.head.appendChild(script);
         return deferred.promise;
       };
+    }])
+    .filter('getImageUrl', ['Buildfire', function (Buildfire) {
+      return function (url, width, height, type) {
+        if (type == 'resize')
+          return Buildfire.imageLib.resizeImage(url, {
+            width: width,
+            height: height
+          });
+        else
+          return Buildfire.imageLib.cropImage(url, {
+            width: width,
+            height: height
+          });
+      }
     }])
     .directive('googleLocationSearch', function () {
       return {
@@ -106,7 +104,7 @@
         }
       };
     })
-    .directive("googleMap", function () {
+    .directive("googleMap", ['VersionCheckService',function (VersionCheckService) {
       return {
         template: "<div></div>",
         replace: true,
@@ -118,18 +116,25 @@
             if (newValue) {
               scope.coordinates = newValue;
               if (scope.coordinates.length) {
-                var map = new google.maps.Map(elem[0], {
+                const options = {
                   center: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
-                  zoomControl: false,
                   streetViewControl: false,
                   mapTypeControl: false,
                   zoom: 15,
-                  mapTypeId: google.maps.MapTypeId.ROADMAP
-                });
-                var marker = new google.maps.Marker({
+                  mapTypeId: google.maps.MapTypeId.ROADMAP,
+                  mapId:'contentPageMap'
+                }
+                if (VersionCheckService.isCameraControlVersion()) {
+                  options.cameraControl = false;
+                } else {
+                  options.zoomControl = false;
+                }
+                var map = new google.maps.Map(elem[0], options);
+                var marker = new google.maps.marker.AdvancedMarkerElement
+                ({
                   position: new google.maps.LatLng(scope.coordinates[1], scope.coordinates[0]),
                   map: map,
-                  draggable:true
+                  gmpDraggable:true
                 });
 
                 var styleOptions = {
@@ -148,7 +153,7 @@
               google.maps.event.addListener(marker, 'dragend', function (event) {
                 scope.coordinates = [event.latLng.lng(), event.latLng.lat()];
                 geocoder.geocode({
-                  latLng: marker.getPosition()
+                  latLng: marker.position
                 }, function(responses) {
                   if (responses && responses.length > 0) {
                     scope.location  = responses[0].formatted_address;
@@ -169,7 +174,7 @@
           }, true);
         }
       }
-    })
+    }])
     .directive('ngEnter', function () {
       return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
