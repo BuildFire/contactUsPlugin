@@ -59,7 +59,7 @@
                                   mapTypeControl: false,
                                   zoom: 15,
                                   mapTypeId: google.maps.MapTypeId.ROADMAP,
-                                  mapId:'mainPageMap'
+                                  mapId: buildfire.getContext().apiKeys.mapId || 'bfMainPageMap'
                               }
 
                               if (VersionCheckService.isCameraControlVersion()) {
@@ -75,11 +75,6 @@
                                   map: map
                               });
 
-                              var styleOptions = { name: "Report Error Hide Style" };
-                              var MAP_STYLE = [{ stylers: [{ visibility: "on" }] }];
-                              var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
-                              map.mapTypes.set("Report Error Hide Style", mapType);
-                              map.setMapTypeId("Report Error Hide Style");
                               marker.addListener('click', function () {
                                   if (buildfire.getContext().device && buildfire.getContext().device.platform.toLowerCase() === 'ios')
                                       buildfire.navigation.openWindow("maps://maps.apple.com?q=" + scope.coordinates[1] + "," + scope.coordinates[0], '_system');
