@@ -122,7 +122,7 @@
                   mapTypeControl: false,
                   zoom: 15,
                   mapTypeId: google.maps.MapTypeId.ROADMAP,
-                  mapId: buildfire.getContext().apiKeys.mapId || 'bfContentPageMap'
+                  mapId: buildfire.getContext().apiKeys.googleMapId || 'bfContentPageMap'
                 }
                 if (VersionCheckService.isCameraControlVersion()) {
                   options.cameraControl = false;
