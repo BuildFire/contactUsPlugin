@@ -1,3 +1,6 @@
+body {
+    padding-top: var(--bf-safe-area-inset-top);
+}
 /* Plugin CSS */
 .contact-plugin.layout1 .contact-info-button {
     max-width: 100%;
