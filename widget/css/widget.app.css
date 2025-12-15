@@ -1,5 +1,6 @@
-body {
+html {
     padding-top: var(--bf-safe-area-inset-top);
+    padding-bottom: var(--bf-safe-area-inset-bottom);
 }
 /* Plugin CSS */
 .contact-plugin.layout1 .contact-info-button {
@@ -84,4 +85,8 @@ body {
     opacity: 0.85;
     z-index: 9;
     -webkit-transform: translate3d(0, 0, 0);
+}
+
+.holder .info-bar.no-map {
+    position: relative;
 }

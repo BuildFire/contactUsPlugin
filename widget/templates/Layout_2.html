@@ -5,7 +5,8 @@
       <div google-map class="map-size"
            ng-if="WidgetHome.data.content.address && WidgetHome.data.content.showMap"
            coordinates="WidgetHome.data.content.address.location_coordinates"></div>
-      <div class="contact-address info-bar titleBarBackgroundTheme">
+      <div class="contact-address info-bar titleBarBackgroundTheme"
+           ng-class="{'no-map': !WidgetHome.data.content.showMap}">
         <p class="margin-bottom-zero col-md-12"
            ng-show="WidgetHome.data.content.addressTitle">
           <a class="titleBarTextAndIcons" ng-click="WidgetHome.onAddressClick(WidgetHome.data.content.address.location_coordinates[0],WidgetHome.data.content.address.location_coordinates[1])">
