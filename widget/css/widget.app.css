@@ -1,3 +1,7 @@
+html {
+    padding-top: var(--bf-safe-area-inset-top);
+    padding-bottom: var(--bf-safe-area-inset-bottom);
+}
 /* Plugin CSS */
 .contact-plugin.layout1 .contact-info-button {
     max-width: 100%;
@@ -81,4 +85,8 @@
     opacity: 0.85;
     z-index: 9;
     -webkit-transform: translate3d(0, 0, 0);
+}
+
+.holder .info-bar.no-map {
+    position: relative;
 }
