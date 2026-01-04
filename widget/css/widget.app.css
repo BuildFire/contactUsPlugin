@@ -1,8 +1,10 @@
-html {
+/* Plugin CSS */
+
+body {
     padding-top: var(--bf-safe-area-inset-top);
     padding-bottom: var(--bf-safe-area-inset-bottom);
 }
-/* Plugin CSS */
+
 .contact-plugin.layout1 .contact-info-button {
     max-width: 100%;
     overflow: hidden;
